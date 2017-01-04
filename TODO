@@ -1,0 +1,7 @@
+— create a function for converting arm-based data set to a contrast-based format (see the function ‘pairwise’ in the netmeta package)
+
+- add methods for inspection and for checking convergence (see the coda package)
+
+- change the package name (netmetaCopula or netmetaC?)
+
+- replace ‘mcmplots’ package for plotting MCMC results with ‘ggmcmc’

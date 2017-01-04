@@ -1,0 +1,144 @@
+---
+title: '`netcopula` package'
+author: "Sergio Venturini"
+date: ''
+# output: rmarkdown::html_vignette
+output:
+  pdf_document:
+    highlight: zenburn
+#    keep_tex: yes
+  html_document:
+    highlight: tango
+    self-contained: yes
+    standalone: yes
+    theme: united
+#  word_document: default
+subtitle: Report at `r Sys.Date()`
+header-includes: \usepackage{bm}
+vignette: >
+  %\VignetteIndexEntry{Report at `r Sys.Date()`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r global_options, include=FALSE}
+# knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+path <- "~/dev/netcopula/demo/tmp"
+library(netcopula)
+```
+
+# Using \emph{all the data} from Achana et al. (2014) (i.e. imputing the missing outcomes)
+
+All the latent variables are estimated, tha is, we do not use the imputation algorithm.
+
+```{r loading_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+load(file = file.path(path, "examples_10.RData"))
+```
+
+## $\boldsymbol{\Gamma}$ (outcome copula correlation matrix)
+
+Here, the $\boldsymbol{\Gamma}$ matrix is not estimated, but it is constrained to be equal to the identity matrix.
+
+## $\boldsymbol{\Sigma}_M$ (common between-study covariance structure)
+
+```{r Sigma_M_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "Sigma_M", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "Sigma_M", type = "caterpillar")
+```
+
+```{r Corr_M_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "Corr_M", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "Corr_M", type = "caterpillar")
+```
+
+## $\boldsymbol{\mu}$ (study-specific baseline effects)
+
+```{r mu_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "mu", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "mu", type = "caterpillar")
+```
+
+## $\boldsymbol{\delta}$ (study-specific [random] treatment effects)
+
+```{r delta_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "delta", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "delta", type = "caterpillar")
+```
+
+## $\boldsymbol{d}$ (pooled treatment effects across trials)
+
+```{r d_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "d", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "d", type = "caterpillar")
+```
+
+## $\boldsymbol{x}$ (latent variables)
+
+```{r x_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "x", latent_var = TRUE, type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "x", latent_var = TRUE, type = "caterpillar")
+```
+
+# Using \emph{only complete data} for the first two outcomes from Achana et al. (2014)
+
+All the latent variables are estimated, tha is, we do not use the imputation algorithm.
+
+```{r loading_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+load(file = file.path(path, "examples2_10.RData"))
+```
+
+## $\boldsymbol{\Gamma}$ (outcome copula correlation matrix)
+
+Here, the $\boldsymbol{\Gamma}$ matrix is not estimated, but it is constrained to be equal to the identity matrix.
+
+## $\boldsymbol{\Sigma}_M$ (common between-study covariance structure)
+
+```{r Sigma_M_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "Sigma_M", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "Sigma_M", type = "caterpillar")
+```
+
+```{r Corr_M_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "Corr_M", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "Corr_M", type = "caterpillar")
+```
+
+## $\boldsymbol{\mu}$ (study-specific baseline effects)
+
+```{r mu_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "mu", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "mu", type = "caterpillar")
+```
+
+## $\boldsymbol{\delta}$ (study-specific [random] treatment effects)
+
+```{r delta_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "delta", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "delta", type = "caterpillar")
+```
+
+## $\boldsymbol{d}$ (pooled treatment effects across trials)
+
+```{r d_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "d", type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "d", type = "caterpillar")
+```
+
+## $\boldsymbol{x}$ (latent variables)
+
+```{r x_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE, results="asis"}
+plot(x = res, to_plot = "x", latent_var = TRUE, type = "trace")
+cat("\\clearpage")
+plot(x = res, to_plot = "x", latent_var = TRUE, type = "caterpillar")
+```

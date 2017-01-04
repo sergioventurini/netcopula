@@ -1,0 +1,236 @@
+---
+title: '`netcopula` package'
+author: "Sergio Venturini"
+date: ''
+# output: rmarkdown::html_vignette
+output:
+  pdf_document:
+    highlight: zenburn
+#    keep_tex: yes
+  html_document:
+    highlight: tango
+    self-contained: yes
+    standalone: yes
+    theme: united
+  word_document: default
+subtitle: Report at 2016-04-20`
+header-includes: \usepackage{bm}
+vignette: >
+  %\VignetteIndexEntry{Report at 2016-04-20}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r global_options, include=FALSE}
+# knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+path <- "~/dev/netcopula/demo/tmp"
+gen_res <- function(to_plot) {
+  to_keep <- substr(rownames(out), 1, nchar(to_plot) + 1) == paste0(to_plot, "[")
+  tmp <- out[to_keep, ]
+  caterplot(res_mcmc, to_plot, reorder = TRUE, quantiles = list(outer = c(0.025, 0.975), inner = c(0.1, 0.9)))
+  caterpoints(tmp[sort.int(tmp[, 5], decreasing = TRUE, index.return = TRUE)$ix, 1], pch = "x", col = "darkorange")
+  title(paste0("parameters ", to_plot, " (data from Achana et al., 2014)"), cex.main = 1.25)
+  
+  traplot(res_mcmc, parms = to_plot, mar = c(1.0, 1.5, .75, .15) + .1, col = NULL, lty = 1, plot.title = NULL, main = NULL, greek = FALSE, style = "plain", cex.main = .85, cex.axis = .7, tcl = -.3, xaxt = "n")
+}
+```
+
+```{r loading, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+library(netcopula)
+library(mcmcplots)
+library(coda)
+
+load(file = file.path(path, "examples_5.RData"))
+if (!.hasSlot(res, "S_q")) {
+  res@S_q <- array()
+  res@Sigma_q_prop <- array()
+  res@rho_mu <- array()
+  res@cov_mu <- array()
+  res@ar_mu_vec <- array()
+  res@mu_rate <- array()
+  res@mu_prop <- array()
+  res@tp_mu <- array()
+  res@delta_prop <- array()
+  res@data <- nc_data
+}
+```
+
+# $\boldsymbol{\Gamma}$ fixed -- $\boldsymbol{\mu}$ and $\boldsymbol{\delta}$ unconstrained
+
+In this section we fix the $\boldsymbol{\Gamma}$ parameters to their sample estimates, that is
+
+```{r Gamma_fix, echo=FALSE}
+cor(na.omit(nc_data@study_data[, colnames(nc_data@study_data)[regexpr("y", colnames(nc_data@study_data)) == 1]]))
+```
+
+and leave the $\boldsymbol{\mu}$ and $\boldsymbol{\delta}$ parameters unconstrained (i.e. at each iteration we do not impose the restriction that $\mu_{ikm}$ is fixed for all the arms of the same study and that $\delta_{ikm}$ is 0 for all arms different from the baseline).
+
+```{r loading_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+res_mcmc <- as.mcmc(res, data = nc_data, nthin = 50, latent_var = TRUE)
+res_mcmc <- add_corr(res_mcmc)
+out <- summary(res, digits_summary = 5, latent_var = TRUE, print = FALSE, data = nc_data, nthin = 50)
+```
+
+## $\boldsymbol{\Gamma}$ (outcome copula correlation matrix)
+
+```{r Gamma_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Gamma")
+```
+
+## $\boldsymbol{\Sigma}_M$ (common between-study covariance structure)
+
+```{r Sigma_M_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Sigma_M")
+```
+
+```{r Corr_M_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Corr_M")
+```
+
+## $\boldsymbol{\mu}$ (study-specific baseline effects)
+
+```{r mu_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("mu")
+```
+
+## $\boldsymbol{\delta}$ (study-specific [random] treatment effects)
+
+```{r delta_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("delta")
+```
+
+## $\boldsymbol{d}$ (pooled treatment effects across trials)
+
+```{r d_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("d")
+```
+
+## $\boldsymbol{x}$ (latent variables)
+
+```{r x_1, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("x")
+```
+
+
+# $\boldsymbol{\Gamma}$ fixed -- $\boldsymbol{\mu}$ and $\boldsymbol{\delta}$ constrained
+
+```{r loading_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+load(file = file.path(path, "examples_6.RData"))
+if (!.hasSlot(res, "S_q")) {
+  res@S_q <- array()
+  res@Sigma_q_prop <- array()
+  res@rho_mu <- array()
+  res@cov_mu <- array()
+  res@ar_mu_vec <- array()
+  res@mu_rate <- array()
+  res@mu_prop <- array()
+  res@tp_mu <- array()
+  res@delta_prop <- array()
+  res@data <- nc_data
+}
+res_mcmc <- as.mcmc(res, data = nc_data, nthin = 50, latent_var = TRUE)
+res_mcmc <- add_corr(res_mcmc)
+out <- summary(res, digits_summary = 5, latent_var = TRUE, print = FALSE, data = nc_data, nthin = 50)
+```
+
+## $\boldsymbol{\Gamma}$ (outcome copula correlation matrix)
+
+```{r Gamma_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Gamma")
+```
+
+## $\boldsymbol{\Sigma}_M$ (common between-study covariance structure)
+
+```{r Sigma_M_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Sigma_M")
+```
+
+```{r Corr_M_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Corr_M")
+```
+
+## $\boldsymbol{\mu}$ (study-specific baseline effects)
+
+```{r mu_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("mu")
+```
+
+## $\boldsymbol{\delta}$ (study-specific [random] treatment effects)
+
+```{r delta_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("delta")
+```
+
+## $\boldsymbol{d}$ (pooled treatment effects across trials)
+
+```{r d_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("d")
+```
+
+## $\boldsymbol{x}$ (latent variables)
+
+```{r x_2, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("x")
+```
+
+
+# $\boldsymbol{\Gamma}$ estimated -- $\boldsymbol{\mu}$ and $\boldsymbol{\delta}$ unconstrained
+
+```{r loading_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+load(file = file.path(path, "examples_7.RData"))
+if (!.hasSlot(res, "S_q")) {
+  res@S_q <- array()
+  res@Sigma_q_prop <- array()
+  res@rho_mu <- array()
+  res@cov_mu <- array()
+  res@ar_mu_vec <- array()
+  res@mu_rate <- array()
+  res@mu_prop <- array()
+  res@tp_mu <- array()
+  res@delta_prop <- array()
+  res@data <- nc_data
+}
+res_mcmc <- as.mcmc(res, data = nc_data, nthin = 50, latent_var = TRUE)
+res_mcmc <- add_corr(res_mcmc)
+out <- summary(res, digits_summary = 5, latent_var = TRUE, print = FALSE, data = nc_data, nthin = 50)
+```
+
+## $\boldsymbol{\Gamma}$ (outcome copula correlation matrix)
+
+```{r Gamma_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Gamma")
+```
+
+## $\boldsymbol{\Sigma}_M$ (common between-study covariance structure)
+
+```{r Sigma_M_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Sigma_M")
+```
+
+```{r Corr_M_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("Corr_M")
+```
+
+## $\boldsymbol{\mu}$ (study-specific baseline effects)
+
+```{r mu_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("mu")
+```
+
+## $\boldsymbol{\delta}$ (study-specific [random] treatment effects)
+
+```{r delta_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("delta")
+```
+
+## $\boldsymbol{d}$ (pooled treatment effects across trials)
+
+```{r d_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("d")
+```
+
+## $\boldsymbol{x}$ (latent variables)
+
+```{r x_3, echo=FALSE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+gen_res("x")
+```
