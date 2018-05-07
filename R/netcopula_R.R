@@ -253,96 +253,96 @@ nc_mcmc_mh_R <- function(data, init, totiter, prior, prop, tuning, adapt, verbos
 
     # updating mu (study-specific baseline effects) and delta (study-specific
     # [random] treatment effects)
-    # for (ik in 1:n_datapoints) {
-    #   if (nGamma > 1) {
-    #     Gamma_k <- Gamma[[trt[ik]]]
-    #   } else {
-    #     Gamma_k <- Gamma[[1]]
-    #   }
-    #   d_1 <- d[baseline[ik], ]
-    #   d_k <- d[trt[ik], ]
-    #   d_1k <- d_k - d_1
-    #   if (trt[ik] == baseline[ik]) {
-    #     # update mu (study-specific baseline effect)
-    #     for (m in 1:M) {
-    #       Gamma_k_m_m <- Gamma_k[m, -m]
-    #       Gamma_k_m <- Gamma_k[-m, -m]
-    #       x_ik_m <- x_imp_arma[ik, -m]
-    #       w_ikm <- as.numeric(t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% x_ik_m)
-    #       gamma_ikm <- sqrt(as.numeric(Gamma_k[m, m] - t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% Gamma_k_m_m))
+    for (ik in 1:n_datapoints) {
+      if (nGamma > 1) {
+        Gamma_k <- Gamma[[trt[ik]]]
+      } else {
+        Gamma_k <- Gamma[[1]]
+      }
+      d_1 <- d[baseline[ik], ]
+      d_k <- d[trt[ik], ]
+      d_1k <- d_k - d_1
+      if (trt[ik] == baseline[ik]) {
+        # update mu (study-specific baseline effect)
+        for (m in 1:M) {
+          Gamma_k_m_m <- Gamma_k[m, -m]
+          Gamma_k_m <- Gamma_k[-m, -m]
+          x_ik_m <- x_imp_arma[ik, -m]
+          w_ikm <- as.numeric(t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% x_ik_m)
+          gamma_ikm <- sqrt(as.numeric(Gamma_k[m, m] - t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% Gamma_k_m_m))
 
-    #       mu_curr <- mu_long[ik, m]
-    #       mode_mu <- mu_curr
-    #       var_mu[1, 1] <- rho_mu[study_index[ik], m]^2*cov_mu[study_index[ik], m]
-    #       mu_prop <- as.numeric(rmvt_arma(1, mode_mu, var_mu, 7))
-    #       mu_prop_chain[study_index[ik], m, niter] <- mu_prop
-    #       rho_mu_chain[study_index[ik], m, niter] <- rho_mu[study_index[ik], m]
-    #       cov_mu_chain[study_index[ik], m, niter] <- cov_mu[study_index[ik], m]
+          mu_curr <- mu_long[ik, m]
+          mode_mu <- mu_curr
+          var_mu[1, 1] <- rho_mu[study_index[ik], m]^2*cov_mu[study_index[ik], m]
+          mu_prop <- as.numeric(rmvt_arma(1, mode_mu, var_mu, 7))
+          mu_prop_chain[study_index[ik], m, niter] <- mu_prop
+          rho_mu_chain[study_index[ik], m, niter] <- rho_mu[study_index[ik], m]
+          cov_mu_chain[study_index[ik], m, niter] <- cov_mu[study_index[ik], m]
 
-    #       target_mu_curr <- mu_logpost(mu_curr, delta[ik, m], as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, mu_sigma, eps, eps_ab)
-    #       target_mu_prop <- mu_logpost(mu_prop, delta[ik, m], as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, mu_sigma, eps, eps_ab)
-    #       tp_mu_chain[study_index[ik], m, niter] <- target_mu_prop
+          target_mu_curr <- mu_logpost(mu_curr, delta[ik, m], as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, mu_sigma, eps, eps_ab)
+          target_mu_prop <- mu_logpost(mu_prop, delta[ik, m], as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, mu_sigma, eps, eps_ab)
+          tp_mu_chain[study_index[ik], m, niter] <- target_mu_prop
 
-    #       mu_A <- target_mu_prop - target_mu_curr
-    #       mu_B <- 0
-    #       mu_rate <- exp(mu_A + mu_B)
-    #       mu_rate_chain[study_index[ik], m, niter] <- mu_rate
-    #       ran_unif <- runif(1)
-    #       if (!is.na(target_mu_prop) & !is.na(target_mu_curr)) {
-    #         if (ran_unif < mu_rate) {
-    #           mu_long[ik, m] <- mu_prop
-    #           mu <- param_wide(mu_long, narms, trt, baseline)
-    #           mu_long <- param_long(mu, narms, FALSE) # is this necessary?
-    #           accept_mu <- accept_mu + 1
-    #         }
-    #       } else {
-    #         mu_rate <- 0
-    #       }
-    #       ar_mu_vec[study_index[ik], m, niter] <- min(mu_rate, 1, na.rm = TRUE)
-    #     }
-    #   } else {
-    #     # update delta (study-specific [random] treatment effects)
-    #     for (m in 1:M) {
-    #       Gamma_k_m_m <- Gamma_k[m, -m]
-    #       Gamma_k_m <- Gamma_k[-m, -m]
-    #       x_ik_m <- x_imp_arma[ik, -m]
-    #       w_ikm <- as.numeric(t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% x_ik_m)
-    #       gamma_ikm <- sqrt(as.numeric(Gamma_k[m, m] - t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% Gamma_k_m_m))
+          mu_A <- target_mu_prop - target_mu_curr
+          mu_B <- 0
+          mu_rate <- exp(mu_A + mu_B)
+          mu_rate_chain[study_index[ik], m, niter] <- mu_rate
+          ran_unif <- runif(1)
+          if (!is.na(target_mu_prop) & !is.na(target_mu_curr)) {
+            if (ran_unif < mu_rate) {
+              mu_long[ik, m] <- mu_prop
+              mu <- param_wide(mu_long, narms, trt, baseline)
+              mu_long <- param_long(mu, narms, FALSE) # is this necessary?
+              accept_mu <- accept_mu + 1
+            }
+          } else {
+            mu_rate <- 0
+          }
+          ar_mu_vec[study_index[ik], m, niter] <- min(mu_rate, 1, na.rm = TRUE)
+        }
+      } else {
+        # update delta (study-specific [random] treatment effects)
+        for (m in 1:M) {
+          Gamma_k_m_m <- Gamma_k[m, -m]
+          Gamma_k_m <- Gamma_k[-m, -m]
+          x_ik_m <- x_imp_arma[ik, -m]
+          w_ikm <- as.numeric(t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% x_ik_m)
+          gamma_ikm <- sqrt(as.numeric(Gamma_k[m, m] - t(Gamma_k_m_m) %*% solve(Gamma_k_m) %*% Gamma_k_m_m))
 
-    #       Sigma_M_m_m <- Sigma_M[m, -m]
-    #       Sigma_M_m <- Sigma_M[-m, -m]
-    #       delta_ik_m <- delta_arma[ik, -m]
-    #       d_1k_m <- d_1k[-m]
-    #       tau_ikm <- d_1k[m] + as.numeric(t(Sigma_M_m_m) %*% solve(Sigma_M_m) %*% (delta_ik_m - d_1k_m))
-    #       eta_ikm <- sqrt(as.numeric(Sigma_M[m, m] - t(Sigma_M_m_m) %*% solve(Sigma_M_m) %*% Sigma_M_m_m))
+          Sigma_M_m_m <- Sigma_M[m, -m]
+          Sigma_M_m <- Sigma_M[-m, -m]
+          delta_ik_m <- delta_arma[ik, -m]
+          d_1k_m <- d_1k[-m]
+          tau_ikm <- d_1k[m] + as.numeric(t(Sigma_M_m_m) %*% solve(Sigma_M_m) %*% (delta_ik_m - d_1k_m))
+          eta_ikm <- sqrt(as.numeric(Sigma_M[m, m] - t(Sigma_M_m_m) %*% solve(Sigma_M_m) %*% Sigma_M_m_m))
 
-    #       delta_curr <- delta[ik, m]
-    #       mode_delta <- delta_curr
-    #       var_delta[1, 1] <- rho_delta[ik, m]^2*cov_delta[ik, m]
-    #       delta_prop <- as.numeric(rmvt_arma(1, mode_delta, var_delta, 7))
-    #       delta_prop_chain[ik, m, niter] <- delta_prop
-    #       rho_delta_chain[ik, m, niter] <- rho_delta[ik, m]
-    #       cov_delta_chain[ik, m, niter] <- cov_delta[ik, m]
+          delta_curr <- delta[ik, m]
+          mode_delta <- delta_curr
+          var_delta[1, 1] <- rho_delta[ik, m]^2*cov_delta[ik, m]
+          delta_prop <- as.numeric(rmvt_arma(1, mode_delta, var_delta, 7))
+          delta_prop_chain[ik, m, niter] <- delta_prop
+          rho_delta_chain[ik, m, niter] <- rho_delta[ik, m]
+          cov_delta_chain[ik, m, niter] <- cov_delta[ik, m]
 
-    #       target_delta_curr <- delta_logpost(delta_curr, mu_long[ik, m], tau_ikm, eta_ikm, as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, eps, eps_ab)
-    #       target_delta_prop <- delta_logpost(delta_prop, mu_long[ik, m], tau_ikm, eta_ikm, as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, eps, eps_ab)
+          target_delta_curr <- delta_logpost(delta_curr, mu_long[ik, m], tau_ikm, eta_ikm, as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, eps, eps_ab)
+          target_delta_prop <- delta_logpost(delta_prop, mu_long[ik, m], tau_ikm, eta_ikm, as.double(y_imp[ik, m]), as.double(n_imp[ik, m]), w_ikm, gamma_ikm, eps, eps_ab)
 
-    #       delta_A <- target_delta_prop - target_delta_curr
-    #       delta_B <- 0
-    #       delta_rate <- exp(delta_A + delta_B)
-    #       ran_unif <- runif(1)
-    #       if (!is.na(target_delta_prop) & !is.na(target_delta_curr)) {
-    #         if (ran_unif < delta_rate) {
-    #           delta[ik, m] <- delta_prop
-    #           accept_delta <- accept_delta + 1
-    #         }
-    #       } else {
-    #         delta_rate <- 0
-    #       }
-    #       ar_delta_vec[ik, m, niter] <- min(delta_rate, 1, na.rm = TRUE)
-    #     }
-    #   }
-    # }
+          delta_A <- target_delta_prop - target_delta_curr
+          delta_B <- 0
+          delta_rate <- exp(delta_A + delta_B)
+          ran_unif <- runif(1)
+          if (!is.na(target_delta_prop) & !is.na(target_delta_curr)) {
+            if (ran_unif < delta_rate) {
+              delta[ik, m] <- delta_prop
+              accept_delta <- accept_delta + 1
+            }
+          } else {
+            delta_rate <- 0
+          }
+          ar_delta_vec[ik, m, niter] <- min(delta_rate, 1, na.rm = TRUE)
+        }
+      }
+    }
     mu_chain[, , niter] <- mu
     delta_chain[, , niter] <- delta
     delta_arma <- delta
@@ -507,146 +507,146 @@ nc_mcmc_mh_R <- function(data, init, totiter, prior, prop, tuning, adapt, verbos
     # x_adj_chain[, , niter] <- x
 
     # # updating d (pooled treatment effects across trials)
-    # d_curr <- mat_to_vec(d, TRUE, ref_trt)
-    # d_curr_ref <- d
-    # d_prop <- rmvt_arma(1, d_curr, (sd_multplier*rho_d)^2*cov_d, 7)
-    # d_prop_ref <- vec_to_mat(as.numeric(d_prop), M, TRUE, ref_trt)
-    # target_d_curr <- d_logpost(d_curr_ref, delta_arma, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
-    # target_d_prop <- d_logpost(d_prop_ref, delta_arma, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
-    # d_A <- target_d_prop - target_d_curr
-    # d_B <- 0
-    # d_rate <- exp(d_A + d_B)
-    # ran_unif <- runif(1)
-    # if (ran_unif < d_rate) {
-    #   d <- d_prop_ref
-    #   accept_d <- accept_d + 1
-    # }
+    d_curr <- mat_to_vec(d, TRUE, ref_trt)
+    d_curr_ref <- d
+    d_prop <- rmvt_arma(1, d_curr, (sd_multplier*rho_d)^2*cov_d, 7)
+    d_prop_ref <- vec_to_mat(as.numeric(d_prop), M, TRUE, ref_trt)
+    target_d_curr <- d_logpost(d_curr_ref, delta_arma, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
+    target_d_prop <- d_logpost(d_prop_ref, delta_arma, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
+    d_A <- target_d_prop - target_d_curr
+    d_B <- 0
+    d_rate <- exp(d_A + d_B)
+    ran_unif <- runif(1)
+    if (ran_unif < d_rate) {
+      d <- d_prop_ref
+      accept_d <- accept_d + 1
+    }
     ar_d_vec[niter] <- min(d_rate, 1, na.rm = TRUE)
     d_chain[, , niter] <- d
 
     # # updating Sigma_M (common between-study covariance structure)
-    # Sigma_M_curr <- Sigma_M
-    # beta_curr <- Sigma_M_to_beta(Sigma_M_curr)
-    # beta_prop <- as.numeric(rmvt_arma(1, beta_curr, (sd_multplier*rho_beta)^2*cov_beta, 7))
-    # Sigma_M_prop <- beta_to_Sigma_M(beta_prop, M)
-    # target_Sigma_M_prop <- Sigma_M_logpost(d, delta_arma, Sigma_M_prop, trt, baseline, narms_study, sigma_r)
-    # target_Sigma_M_curr <- Sigma_M_logpost(d, delta_arma, Sigma_M_curr, trt, baseline, narms_study, sigma_r)
-    # Sigma_M_A <- target_Sigma_M_prop - target_Sigma_M_curr
-    # Sigma_M_B <- 0
-    # Sigma_M_rate <- exp(Sigma_M_A + Sigma_M_B)
-    # ran_unif <- runif(1)
-    # if (ran_unif < Sigma_M_rate) {
-    #   Sigma_M <- Sigma_M_prop
-    #   accept_Sigma_M <- accept_Sigma_M + 1
-    # }
+    Sigma_M_curr <- Sigma_M
+    beta_curr <- Sigma_M_to_beta(Sigma_M_curr)
+    beta_prop <- as.numeric(rmvt_arma(1, beta_curr, (sd_multplier*rho_beta)^2*cov_beta, 7))
+    Sigma_M_prop <- beta_to_Sigma_M(beta_prop, M)
+    target_Sigma_M_prop <- Sigma_M_logpost(d, delta_arma, Sigma_M_prop, trt, baseline, narms_study, sigma_r)
+    target_Sigma_M_curr <- Sigma_M_logpost(d, delta_arma, Sigma_M_curr, trt, baseline, narms_study, sigma_r)
+    Sigma_M_A <- target_Sigma_M_prop - target_Sigma_M_curr
+    Sigma_M_B <- 0
+    Sigma_M_rate <- exp(Sigma_M_A + Sigma_M_B)
+    ran_unif <- runif(1)
+    if (ran_unif < Sigma_M_rate) {
+      Sigma_M <- Sigma_M_prop
+      accept_Sigma_M <- accept_Sigma_M + 1
+    }
     ar_Sigma_M_vec[niter] <- min(Sigma_M_rate, 1, na.rm = TRUE)
     Sigma_M_chain[niter, ] <- diag_tri(Sigma_M)
     beta_chain[niter, ] <- Sigma_M_to_beta(Sigma_M)
 
     # adaptation step
-    # if (((adapt_k + 1) <= maxiter) & ((niter %% every) == 0)) {
-    #   if (verbose) {
-    #     print(paste0("      --> performing adaptation [step ", adapt_k + 1, "/", maxiter, "]"))
-    #   }
+    if (((adapt_k + 1) <= maxiter) & ((niter %% every) == 0)) {
+      if (verbose) {
+        print(paste0("      --> performing adaptation [step ", adapt_k + 1, "/", maxiter, "]"))
+      }
 
-    #   # mu proposal parameters
-    #   for (s in 1:n_study) {
-    #     for (m in 1:M) {
-    #       if (abs(ar_mu[1, s, m] - tar) > tol) {
-    #         theta_mu <- as.matrix(mu_chain[s, m, (niter - every + 1):niter])
-    #         if (adapt_k == 0) {
-    #           mu_mu[s, m] <- mean(theta_mu)
-    #         }
-    #         mu_mu_vec[1] <- mu_mu[s, m]
-    #         tmp <- ar_mu_vec[s, m, (niter - every + 1):niter]
-    #         ar_mu[2, s, m] <- as.numeric(mean(tmp))
-    #         ar_mu_sub <- ar_mu[1:2, s, m]
-    #         cov_mu_mat[1, 1] <- cov_mu[s, m]
-    #         prop_mu <- rwmh_adapt_R(theta_mu, mu_mu_vec, rho_mu[s, m], cov_mu_mat, ar_mu_sub, alpha, beta, gamma, tar, adapt_k, FALSE, 1)
-    #         rho_mu[s, m] <- prop_mu$rho
-    #         cov_mu_mat <- prop_mu$covariance
-    #         if (!is_positive_definite(cov_mu_mat, 1791)) {
-    #           print("cov_mu_mat")
-    #           cov_mu_mat <- make_positive_definite(cov_mu_mat)
-    #         }
-    #         cov_mu[s, m] <- cov_mu_mat[1, 1]
-    #         mu_mu_vec <- prop_mu$mu
-    #         mu_mu[s, m] <- mu_mu_vec[1]
-    #         ar_mu[1, s, m] <- prop_mu$ar
-    #       }
-    #     }
-    #   }
+      # mu proposal parameters
+      for (s in 1:n_study) {
+        for (m in 1:M) {
+          if (abs(ar_mu[1, s, m] - tar) > tol) {
+            theta_mu <- as.matrix(mu_chain[s, m, (niter - every + 1):niter])
+            if (adapt_k == 0) {
+              mu_mu[s, m] <- mean(theta_mu)
+            }
+            mu_mu_vec[1] <- mu_mu[s, m]
+            tmp <- ar_mu_vec[s, m, (niter - every + 1):niter]
+            ar_mu[2, s, m] <- as.numeric(mean(tmp))
+            ar_mu_sub <- ar_mu[1:2, s, m]
+            cov_mu_mat[1, 1] <- cov_mu[s, m]
+            prop_mu <- rwmh_adapt_R(theta_mu, mu_mu_vec, rho_mu[s, m], cov_mu_mat, ar_mu_sub, alpha, beta, gamma, tar, adapt_k, FALSE, 1)
+            rho_mu[s, m] <- prop_mu$rho
+            cov_mu_mat <- prop_mu$covariance
+            if (!is_positive_definite(cov_mu_mat, 1791)) {
+              print("cov_mu_mat")
+              cov_mu_mat <- make_positive_definite(cov_mu_mat)
+            }
+            cov_mu[s, m] <- cov_mu_mat[1, 1]
+            mu_mu_vec <- prop_mu$mu
+            mu_mu[s, m] <- mu_mu_vec[1]
+            ar_mu[1, s, m] <- prop_mu$ar
+          }
+        }
+      }
 
-    #   # delta proposal parameters
-    #   for (ik in 1:n_datapoints) {
-    #     if (trt[ik] != baseline[ik]) {
-    #       for (m in 1:M) {
-    #         if (abs(ar_delta[1, ik, m] - tar) > tol) {
-    #           theta_delta <- as.matrix(delta_chain[ik, m, (niter - every + 1):niter])
-    #           if (adapt_k == 0) {
-    #             mu_delta[ik, m] <- mean(theta_delta)
-    #           }
-    #           mu_delta_vec[1] <- mu_delta[ik, m]
-    #           tmp <- ar_delta_vec[ik, m, (niter - every + 1):niter]
-    #           ar_delta[2, ik, m] <- as.numeric(mean(tmp))
-    #           ar_delta_sub[1] <- ar_delta[1, ik, m]
-    #           ar_delta_sub[2] <- ar_delta[2, ik, m]
-    #           cov_delta_mat[1, 1] <- cov_delta[ik, m]
-    #           prop_delta <- rwmh_adapt_R(theta_delta, mu_delta_vec, rho_delta[ik, m], cov_delta_mat, ar_delta_sub, alpha, beta, gamma, tar, adapt_k, FALSE, 2)
-    #           rho_delta[ik, m] <- prop_delta$rho
-    #           cov_delta_mat <- prop_delta$covariance
-    #           if (!is_positive_definite(cov_delta_mat, 1820)) {
-    #             print("cov_delta_mat")
-    #             cov_delta_mat <- make_positive_definite(cov_delta_mat)
-    #           }
-    #           cov_delta[ik, m] <- cov_delta_mat[1, 1]
-    #           mu_delta_vec <- prop_delta$mu
-    #           mu_delta[ik, m] <- mu_delta_vec[1]
-    #           ar_delta[1, ik, m] <- prop_delta$ar
-    #         }
-    #       }
-    #     }
-    #   }
+      # delta proposal parameters
+      for (ik in 1:n_datapoints) {
+        if (trt[ik] != baseline[ik]) {
+          for (m in 1:M) {
+            if (abs(ar_delta[1, ik, m] - tar) > tol) {
+              theta_delta <- as.matrix(delta_chain[ik, m, (niter - every + 1):niter])
+              if (adapt_k == 0) {
+                mu_delta[ik, m] <- mean(theta_delta)
+              }
+              mu_delta_vec[1] <- mu_delta[ik, m]
+              tmp <- ar_delta_vec[ik, m, (niter - every + 1):niter]
+              ar_delta[2, ik, m] <- as.numeric(mean(tmp))
+              ar_delta_sub[1] <- ar_delta[1, ik, m]
+              ar_delta_sub[2] <- ar_delta[2, ik, m]
+              cov_delta_mat[1, 1] <- cov_delta[ik, m]
+              prop_delta <- rwmh_adapt_R(theta_delta, mu_delta_vec, rho_delta[ik, m], cov_delta_mat, ar_delta_sub, alpha, beta, gamma, tar, adapt_k, FALSE, 2)
+              rho_delta[ik, m] <- prop_delta$rho
+              cov_delta_mat <- prop_delta$covariance
+              if (!is_positive_definite(cov_delta_mat, 1820)) {
+                print("cov_delta_mat")
+                cov_delta_mat <- make_positive_definite(cov_delta_mat)
+              }
+              cov_delta[ik, m] <- cov_delta_mat[1, 1]
+              mu_delta_vec <- prop_delta$mu
+              mu_delta[ik, m] <- mu_delta_vec[1]
+              ar_delta[1, ik, m] <- prop_delta$ar
+            }
+          }
+        }
+      }
 
-    #   # d proposal parameters
-    #   if (abs(ar_d[1] - tar) > tol) {
-    #     theta_d <- d_chain[, , (niter - every + 1):niter, drop = FALSE]
-    #     theta_d_reshaped <- cube_to_mat(theta_d, TRUE, ref_trt)
-    #     if (adapt_k == 0) {
-    #       mu_d <- as.numeric(colMeans(theta_d_reshaped))
-    #     }
-    #     ar_d[2] <- as.numeric(mean(ar_d_vec[(niter - every + 1):niter]))
-    #     prop_d <- rwmh_adapt_R(theta_d_reshaped, mu_d, rho_d, cov_d, ar_d, alpha, beta, gamma, tar, adapt_k, FALSE, 3)
-    #     rho_d <- prop_d$rho
-    #     cov_d <- prop_d$covariance
-    #     if (!is_positive_definite(cov_d, 1843)) {
-    #       print("cov_d")
-    #       cov_d <- make_positive_definite(cov_d)
-    #     }
-    #     mu_d <- prop_d$mu
-    #     ar_d[1] <- prop_d$ar
-    #   }
+      # d proposal parameters
+      if (abs(ar_d[1] - tar) > tol) {
+        theta_d <- d_chain[, , (niter - every + 1):niter, drop = FALSE]
+        theta_d_reshaped <- cube_to_mat(theta_d, TRUE, ref_trt)
+        if (adapt_k == 0) {
+          mu_d <- as.numeric(colMeans(theta_d_reshaped))
+        }
+        ar_d[2] <- as.numeric(mean(ar_d_vec[(niter - every + 1):niter]))
+        prop_d <- rwmh_adapt_R(theta_d_reshaped, mu_d, rho_d, cov_d, ar_d, alpha, beta, gamma, tar, adapt_k, FALSE, 3)
+        rho_d <- prop_d$rho
+        cov_d <- prop_d$covariance
+        if (!is_positive_definite(cov_d, 1843)) {
+          print("cov_d")
+          cov_d <- make_positive_definite(cov_d)
+        }
+        mu_d <- prop_d$mu
+        ar_d[1] <- prop_d$ar
+      }
 
-    #   # log Cholesky betas (Sigma_M) proposal parameters
-    #   if (abs(ar_Sigma_M[1] - tar) > tol) {
-    #     theta_beta <- as.matrix(beta_chain[(niter - every + 1):niter, ])
-    #     if (adapt_k == 0) {
-    #       mu_beta <- as.numeric(colMeans(theta_beta))
-    #     }
-    #     ar_Sigma_M[2] <- as.numeric(mean(ar_Sigma_M_vec[(niter - every + 1):niter]))
-    #     prop_beta <- rwmh_adapt_R(theta_beta, mu_beta, rho_beta, cov_beta, ar_Sigma_M, alpha, beta, gamma, tar, adapt_k, FALSE, 4)
-    #     rho_beta <- prop_beta$rho
-    #     cov_beta <- prop_beta$covariance
-    #     if (!is_positive_definite(cov_beta, 1861)) {
-    #       print("cov_beta")
-    #       cov_beta <- make_positive_definite(cov_beta)
-    #     }
-    #     mu_beta <- prop_beta$mu
-    #     ar_Sigma_M[1] <- prop_beta$ar
-    #   }
+      # log Cholesky betas (Sigma_M) proposal parameters
+      if (abs(ar_Sigma_M[1] - tar) > tol) {
+        theta_beta <- as.matrix(beta_chain[(niter - every + 1):niter, ])
+        if (adapt_k == 0) {
+          mu_beta <- as.numeric(colMeans(theta_beta))
+        }
+        ar_Sigma_M[2] <- as.numeric(mean(ar_Sigma_M_vec[(niter - every + 1):niter]))
+        prop_beta <- rwmh_adapt_R(theta_beta, mu_beta, rho_beta, cov_beta, ar_Sigma_M, alpha, beta, gamma, tar, adapt_k, FALSE, 4)
+        rho_beta <- prop_beta$rho
+        cov_beta <- prop_beta$covariance
+        if (!is_positive_definite(cov_beta, 1861)) {
+          print("cov_beta")
+          cov_beta <- make_positive_definite(cov_beta)
+        }
+        mu_beta <- prop_beta$mu
+        ar_Sigma_M[1] <- prop_beta$ar
+      }
 
-    #   adapt_k <- adapt_k + 1
-    # }
+      adapt_k <- adapt_k + 1
+    }
 
     # calculate the loglikelihood, logprior and logposterior
     # loglik[niter] <- nc_loglik(y_imp, n_imp, x_imp, trt, mu, delta, Gamma)

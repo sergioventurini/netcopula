@@ -62,9 +62,9 @@ nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
   n_y <- data@study_data[, (7):(7 + M - 1)]
   y <- data@study_data[, (7 + M):(6 + 2*M)]
   trt <- data@study_data[, "trt"]
-  logpost <- -Inf
+  # logpost <- -Inf
 
-  while (is.na(logpost) | is.infinite(logpost)) {
+  # while (is.na(logpost) | is.infinite(logpost)) {
     if (random_start & is.null(init)) {
       mu_mean <- rep(0, M)
       mu_Sigma <- (prm_init$mu_sigma2)*diag(M)
@@ -102,7 +102,11 @@ nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
       Gamma <- list()
       for (q in 1:prm_init$nGamma) {
         # Gamma[[q]] <- diag(M)
-        Gamma[[q]] <- rlkj_arma(M, 1)
+        if (M > 1) {
+          Gamma[[q]] <- rlkj_arma(M, 1)
+        } else {
+          Gamma[[q]] <- as.matrix(1)
+        }
       }
 
       # initialize x (latent variables)
@@ -113,19 +117,20 @@ nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
         } else {
           Gamma_study <- Gamma[[1]]
         }
-        x[i, ] <- rmvn_arma(1, rep(0, M), Gamma_study)
+        x[i, ] <- rmvn_arma(1, rep(0, M), as.matrix(Gamma_study))
       }
-      # x[is.na(y)] <- NA # sets to NA
 
       # initialize D's (latent variables scale matrices)
       D <- list()
       for (q in 1:prm_init$nGamma) {
         if (prm_init$nGamma == n_trt) {
-          D[[q]] <- diag(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2)))
+          D[[q]] <- as.matrix(diag(as.matrix(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2)))))
         } else if (prm_init$nGamma == 1) {
-          D[[q]] <- diag(sqrt(1/colSums(x^2)))
+          D[[q]] <- as.matrix(diag(as.matrix(sqrt(1/colSums(x^2)))))
         }
       }
+
+      x[is.na(y)] <- NA # sets NA in the x matrix
     } else {
       mu <- init$mu
       delta <- init$delta
@@ -136,12 +141,159 @@ nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
       x <- init$x
     }
 
-    loglik <- nc_loglik(as.matrix(y), as.matrix(n_y), x, trt, mu, delta, Gamma)
-    logprior <- nc_logprior(mu, sqrt(prm_init$mu_sigma2), d, sqrt(prm_init$d_sigma2), Sigma_M, prm_init$beta_sigma, ref_trt)
-    logpost <- loglik + logprior
-  }
+  #   loglik <- nc_loglik(as.matrix(y), as.matrix(n_y), x, trt, mu, delta, Gamma)
+  #   logprior <- nc_logprior(mu, sqrt(prm_init$mu_sigma2), d, sqrt(prm_init$d_sigma2), Sigma_M, prm_init$beta_sigma, ref_trt)
+  #   logpost <- loglik + logprior
+  # }
 
   return(list(mu = mu, delta = delta, d = d, Sigma_M = Sigma_M, Gamma = Gamma, D = D, x = x))
+}
+
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' @param data Object of class \code{nc_data} containing the data to analyze.
+#' @param burnin Length one integer vector providing the number of MCMC burnin
+#' iterations.
+#' @param nsim Length one integer vector providing the number of MCMC
+#' iterations.
+#' @param nthin Length one integer vector providing the thinning interval.
+#' @param prm_prior Named list of parameters for the proposal distributions of
+#' the \eqn{Z} latent positions and \eqn{\alpha} parameters; the elements'
+#' names must be \code{"z"} and \code{"alpha"} and both need to be a single
+#' number representing the standard deviations of the normal proposal
+#' distributions for each \eqn{z_{ih}^{g}}{z_ih^g} and \eqn{\alpha_g}
+#' respectively.
+#' @param prm_prop Named list of hyperparameters for the prior distributions
+#' of the \eqn{\sigma^2} and \eqn{\lambda} parameters; the elements' names
+#' must be \code{"sigma2"} and \code{"lambda"} with the first one a two-sized
+#' vector containing the \eqn{\sigma^2} prior hyperparameters and the second
+#' element a vector providing the \eqn{\lambda} hyperparameters.
+#' @param random_start Length-one logical vector; if \code{TRUE} (default), it
+#' allows the algorithm to start from a random starting point.
+#' @param init Named list providing user-defined starting values. If provided,
+#' it overrides the value given for \code{random_start}.
+#' @param tuning Named list of tuning parameters (see details).
+#' @param adaptation Named list of adaptation parameters (see details).
+#' @param verbose Length-one logical vector; if \code{TRUE}, messages
+#' informing about the progress of the computations will be printed.
+#'
+#' @return \code{netcopula_old} returns an object of class \code{\link{nc_mcmc}}.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # netcopula_old(...)
+#' }
+#'
+#' @references
+#' Venturini, S. and Graziani, R. (2016), "A Bayesian Copula Based Model for
+#' Multivariate Network Meta-Analysis". Technical report.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#'
+#' @seealso
+#' \code{\link{nc_data-class}},
+#' \code{\link{nc_mcmc}}
+netcopula_old <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prior, prm_prop = NULL, prm_init, random_start = TRUE, init = NULL, tuning, adaptation, verbose = FALSE, mu_delta_mh = TRUE) {
+  if (class(data) != "nc_data") {
+    stop("the data argument must be a 'nc_data' object; see the help of the 'nc_data_create()' function.")
+  }
+  if (adaptation$maxiter > (burnin + nsim)/adaptation$every) {
+    stop("the 'maxiter' adaptation parameter is too large.")
+  }
+  if (adaptation$miniter > adaptation$maxiter) {
+    stop("the 'miniter' adaptation parameter must be smaller than or equal to 'maxiter'.")
+  }
+  if (adaptation$alpha < 0 | adaptation$alpha > 1 |
+    adaptation$beta < 0 | adaptation$beta > 1 |
+    adaptation$gamma < 0 | adaptation$gamma > 1 |
+    adaptation$tar < 0 | adaptation$tar > 1) {
+    stop("the 'alpha', 'beta', 'gamma' and 'tar' adaptation parameters must be in [0, 1].")
+  }
+  if (adaptation$tol <= 0) {
+    stop("the 'tol' adaptation parameter must be positive.")
+  }
+
+  n <- slot(data, "n_study")
+  M <- slot(data, "n_outcomes")
+  n_datapoints <- slot(data, "n_datapoints")
+  tot_iter <- burnin + nsim
+
+  if (verbose) cat("Initialization of the algorithm...")
+
+  if (is.null(prm_init)) {
+    prm_init <- prm_prior
+  }
+  nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
+  mu <- nc_start$mu
+  delta <- nc_start$delta
+  d <- nc_start$d
+  Sigma <- nc_start$Sigma
+  Gamma <- nc_start$Gamma
+
+  if (verbose) cat("done!\n")
+
+  # start iteration
+  if (verbose) cat("Running the MCMC simulation...\n")
+
+  if (mu_delta_mh) {
+    res <- nc_mcmc_mh(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  } else {
+    # TO DO: alla fine eliminare questa possibilita'
+    res <- nc_mcmc_opt(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  }
+
+  if (verbose) cat("done!\n")
+
+  out <- new("nc_mcmc",
+    mu = as.array(res[["mu"]]),
+    delta = as.array(res[["delta"]]),
+    d = as.array(res[["d"]]),
+    Sigma = as.mcmc(res[["Sigma"]]),
+    Gamma = as.array(res[["Gamma"]]),
+    x = as.array(res[["x"]]),
+    x_unadj = as.array(res[["x_unadj"]]),
+    # a = as.array(res[["a"]]),
+    # b = as.array(res[["b"]]),
+    # D = as.array(res[["D"]]),
+    # S_q = as.array(res[["S_q"]]),
+    # Sigma_q_prop = as.array(res[["Sigma_q_prop"]]),
+    # rho_mu = as.array(res[["rho_mu"]]),
+    # cov_mu = as.array(res[["cov_mu"]]),
+    # ar_mu_vec = as.array(res[["ar_mu_vec"]]),
+    # mu_rate = as.array(res[["mu_rate"]]),
+    # mu_prop = as.array(res[["mu_prop"]]),
+    # tp_mu = as.array(res[["tp_mu"]]),
+    # delta_prop = as.array(res[["delta_prop"]]),
+    accept = as.list(res[["accept"]]),
+    dens = list(loglik = as.numeric(res[["loglik"]]), logprior = as.numeric(res[["logprior"]]), logpost = as.numeric(res[["logpost"]])),
+    control = list(burnin = burnin, nsim = nsim, nthin = nthin, prm_prop = prm_prop, prm_prior = prm_prior),
+    dim = list(n_study = n, n_outcomes = M, n_datapoints = n_datapoints, n_treatments = slot(data, "n_treatments"), ref_trt = data@ref_trt),
+    data = data,
+    call = match.call()
+  )
+
+  return(out)
 }
 
 #' Estimation of copula based models for multivariate network meta-analysis.
@@ -234,7 +386,154 @@ netcopula <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prior, p
   if (verbose) cat("Running the MCMC simulation...\n")
 
   if (mu_delta_mh) {
-    res <- nc_mcmc_mh(
+    res <- nc_mcmc_mh_new(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  } else {
+    # TO DO: alla fine eliminare questa possibilita'
+    res <- nc_mcmc_opt(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  }
+
+  if (verbose) cat("done!\n")
+
+  out <- new("nc_mcmc",
+    mu = as.array(res[["mu"]]),
+    delta = as.array(res[["delta"]]),
+    d = as.array(res[["d"]]),
+    Sigma = as.mcmc(res[["Sigma"]]),
+    Gamma = as.array(res[["Gamma"]]),
+    x = as.array(res[["x"]]),
+    x_unadj = as.array(res[["x_unadj"]]),
+    # a = as.array(res[["a"]]),
+    # b = as.array(res[["b"]]),
+    # D = as.array(res[["D"]]),
+    # S_q = as.array(res[["S_q"]]),
+    # Sigma_q_prop = as.array(res[["Sigma_q_prop"]]),
+    # rho_mu = as.array(res[["rho_mu"]]),
+    # cov_mu = as.array(res[["cov_mu"]]),
+    # ar_mu_vec = as.array(res[["ar_mu_vec"]]),
+    # mu_rate = as.array(res[["mu_rate"]]),
+    # mu_prop = as.array(res[["mu_prop"]]),
+    # tp_mu = as.array(res[["tp_mu"]]),
+    # delta_prop = as.array(res[["delta_prop"]]),
+    accept = as.list(res[["accept"]]),
+    dens = list(loglik = as.numeric(res[["loglik"]]), logprior = as.numeric(res[["logprior"]]), logpost = as.numeric(res[["logpost"]])),
+    control = list(burnin = burnin, nsim = nsim, nthin = nthin, prm_prop = prm_prop, prm_prior = prm_prior),
+    dim = list(n_study = n, n_outcomes = M, n_datapoints = n_datapoints, n_treatments = slot(data, "n_treatments"), ref_trt = data@ref_trt),
+    data = data,
+    call = match.call()
+  )
+
+  return(out)
+}
+
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' @param data Object of class \code{nc_data} containing the data to analyze.
+#' @param burnin Length one integer vector providing the number of MCMC burnin
+#' iterations.
+#' @param nsim Length one integer vector providing the number of MCMC
+#' iterations.
+#' @param nthin Length one integer vector providing the thinning interval.
+#' @param prm_prior Named list of parameters for the proposal distributions of
+#' the \eqn{Z} latent positions and \eqn{\alpha} parameters; the elements'
+#' names must be \code{"z"} and \code{"alpha"} and both need to be a single
+#' number representing the standard deviations of the normal proposal
+#' distributions for each \eqn{z_{ih}^{g}}{z_ih^g} and \eqn{\alpha_g}
+#' respectively.
+#' @param prm_prop Named list of hyperparameters for the prior distributions
+#' of the \eqn{\sigma^2} and \eqn{\lambda} parameters; the elements' names
+#' must be \code{"sigma2"} and \code{"lambda"} with the first one a two-sized
+#' vector containing the \eqn{\sigma^2} prior hyperparameters and the second
+#' element a vector providing the \eqn{\lambda} hyperparameters.
+#' @param random_start Length-one logical vector; if \code{TRUE} (default), it
+#' allows the algorithm to start from a random starting point.
+#' @param init Named list providing user-defined starting values. If provided,
+#' it overrides the value given for \code{random_start}.
+#' @param tuning Named list of tuning parameters (see details).
+#' @param adaptation Named list of adaptation parameters (see details).
+#' @param verbose Length-one logical vector; if \code{TRUE}, messages
+#' informing about the progress of the computations will be printed.
+#'
+#' @return \code{netcopula_new} returns an object of class \code{\link{nc_mcmc}}.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # netcopula_new(...)
+#' }
+#'
+#' @references
+#' Venturini, S. and Graziani, R. (2016), "A Bayesian Copula Based Model for
+#' Multivariate Network Meta-Analysis". Technical report.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#'
+#' @seealso
+#' \code{\link{nc_data-class}},
+#' \code{\link{nc_mcmc}}
+netcopula_new <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prior, prm_prop = NULL, prm_init, random_start = TRUE, init = NULL, tuning, adaptation, verbose = FALSE, mu_delta_mh = TRUE) {
+  if (class(data) != "nc_data") {
+    stop("the data argument must be a 'nc_data' object; see the help of the 'nc_data_create()' function.")
+  }
+  if (adaptation$maxiter > (burnin + nsim)/adaptation$every) {
+    stop("the 'maxiter' adaptation parameter is too large.")
+  }
+  if (adaptation$miniter > adaptation$maxiter) {
+    stop("the 'miniter' adaptation parameter must be smaller than or equal to 'maxiter'.")
+  }
+  if (adaptation$alpha < 0 | adaptation$alpha > 1 |
+    adaptation$beta < 0 | adaptation$beta > 1 |
+    adaptation$gamma < 0 | adaptation$gamma > 1 |
+    adaptation$tar < 0 | adaptation$tar > 1) {
+    stop("the 'alpha', 'beta', 'gamma' and 'tar' adaptation parameters must be in [0, 1].")
+  }
+  if (adaptation$tol <= 0) {
+    stop("the 'tol' adaptation parameter must be positive.")
+  }
+
+  n <- slot(data, "n_study")
+  M <- slot(data, "n_outcomes")
+  n_datapoints <- slot(data, "n_datapoints")
+  tot_iter <- burnin + nsim
+
+  if (verbose) cat("Initialization of the algorithm...")
+
+  if (is.null(prm_init)) {
+    prm_init <- prm_prior
+  }
+  nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
+  mu <- nc_start$mu
+  delta <- nc_start$delta
+  d <- nc_start$d
+  Sigma <- nc_start$Sigma
+  Gamma <- nc_start$Gamma
+
+  if (verbose) cat("done!\n")
+
+  # start iteration
+  if (verbose) cat("Running the MCMC simulation...\n")
+
+  if (mu_delta_mh) {
+    res <- nc_mcmc_mh_new2(
       data = data,
       init = nc_start,
       totiter = tot_iter,
@@ -405,8 +704,10 @@ as.mcmc.nc_mcmc <- function(res, latent_var = FALSE, ...) {
   colnames(d) <- nm
   trt_tmp <- setdiff(1:nt, ref_trt)
   d_tmp <- trt_tmp
-  for (i in 1:(M - 1)) {
-    d_tmp <- append(d_tmp, trt_tmp + nt*i)
+  if (M > 1) {
+    for (i in 1:(M - 1)) {
+      d_tmp <- append(d_tmp, trt_tmp + nt*i)
+    }
   }
   d <- d[, d_tmp]
 
@@ -422,15 +723,19 @@ as.mcmc.nc_mcmc <- function(res, latent_var = FALSE, ...) {
   colnames(Sigma) <- nm
 
   Gamma <- res@Gamma
-  nelem <- M*(M - 1)/2
+  nelem <- ifelse(M > 1, M*(M - 1)/2, 1)
   nm <- character(nGamma*nelem)
   count <- 1
   for (h in 1:nGamma) {
-    for (j in 1:(M - 1)) {
-      for (i in (j + 1):M) {
-        nm[count + nelem*(h - 1)] <- paste0("Gamma[", h, ",", i, ",", j, "]")
-        count <- count + 1
+    if (M > 1) {
+      for (j in 1:(M - 1)) {
+        for (i in (j + 1):M) {
+          nm[count + nelem*(h - 1)] <- paste0("Gamma[", h, ",", i, ",", j, "]")
+          count <- count + 1
+        }
       }
+    } else {
+      nm[count + h - 1] <- paste0("Gamma[", h, ",", i, ",", j, "]")
     }
     count <- 1
   }
@@ -445,11 +750,15 @@ as.mcmc.nc_mcmc <- function(res, latent_var = FALSE, ...) {
       nm <- character(nGamma*nelem)
       count <- 1
       for (h in 1:nGamma) {
-        for (j in 1:M) {
-          for (i in j:M) {
-            nm[count + nelem*(h - 1)] <- paste0("S_q[", h, ",", i, ",", j, "]")
-            count <- count + 1
+        if (M > 1) {
+          for (j in 1:M) {
+            for (i in j:M) {
+              nm[count + nelem*(h - 1)] <- paste0("S_q[", h, ",", i, ",", j, "]")
+              count <- count + 1
+            }
           }
+        } else {
+          nm[count + h - 1] <- paste0("S_q[", h, ",", i, ",", j, "]")
         }
         count <- 1
       }
@@ -462,11 +771,15 @@ as.mcmc.nc_mcmc <- function(res, latent_var = FALSE, ...) {
       nm <- character(nGamma*nelem)
       count <- 1
       for (h in 1:nGamma) {
-        for (j in 1:M) {
-          for (i in j:M) {
-            nm[count + nelem*(h - 1)] <- paste0("Sigma_q_prop[", h, ",", i, ",", j, "]")
-            count <- count + 1
+        if (M > 1) {
+          for (j in 1:M) {
+            for (i in j:M) {
+              nm[count + nelem*(h - 1)] <- paste0("Sigma_q_prop[", h, ",", i, ",", j, "]")
+              count <- count + 1
+            }
           }
+        } else {
+          nm[count + h - 1] <- paste0("Sigma_q_prop[", h, ",", i, ",", j, "]")
         }
         count <- 1
       }

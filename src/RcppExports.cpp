@@ -9,7 +9,7 @@ using namespace Rcpp;
 
 // qnorm_boost
 Rcpp::NumericVector qnorm_boost(const Rcpp::NumericVector& p, const double& mean, const double& sd, const bool& lower_tail);
-RcppExport SEXP netcopula_qnorm_boost(SEXP pSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP lower_tailSEXP) {
+RcppExport SEXP _netcopula_qnorm_boost(SEXP pSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // pnorm_boost
 Rcpp::NumericVector pnorm_boost(const Rcpp::NumericVector& x, const double& mean, const double& sd, const bool& lower_tail);
-RcppExport SEXP netcopula_pnorm_boost(SEXP xSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP lower_tailSEXP) {
+RcppExport SEXP _netcopula_pnorm_boost(SEXP xSEXP, SEXP meanSEXP, SEXP sdSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // qbinom_boost
 Rcpp::NumericVector qbinom_boost(const Rcpp::NumericVector& p, const int& n, const double& prob, const bool& lower_tail);
-RcppExport SEXP netcopula_qbinom_boost(SEXP pSEXP, SEXP nSEXP, SEXP probSEXP, SEXP lower_tailSEXP) {
+RcppExport SEXP _netcopula_qbinom_boost(SEXP pSEXP, SEXP nSEXP, SEXP probSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -51,7 +51,7 @@ END_RCPP
 }
 // pbinom_boost
 Rcpp::NumericVector pbinom_boost(const Rcpp::NumericVector& x, const int& n, const double& prob, const bool& lower_tail);
-RcppExport SEXP netcopula_pbinom_boost(SEXP xSEXP, SEXP nSEXP, SEXP probSEXP, SEXP lower_tailSEXP) {
+RcppExport SEXP _netcopula_pbinom_boost(SEXP xSEXP, SEXP nSEXP, SEXP probSEXP, SEXP lower_tailSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -65,7 +65,7 @@ END_RCPP
 }
 // dmvn_arma
 arma::vec dmvn_arma(const arma::mat& x, const arma::vec& mean, const arma::mat& sigma, const bool& logd);
-RcppExport SEXP netcopula_dmvn_arma(SEXP xSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dmvn_arma(SEXP xSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -79,7 +79,7 @@ END_RCPP
 }
 // rmvn_arma
 arma::mat rmvn_arma(const int& n, const arma::vec& mean, const arma::mat& sigma);
-RcppExport SEXP netcopula_rmvn_arma(SEXP nSEXP, SEXP meanSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _netcopula_rmvn_arma(SEXP nSEXP, SEXP meanSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -92,7 +92,7 @@ END_RCPP
 }
 // dinvwish_arma
 double dinvwish_arma(const arma::mat& IW, const int& nu, const arma::mat& S, const bool& logd);
-RcppExport SEXP netcopula_dinvwish_arma(SEXP IWSEXP, SEXP nuSEXP, SEXP SSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dinvwish_arma(SEXP IWSEXP, SEXP nuSEXP, SEXP SSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -106,7 +106,7 @@ END_RCPP
 }
 // rinvwish_arma
 arma::mat rinvwish_arma(const int& nu, const arma::mat& S);
-RcppExport SEXP netcopula_rinvwish_arma(SEXP nuSEXP, SEXP SSEXP) {
+RcppExport SEXP _netcopula_rinvwish_arma(SEXP nuSEXP, SEXP SSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -118,7 +118,7 @@ END_RCPP
 }
 // dlkj_arma
 double dlkj_arma(const arma::mat& R, const double& eta, const bool& logd);
-RcppExport SEXP netcopula_dlkj_arma(SEXP RSEXP, SEXP etaSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dlkj_arma(SEXP RSEXP, SEXP etaSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -131,7 +131,7 @@ END_RCPP
 }
 // rlkj_arma
 arma::mat rlkj_arma(const int& K, const double& eta);
-RcppExport SEXP netcopula_rlkj_arma(SEXP KSEXP, SEXP etaSEXP) {
+RcppExport SEXP _netcopula_rlkj_arma(SEXP KSEXP, SEXP etaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -143,7 +143,7 @@ END_RCPP
 }
 // rtruncnorm_rcpp
 Rcpp::NumericVector rtruncnorm_rcpp(const int& n, const double& a, const double& b, const double& mean, const double& sd);
-RcppExport SEXP netcopula_rtruncnorm_rcpp(SEXP nSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+RcppExport SEXP _netcopula_rtruncnorm_rcpp(SEXP nSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -158,7 +158,7 @@ END_RCPP
 }
 // rtruncnorm2_rcpp
 Rcpp::NumericVector rtruncnorm2_rcpp(const int& n, const double& a, const double& b, const double& mean, const double& sd);
-RcppExport SEXP netcopula_rtruncnorm2_rcpp(SEXP nSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+RcppExport SEXP _netcopula_rtruncnorm2_rcpp(SEXP nSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -173,7 +173,7 @@ END_RCPP
 }
 // dtruncnorm_rcpp
 Rcpp::NumericVector dtruncnorm_rcpp(const Rcpp::NumericVector& x, const double& a, const double& b, const double& mean, const double& sd);
-RcppExport SEXP netcopula_dtruncnorm_rcpp(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+RcppExport SEXP _netcopula_dtruncnorm_rcpp(SEXP xSEXP, SEXP aSEXP, SEXP bSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -188,7 +188,7 @@ END_RCPP
 }
 // dlogchol_arma
 double dlogchol_arma(const arma::mat& A, const double& sigma_r, const bool& logd);
-RcppExport SEXP netcopula_dlogchol_arma(SEXP ASEXP, SEXP sigma_rSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dlogchol_arma(SEXP ASEXP, SEXP sigma_rSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -201,7 +201,7 @@ END_RCPP
 }
 // rlogchol_arma
 arma::mat rlogchol_arma(const int& M, const double& sigma_r);
-RcppExport SEXP netcopula_rlogchol_arma(SEXP MSEXP, SEXP sigma_rSEXP) {
+RcppExport SEXP _netcopula_rlogchol_arma(SEXP MSEXP, SEXP sigma_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -213,7 +213,7 @@ END_RCPP
 }
 // dmvt_arma
 Rcpp::NumericVector dmvt_arma(const arma::mat& x, const arma::vec& mean, const arma::mat& sigma, const int& df, const bool& logd);
-RcppExport SEXP netcopula_dmvt_arma(SEXP xSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP dfSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dmvt_arma(SEXP xSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP dfSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -228,7 +228,7 @@ END_RCPP
 }
 // rmvt_arma
 arma::mat rmvt_arma(const int& n, const arma::vec& mean, const arma::mat& sigma, const int& df);
-RcppExport SEXP netcopula_rmvt_arma(SEXP nSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP dfSEXP) {
+RcppExport SEXP _netcopula_rmvt_arma(SEXP nSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP dfSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -242,7 +242,7 @@ END_RCPP
 }
 // dmatvn_arma
 double dmatvn_arma(const arma::mat& X, const arma::mat& M, const arma::mat& U, const arma::mat& V, const bool& logd);
-RcppExport SEXP netcopula_dmatvn_arma(SEXP XSEXP, SEXP MSEXP, SEXP USEXP, SEXP VSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dmatvn_arma(SEXP XSEXP, SEXP MSEXP, SEXP USEXP, SEXP VSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -257,7 +257,7 @@ END_RCPP
 }
 // rmatvn_arma
 arma::mat rmatvn_arma(const arma::mat& M, const arma::mat& U, const arma::mat& V);
-RcppExport SEXP netcopula_rmatvn_arma(SEXP MSEXP, SEXP USEXP, SEXP VSEXP) {
+RcppExport SEXP _netcopula_rmatvn_arma(SEXP MSEXP, SEXP USEXP, SEXP VSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -270,7 +270,7 @@ END_RCPP
 }
 // dmatvt_arma
 double dmatvt_arma(const arma::mat& X, const arma::mat& M, const arma::mat& Sigma, const arma::mat& Omega, const int& df, const bool& logd);
-RcppExport SEXP netcopula_dmatvt_arma(SEXP XSEXP, SEXP MSEXP, SEXP SigmaSEXP, SEXP OmegaSEXP, SEXP dfSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dmatvt_arma(SEXP XSEXP, SEXP MSEXP, SEXP SigmaSEXP, SEXP OmegaSEXP, SEXP dfSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -286,7 +286,7 @@ END_RCPP
 }
 // rmatvt_arma
 arma::mat rmatvt_arma(const arma::mat& M, const arma::mat& Sigma, const arma::mat& Omega, const int& df);
-RcppExport SEXP netcopula_rmatvt_arma(SEXP MSEXP, SEXP SigmaSEXP, SEXP OmegaSEXP, SEXP dfSEXP) {
+RcppExport SEXP _netcopula_rmatvt_arma(SEXP MSEXP, SEXP SigmaSEXP, SEXP OmegaSEXP, SEXP dfSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -300,7 +300,7 @@ END_RCPP
 }
 // dinvgamma_rcpp
 arma::vec dinvgamma_rcpp(const arma::vec& x, const double& alpha, const double& beta, const bool& logd);
-RcppExport SEXP netcopula_dinvgamma_rcpp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_dinvgamma_rcpp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -314,7 +314,7 @@ END_RCPP
 }
 // rinvgamma_rcpp
 arma::vec rinvgamma_rcpp(const int& n, const double& alpha, const double& beta);
-RcppExport SEXP netcopula_rinvgamma_rcpp(SEXP nSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+RcppExport SEXP _netcopula_rinvgamma_rcpp(SEXP nSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -327,7 +327,7 @@ END_RCPP
 }
 // gausscopdens
 double gausscopdens(const Rcpp::NumericVector& u, const arma::mat& Gamma, const bool& is_u, const bool& logd);
-RcppExport SEXP netcopula_gausscopdens(SEXP uSEXP, SEXP GammaSEXP, SEXP is_uSEXP, SEXP logdSEXP) {
+RcppExport SEXP _netcopula_gausscopdens(SEXP uSEXP, SEXP GammaSEXP, SEXP is_uSEXP, SEXP logdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -339,9 +339,170 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_elements
+arma::vec get_elements(const arma::mat& x, const arma::uvec& row_ind, const arma::uvec& col_ind);
+RcppExport SEXP _netcopula_get_elements(SEXP xSEXP, SEXP row_indSEXP, SEXP col_indSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type row_ind(row_indSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type col_ind(col_indSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_elements(x, row_ind, col_ind));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rev_col_subset
+arma::mat rev_col_subset(arma::mat x, unsigned int start, unsigned int end);
+RcppExport SEXP _netcopula_rev_col_subset(SEXP xSEXP, SEXP startSEXP, SEXP endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type end(endSEXP);
+    rcpp_result_gen = Rcpp::wrap(rev_col_subset(x, start, end));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rev_row_subset
+arma::mat rev_row_subset(arma::mat x, unsigned int start, unsigned int end);
+RcppExport SEXP _netcopula_rev_row_subset(SEXP xSEXP, SEXP startSEXP, SEXP endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type end(endSEXP);
+    rcpp_result_gen = Rcpp::wrap(rev_row_subset(x, start, end));
+    return rcpp_result_gen;
+END_RCPP
+}
+// reverse_vec
+arma::vec reverse_vec(arma::vec x);
+RcppExport SEXP _netcopula_reverse_vec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(reverse_vec(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// field_to_matrix
+arma::mat field_to_matrix(arma::field<arma::vec> x);
+RcppExport SEXP _netcopula_field_to_matrix(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::field<arma::vec> >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(field_to_matrix(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sum_field_vec
+double sum_field_vec(const arma::field<arma::vec>& x);
+RcppExport SEXP _netcopula_sum_field_vec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(sum_field_vec(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mudelta_logpost
+double mudelta_logpost(const arma::vec& mudelta, const arma::mat& delta_arma, const arma::mat& y, const arma::mat& n, const arma::mat& x, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& study, const Rcpp::IntegerVector& narms, const arma::mat& d, const arma::mat& Sigma_M, const Rcpp::List& Gamma, const int& m, const double& mu_sigma, const double& eps, const double& eps_ab);
+RcppExport SEXP _netcopula_mudelta_logpost(SEXP mudeltaSEXP, SEXP delta_armaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP xSEXP, SEXP baselineSEXP, SEXP trtSEXP, SEXP studySEXP, SEXP narmsSEXP, SEXP dSEXP, SEXP Sigma_MSEXP, SEXP GammaSEXP, SEXP mSEXP, SEXP mu_sigmaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type mudelta(mudeltaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type delta_arma(delta_armaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type baseline(baselineSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type trt(trtSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type study(studySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type narms(narmsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Sigma_M(Sigma_MSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type Gamma(GammaSEXP);
+    Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const double& >::type mu_sigma(mu_sigmaSEXP);
+    Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
+    Rcpp::traits::input_parameter< const double& >::type eps_ab(eps_abSEXP);
+    rcpp_result_gen = Rcpp::wrap(mudelta_logpost(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nc_mcmc_mh_new
+Rcpp::List nc_mcmc_mh_new(const Rcpp::RObject& data, const Rcpp::List& init, const int& totiter, const Rcpp::List& prior, const Rcpp::List& prop, const Rcpp::List& tuning, const Rcpp::List& adapt, const bool& verbose);
+RcppExport SEXP _netcopula_nc_mcmc_mh_new(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::RObject& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const int& >::type totiter(totiterSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type prior(priorSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type prop(propSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type tuning(tuningSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type adapt(adaptSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(nc_mcmc_mh_new(data, init, totiter, prior, prop, tuning, adapt, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mudelta_logpost2
+double mudelta_logpost2(const arma::vec& mudelta, const arma::mat& delta_arma, const arma::mat& y, const arma::mat& n, const arma::mat& x, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& study, const Rcpp::IntegerVector& narms, const arma::mat& d, const arma::mat& Sigma_M, const Rcpp::List& Gamma, const int& i, const int& m, const double& mu_sigma, const double& eps, const double& eps_ab);
+RcppExport SEXP _netcopula_mudelta_logpost2(SEXP mudeltaSEXP, SEXP delta_armaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP xSEXP, SEXP baselineSEXP, SEXP trtSEXP, SEXP studySEXP, SEXP narmsSEXP, SEXP dSEXP, SEXP Sigma_MSEXP, SEXP GammaSEXP, SEXP iSEXP, SEXP mSEXP, SEXP mu_sigmaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type mudelta(mudeltaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type delta_arma(delta_armaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type baseline(baselineSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type trt(trtSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type study(studySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type narms(narmsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Sigma_M(Sigma_MSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type Gamma(GammaSEXP);
+    Rcpp::traits::input_parameter< const int& >::type i(iSEXP);
+    Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const double& >::type mu_sigma(mu_sigmaSEXP);
+    Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
+    Rcpp::traits::input_parameter< const double& >::type eps_ab(eps_abSEXP);
+    rcpp_result_gen = Rcpp::wrap(mudelta_logpost2(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nc_mcmc_mh_new2
+Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, const int& totiter, const Rcpp::List& prior, const Rcpp::List& prop, const Rcpp::List& tuning, const Rcpp::List& adapt, const bool& verbose);
+RcppExport SEXP _netcopula_nc_mcmc_mh_new2(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::RObject& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type init(initSEXP);
+    Rcpp::traits::input_parameter< const int& >::type totiter(totiterSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type prior(priorSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type prop(propSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type tuning(tuningSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type adapt(adaptSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(nc_mcmc_mh_new2(data, init, totiter, prior, prop, tuning, adapt, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 // nc_loglik
 double nc_loglik(const Rcpp::NumericMatrix& y, const Rcpp::NumericMatrix& n, const Rcpp::NumericMatrix& x, const Rcpp::IntegerVector& trt, const Rcpp::NumericMatrix& mu, const Rcpp::NumericMatrix& delta, const Rcpp::List& Gamma);
-RcppExport SEXP netcopula_nc_loglik(SEXP ySEXP, SEXP nSEXP, SEXP xSEXP, SEXP trtSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _netcopula_nc_loglik(SEXP ySEXP, SEXP nSEXP, SEXP xSEXP, SEXP trtSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -358,7 +519,7 @@ END_RCPP
 }
 // indic_a_b
 int indic_a_b(const double& y_ikm, const int& n_ikm, const double& x_ikm, const double& mu_ikm, const double& delta_ikm);
-RcppExport SEXP netcopula_indic_a_b(SEXP y_ikmSEXP, SEXP n_ikmSEXP, SEXP x_ikmSEXP, SEXP mu_ikmSEXP, SEXP delta_ikmSEXP) {
+RcppExport SEXP _netcopula_indic_a_b(SEXP y_ikmSEXP, SEXP n_ikmSEXP, SEXP x_ikmSEXP, SEXP mu_ikmSEXP, SEXP delta_ikmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -373,7 +534,7 @@ END_RCPP
 }
 // nc_logprior
 double nc_logprior(const Rcpp::NumericMatrix& mu, const double& mu_sigma, const arma::mat& d, const double& d_sigma, const arma::mat& Sigma_M, const double& sigma_r, const int& ref_trt);
-RcppExport SEXP netcopula_nc_logprior(SEXP muSEXP, SEXP mu_sigmaSEXP, SEXP dSEXP, SEXP d_sigmaSEXP, SEXP Sigma_MSEXP, SEXP sigma_rSEXP, SEXP ref_trtSEXP) {
+RcppExport SEXP _netcopula_nc_logprior(SEXP muSEXP, SEXP mu_sigmaSEXP, SEXP dSEXP, SEXP d_sigmaSEXP, SEXP Sigma_MSEXP, SEXP sigma_rSEXP, SEXP ref_trtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -390,7 +551,7 @@ END_RCPP
 }
 // x_imputed
 Rcpp::NumericMatrix x_imputed(const Rcpp::NumericMatrix& x, const Rcpp::List& Gamma, const Rcpp::IntegerVector& trt);
-RcppExport SEXP netcopula_x_imputed(SEXP xSEXP, SEXP GammaSEXP, SEXP trtSEXP) {
+RcppExport SEXP _netcopula_x_imputed(SEXP xSEXP, SEXP GammaSEXP, SEXP trtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -403,7 +564,7 @@ END_RCPP
 }
 // n_imputed
 Rcpp::NumericMatrix n_imputed(const Rcpp::NumericMatrix& n_data);
-RcppExport SEXP netcopula_n_imputed(SEXP n_dataSEXP) {
+RcppExport SEXP _netcopula_n_imputed(SEXP n_dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -414,7 +575,7 @@ END_RCPP
 }
 // y_imputed
 Rcpp::NumericMatrix y_imputed(const Rcpp::NumericMatrix& y, const Rcpp::NumericMatrix& x_imp, const Rcpp::IntegerVector& narms, const Rcpp::NumericMatrix& mu, const Rcpp::NumericMatrix& delta, const Rcpp::NumericMatrix& n_imp);
-RcppExport SEXP netcopula_y_imputed(SEXP ySEXP, SEXP x_impSEXP, SEXP narmsSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP n_impSEXP) {
+RcppExport SEXP _netcopula_y_imputed(SEXP ySEXP, SEXP x_impSEXP, SEXP narmsSEXP, SEXP muSEXP, SEXP deltaSEXP, SEXP n_impSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -430,7 +591,7 @@ END_RCPP
 }
 // Gamma_logpost
 double Gamma_logpost(const arma::mat& Gamma, const arma::mat& x, const double& eta);
-RcppExport SEXP netcopula_Gamma_logpost(SEXP GammaSEXP, SEXP xSEXP, SEXP etaSEXP) {
+RcppExport SEXP _netcopula_Gamma_logpost(SEXP GammaSEXP, SEXP xSEXP, SEXP etaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -443,7 +604,7 @@ END_RCPP
 }
 // logpost
 double logpost(const double& mu, const double& delta, const double& y, const double& n, const double& w, const double& gamma, const double& eps, const double& eps_ab);
-RcppExport SEXP netcopula_logpost(SEXP muSEXP, SEXP deltaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
+RcppExport SEXP _netcopula_logpost(SEXP muSEXP, SEXP deltaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -460,16 +621,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // mu_logpost
-double mu_logpost(const double& mu, const double& delta, const double& y, const double& n, const double& w, const double& gamma, const double& mu_sigma, const double& eps, const double& eps_ab);
-RcppExport SEXP netcopula_mu_logpost(SEXP muSEXP, SEXP deltaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP mu_sigmaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
+double mu_logpost(const double& mu, const arma::vec& delta, const arma::vec& y, const arma::vec& n, const arma::vec& w, const double& gamma, const double& mu_sigma, const double& eps, const double& eps_ab);
+RcppExport SEXP _netcopula_mu_logpost(SEXP muSEXP, SEXP deltaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP mu_sigmaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const double& >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< const double& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const double& >::type n(nSEXP);
-    Rcpp::traits::input_parameter< const double& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type w(wSEXP);
     Rcpp::traits::input_parameter< const double& >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< const double& >::type mu_sigma(mu_sigmaSEXP);
     Rcpp::traits::input_parameter< const double& >::type eps(epsSEXP);
@@ -480,7 +641,7 @@ END_RCPP
 }
 // delta_logpost
 double delta_logpost(const double& delta, const double& mu, const double& tau, const double& eta, const double& y, const double& n, const double& w, const double& gamma, const double& eps, const double& eps_ab);
-RcppExport SEXP netcopula_delta_logpost(SEXP deltaSEXP, SEXP muSEXP, SEXP tauSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
+RcppExport SEXP _netcopula_delta_logpost(SEXP deltaSEXP, SEXP muSEXP, SEXP tauSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP nSEXP, SEXP wSEXP, SEXP gammaSEXP, SEXP epsSEXP, SEXP eps_abSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -500,7 +661,7 @@ END_RCPP
 }
 // delta_logprior
 double delta_logprior(const arma::mat& delta, const arma::mat& d, const arma::mat& Sigma_M, const Rcpp::IntegerVector& trt_arms, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& narms);
-RcppExport SEXP netcopula_delta_logprior(SEXP deltaSEXP, SEXP dSEXP, SEXP Sigma_MSEXP, SEXP trt_armsSEXP, SEXP baselineSEXP, SEXP narmsSEXP) {
+RcppExport SEXP _netcopula_delta_logprior(SEXP deltaSEXP, SEXP dSEXP, SEXP Sigma_MSEXP, SEXP trt_armsSEXP, SEXP baselineSEXP, SEXP narmsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -516,7 +677,7 @@ END_RCPP
 }
 // d_logprior
 double d_logprior(const arma::mat& d, const double& d_sigma, const int& ref_trt);
-RcppExport SEXP netcopula_d_logprior(SEXP dSEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
+RcppExport SEXP _netcopula_d_logprior(SEXP dSEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -529,7 +690,7 @@ END_RCPP
 }
 // d_logpost_multi
 double d_logpost_multi(const arma::mat& d, const arma::mat& delta, const arma::mat& Sigma_M, const Rcpp::IntegerVector& trt_arms, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& narms, const double& d_sigma, const int& ref_trt);
-RcppExport SEXP netcopula_d_logpost_multi(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trt_armsSEXP, SEXP baselineSEXP, SEXP narmsSEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
+RcppExport SEXP _netcopula_d_logpost_multi(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trt_armsSEXP, SEXP baselineSEXP, SEXP narmsSEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -547,7 +708,7 @@ END_RCPP
 }
 // d_logpost
 double d_logpost(const arma::mat& d, const arma::mat& delta, const arma::mat& Sigma_M, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& narms_study, const double& d_sigma, const int& ref_trt);
-RcppExport SEXP netcopula_d_logpost(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trtSEXP, SEXP baselineSEXP, SEXP narms_studySEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
+RcppExport SEXP _netcopula_d_logpost(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trtSEXP, SEXP baselineSEXP, SEXP narms_studySEXP, SEXP d_sigmaSEXP, SEXP ref_trtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -565,7 +726,7 @@ END_RCPP
 }
 // Sigma_M_logpost
 double Sigma_M_logpost(const arma::mat& d, const arma::mat& delta, const arma::mat& Sigma_M, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& narms_study, const double& sigma_r);
-RcppExport SEXP netcopula_Sigma_M_logpost(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trtSEXP, SEXP baselineSEXP, SEXP narms_studySEXP, SEXP sigma_rSEXP) {
+RcppExport SEXP _netcopula_Sigma_M_logpost(SEXP dSEXP, SEXP deltaSEXP, SEXP Sigma_MSEXP, SEXP trtSEXP, SEXP baselineSEXP, SEXP narms_studySEXP, SEXP sigma_rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -582,7 +743,7 @@ END_RCPP
 }
 // nc_mcmc_opt
 Rcpp::List nc_mcmc_opt(const Rcpp::RObject& data, const Rcpp::List& init, const int& totiter, const Rcpp::List& prior, const Rcpp::List& prop, const Rcpp::List& tuning, const Rcpp::List& adapt, const bool& verbose);
-RcppExport SEXP netcopula_nc_mcmc_opt(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _netcopula_nc_mcmc_opt(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -599,8 +760,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // rwmh_adapt
-Rcpp::List rwmh_adapt(const arma::mat& theta, const arma::vec& mu, const double& rho, const arma::mat& cov, const arma::vec& ar, const double& alpha, const double& beta, const double& gamma, const double& tar, const int& k, const bool& iter_cols, const int& what);
-RcppExport SEXP netcopula_rwmh_adapt(SEXP thetaSEXP, SEXP muSEXP, SEXP rhoSEXP, SEXP covSEXP, SEXP arSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP gammaSEXP, SEXP tarSEXP, SEXP kSEXP, SEXP iter_colsSEXP, SEXP whatSEXP) {
+Rcpp::List rwmh_adapt(const arma::mat& theta, const arma::vec& mu, const double& rho, const arma::mat& cov, const arma::vec& ar, const double& alpha, const double& beta, const double& gamma, const double& tar, const int& k, const bool& iter_cols, const int& what, const bool& diagonal);
+RcppExport SEXP _netcopula_rwmh_adapt(SEXP thetaSEXP, SEXP muSEXP, SEXP rhoSEXP, SEXP covSEXP, SEXP arSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP gammaSEXP, SEXP tarSEXP, SEXP kSEXP, SEXP iter_colsSEXP, SEXP whatSEXP, SEXP diagonalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -616,13 +777,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
     Rcpp::traits::input_parameter< const bool& >::type iter_cols(iter_colsSEXP);
     Rcpp::traits::input_parameter< const int& >::type what(whatSEXP);
-    rcpp_result_gen = Rcpp::wrap(rwmh_adapt(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what));
+    Rcpp::traits::input_parameter< const bool& >::type diagonal(diagonalSEXP);
+    rcpp_result_gen = Rcpp::wrap(rwmh_adapt(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what, diagonal));
     return rcpp_result_gen;
 END_RCPP
 }
 // nc_mcmc_mh
 Rcpp::List nc_mcmc_mh(const Rcpp::RObject& data, const Rcpp::List& init, const int& totiter, const Rcpp::List& prior, const Rcpp::List& prop, const Rcpp::List& tuning, const Rcpp::List& adapt, const bool& verbose);
-RcppExport SEXP netcopula_nc_mcmc_mh(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _netcopula_nc_mcmc_mh(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -640,7 +802,7 @@ END_RCPP
 }
 // optim_rcpp
 Rcpp::List optim_rcpp(const Rcpp::NumericVector& par, const Rcpp::Function& fn, const Rcpp::List& args, const Rcpp::List& options, const bool& hessian);
-RcppExport SEXP netcopula_optim_rcpp(SEXP parSEXP, SEXP fnSEXP, SEXP argsSEXP, SEXP optionsSEXP, SEXP hessianSEXP) {
+RcppExport SEXP _netcopula_optim_rcpp(SEXP parSEXP, SEXP fnSEXP, SEXP argsSEXP, SEXP optionsSEXP, SEXP hessianSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -655,7 +817,7 @@ END_RCPP
 }
 // optimhess_rcpp
 Rcpp::NumericMatrix optimhess_rcpp(const Rcpp::NumericVector& par, const Rcpp::Function& fn, const Rcpp::List& args, const Rcpp::List& options);
-RcppExport SEXP netcopula_optimhess_rcpp(SEXP parSEXP, SEXP fnSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
+RcppExport SEXP _netcopula_optimhess_rcpp(SEXP parSEXP, SEXP fnSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -669,7 +831,7 @@ END_RCPP
 }
 // laplace_rcpp
 Rcpp::List laplace_rcpp(const Rcpp::Function& logpost, const Rcpp::NumericVector& guess, const Rcpp::List& args, const Rcpp::List& options);
-RcppExport SEXP netcopula_laplace_rcpp(SEXP logpostSEXP, SEXP guessSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
+RcppExport SEXP _netcopula_laplace_rcpp(SEXP logpostSEXP, SEXP guessSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -683,7 +845,7 @@ END_RCPP
 }
 // optim_rcpp_example
 Rcpp::List optim_rcpp_example();
-RcppExport SEXP netcopula_optim_rcpp_example() {
+RcppExport SEXP _netcopula_optim_rcpp_example() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -693,7 +855,7 @@ END_RCPP
 }
 // optimize_rcpp
 double optimize_rcpp(const Rcpp::Function& fn, const double& xmin, const double& xmax, const double& tol, const Rcpp::List& args);
-RcppExport SEXP netcopula_optimize_rcpp(SEXP fnSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP, SEXP argsSEXP) {
+RcppExport SEXP _netcopula_optimize_rcpp(SEXP fnSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP, SEXP argsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -708,7 +870,7 @@ END_RCPP
 }
 // laplace_u_rcpp
 Rcpp::List laplace_u_rcpp(const Rcpp::Function& fn, const double& xmin, const double& xmax, const double& tol, const Rcpp::List& args, const Rcpp::List& options);
-RcppExport SEXP netcopula_laplace_u_rcpp(SEXP fnSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
+RcppExport SEXP _netcopula_laplace_u_rcpp(SEXP fnSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP, SEXP argsSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -724,7 +886,7 @@ END_RCPP
 }
 // mat_block_diag
 arma::mat mat_block_diag(const arma::mat& A, const int& n);
-RcppExport SEXP netcopula_mat_block_diag(SEXP ASEXP, SEXP nSEXP) {
+RcppExport SEXP _netcopula_mat_block_diag(SEXP ASEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -736,7 +898,7 @@ END_RCPP
 }
 // Sigma_block
 arma::mat Sigma_block(const arma::mat& Sigma_M, const int& n);
-RcppExport SEXP netcopula_Sigma_block(SEXP Sigma_MSEXP, SEXP nSEXP) {
+RcppExport SEXP _netcopula_Sigma_block(SEXP Sigma_MSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -748,7 +910,7 @@ END_RCPP
 }
 // df_nm
 Rcpp::NumericMatrix df_nm(const Rcpp::DataFrame& x, const Rcpp::IntegerVector& cols);
-RcppExport SEXP netcopula_df_nm(SEXP xSEXP, SEXP colsSEXP) {
+RcppExport SEXP _netcopula_df_nm(SEXP xSEXP, SEXP colsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -760,7 +922,7 @@ END_RCPP
 }
 // nm_stack
 Rcpp::NumericVector nm_stack(const Rcpp::NumericMatrix& x);
-RcppExport SEXP netcopula_nm_stack(SEXP xSEXP) {
+RcppExport SEXP _netcopula_nm_stack(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -771,7 +933,7 @@ END_RCPP
 }
 // nv_unstack
 Rcpp::NumericMatrix nv_unstack(const Rcpp::NumericVector& x, const int& nc);
-RcppExport SEXP netcopula_nv_unstack(SEXP xSEXP, SEXP ncSEXP) {
+RcppExport SEXP _netcopula_nv_unstack(SEXP xSEXP, SEXP ncSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -783,7 +945,7 @@ END_RCPP
 }
 // nv_omit
 Rcpp::NumericVector nv_omit(const Rcpp::NumericVector& x);
-RcppExport SEXP netcopula_nv_omit(SEXP xSEXP) {
+RcppExport SEXP _netcopula_nv_omit(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -794,7 +956,7 @@ END_RCPP
 }
 // nv_na_index
 arma::uvec nv_na_index(const Rcpp::NumericVector& x, const int& dim, const bool& type);
-RcppExport SEXP netcopula_nv_na_index(SEXP xSEXP, SEXP dimSEXP, SEXP typeSEXP) {
+RcppExport SEXP _netcopula_nv_na_index(SEXP xSEXP, SEXP dimSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -807,7 +969,7 @@ END_RCPP
 }
 // nv_miss_replace
 Rcpp::NumericVector nv_miss_replace(const Rcpp::NumericVector& x, const arma::vec& miss, const arma::uvec& miss_i);
-RcppExport SEXP netcopula_nv_miss_replace(SEXP xSEXP, SEXP missSEXP, SEXP miss_iSEXP) {
+RcppExport SEXP _netcopula_nv_miss_replace(SEXP xSEXP, SEXP missSEXP, SEXP miss_iSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -820,7 +982,7 @@ END_RCPP
 }
 // split_iv
 Rcpp::List split_iv(const Rcpp::IntegerVector& x, const Rcpp::IntegerVector& f);
-RcppExport SEXP netcopula_split_iv(SEXP xSEXP, SEXP fSEXP) {
+RcppExport SEXP _netcopula_split_iv(SEXP xSEXP, SEXP fSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -832,7 +994,7 @@ END_RCPP
 }
 // split_nm
 Rcpp::List split_nm(const Rcpp::NumericMatrix& x, const Rcpp::IntegerVector& f);
-RcppExport SEXP netcopula_split_nm(SEXP xSEXP, SEXP fSEXP) {
+RcppExport SEXP _netcopula_split_nm(SEXP xSEXP, SEXP fSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -844,7 +1006,7 @@ END_RCPP
 }
 // logit_rcpp
 Rcpp::NumericVector logit_rcpp(Rcpp::NumericVector p);
-RcppExport SEXP netcopula_logit_rcpp(SEXP pSEXP) {
+RcppExport SEXP _netcopula_logit_rcpp(SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -855,7 +1017,7 @@ END_RCPP
 }
 // expit_rcpp
 Rcpp::NumericVector expit_rcpp(Rcpp::NumericVector x);
-RcppExport SEXP netcopula_expit_rcpp(SEXP xSEXP) {
+RcppExport SEXP _netcopula_expit_rcpp(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -866,7 +1028,7 @@ END_RCPP
 }
 // nm_omit
 arma::vec nm_omit(const Rcpp::NumericMatrix& x, const int& rownum);
-RcppExport SEXP netcopula_nm_omit(SEXP xSEXP, SEXP rownumSEXP) {
+RcppExport SEXP _netcopula_nm_omit(SEXP xSEXP, SEXP rownumSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -878,7 +1040,7 @@ END_RCPP
 }
 // param_long
 Rcpp::NumericMatrix param_long(const Rcpp::NumericMatrix& prm_wide, const Rcpp::IntegerVector& narms, const bool& rowindex);
-RcppExport SEXP netcopula_param_long(SEXP prm_wideSEXP, SEXP narmsSEXP, SEXP rowindexSEXP) {
+RcppExport SEXP _netcopula_param_long(SEXP prm_wideSEXP, SEXP narmsSEXP, SEXP rowindexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -891,7 +1053,7 @@ END_RCPP
 }
 // param_wide
 Rcpp::NumericMatrix param_wide(const Rcpp::NumericMatrix& prm_long, const Rcpp::IntegerVector& narms, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& baseline);
-RcppExport SEXP netcopula_param_wide(SEXP prm_longSEXP, SEXP narmsSEXP, SEXP trtSEXP, SEXP baselineSEXP) {
+RcppExport SEXP _netcopula_param_wide(SEXP prm_longSEXP, SEXP narmsSEXP, SEXP trtSEXP, SEXP baselineSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -905,7 +1067,7 @@ END_RCPP
 }
 // list_mat
 arma::mat list_mat(const Rcpp::List& X);
-RcppExport SEXP netcopula_list_mat(SEXP XSEXP) {
+RcppExport SEXP _netcopula_list_mat(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -916,7 +1078,7 @@ END_RCPP
 }
 // diag_tri
 arma::mat diag_tri(const arma::mat& A);
-RcppExport SEXP netcopula_diag_tri(SEXP ASEXP) {
+RcppExport SEXP _netcopula_diag_tri(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -927,7 +1089,7 @@ END_RCPP
 }
 // cube_to_mat
 arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref);
-RcppExport SEXP netcopula_cube_to_mat(SEXP XSEXP, SEXP is_dSEXP, SEXP refSEXP) {
+RcppExport SEXP _netcopula_cube_to_mat(SEXP XSEXP, SEXP is_dSEXP, SEXP refSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -940,7 +1102,7 @@ END_RCPP
 }
 // mat_to_vec
 arma::vec mat_to_vec(const arma::mat& X, const bool& is_d, const int& ref);
-RcppExport SEXP netcopula_mat_to_vec(SEXP XSEXP, SEXP is_dSEXP, SEXP refSEXP) {
+RcppExport SEXP _netcopula_mat_to_vec(SEXP XSEXP, SEXP is_dSEXP, SEXP refSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -953,7 +1115,7 @@ END_RCPP
 }
 // vec_to_mat
 arma::mat vec_to_mat(const arma::vec& x, const int& nc, const bool& is_d, const int& ref);
-RcppExport SEXP netcopula_vec_to_mat(SEXP xSEXP, SEXP ncSEXP, SEXP is_dSEXP, SEXP refSEXP) {
+RcppExport SEXP _netcopula_vec_to_mat(SEXP xSEXP, SEXP ncSEXP, SEXP is_dSEXP, SEXP refSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -967,7 +1129,7 @@ END_RCPP
 }
 // Sigma_M_to_beta
 arma::vec Sigma_M_to_beta(const arma::mat& A);
-RcppExport SEXP netcopula_Sigma_M_to_beta(SEXP ASEXP) {
+RcppExport SEXP _netcopula_Sigma_M_to_beta(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -978,7 +1140,7 @@ END_RCPP
 }
 // beta_to_Sigma_M
 arma::mat beta_to_Sigma_M(const arma::vec& beta, const int& M);
-RcppExport SEXP netcopula_beta_to_Sigma_M(SEXP betaSEXP, SEXP MSEXP) {
+RcppExport SEXP _netcopula_beta_to_Sigma_M(SEXP betaSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -990,7 +1152,7 @@ END_RCPP
 }
 // is_symmetric
 bool is_symmetric(const arma::mat& A);
-RcppExport SEXP netcopula_is_symmetric(SEXP ASEXP) {
+RcppExport SEXP _netcopula_is_symmetric(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1001,7 +1163,7 @@ END_RCPP
 }
 // is_correlation
 bool is_correlation(const arma::mat& A);
-RcppExport SEXP netcopula_is_correlation(SEXP ASEXP) {
+RcppExport SEXP _netcopula_is_correlation(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1012,7 +1174,7 @@ END_RCPP
 }
 // is_positive_definite
 bool is_positive_definite(const arma::mat& A, const int& line);
-RcppExport SEXP netcopula_is_positive_definite(SEXP ASEXP, SEXP lineSEXP) {
+RcppExport SEXP _netcopula_is_positive_definite(SEXP ASEXP, SEXP lineSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1024,7 +1186,7 @@ END_RCPP
 }
 // make_positive_definite
 arma::mat make_positive_definite(const arma::mat& A);
-RcppExport SEXP netcopula_make_positive_definite(SEXP ASEXP) {
+RcppExport SEXP _netcopula_make_positive_definite(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1035,7 +1197,7 @@ END_RCPP
 }
 // is_singular
 bool is_singular(const arma::mat& A);
-RcppExport SEXP netcopula_is_singular(SEXP ASEXP) {
+RcppExport SEXP _netcopula_is_singular(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1046,7 +1208,7 @@ END_RCPP
 }
 // ols_coef
 arma::vec ols_coef(const double& xmin, const double& xmax, const Rcpp::List& args, const bool& delta_par);
-RcppExport SEXP netcopula_ols_coef(SEXP xminSEXP, SEXP xmaxSEXP, SEXP argsSEXP, SEXP delta_parSEXP) {
+RcppExport SEXP _netcopula_ols_coef(SEXP xminSEXP, SEXP xmaxSEXP, SEXP argsSEXP, SEXP delta_parSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1060,7 +1222,7 @@ END_RCPP
 }
 // ols_pred
 double ols_pred(const arma::vec& coef, const double& x);
-RcppExport SEXP netcopula_ols_pred(SEXP coefSEXP, SEXP xSEXP) {
+RcppExport SEXP _netcopula_ols_pred(SEXP coefSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1072,7 +1234,7 @@ END_RCPP
 }
 // cov2cor_rcpp
 arma::mat cov2cor_rcpp(const arma::mat& V);
-RcppExport SEXP netcopula_cov2cor_rcpp(SEXP VSEXP) {
+RcppExport SEXP _netcopula_cov2cor_rcpp(SEXP VSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1080,4 +1242,101 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(cov2cor_rcpp(V));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_netcopula_qnorm_boost", (DL_FUNC) &_netcopula_qnorm_boost, 4},
+    {"_netcopula_pnorm_boost", (DL_FUNC) &_netcopula_pnorm_boost, 4},
+    {"_netcopula_qbinom_boost", (DL_FUNC) &_netcopula_qbinom_boost, 4},
+    {"_netcopula_pbinom_boost", (DL_FUNC) &_netcopula_pbinom_boost, 4},
+    {"_netcopula_dmvn_arma", (DL_FUNC) &_netcopula_dmvn_arma, 4},
+    {"_netcopula_rmvn_arma", (DL_FUNC) &_netcopula_rmvn_arma, 3},
+    {"_netcopula_dinvwish_arma", (DL_FUNC) &_netcopula_dinvwish_arma, 4},
+    {"_netcopula_rinvwish_arma", (DL_FUNC) &_netcopula_rinvwish_arma, 2},
+    {"_netcopula_dlkj_arma", (DL_FUNC) &_netcopula_dlkj_arma, 3},
+    {"_netcopula_rlkj_arma", (DL_FUNC) &_netcopula_rlkj_arma, 2},
+    {"_netcopula_rtruncnorm_rcpp", (DL_FUNC) &_netcopula_rtruncnorm_rcpp, 5},
+    {"_netcopula_rtruncnorm2_rcpp", (DL_FUNC) &_netcopula_rtruncnorm2_rcpp, 5},
+    {"_netcopula_dtruncnorm_rcpp", (DL_FUNC) &_netcopula_dtruncnorm_rcpp, 5},
+    {"_netcopula_dlogchol_arma", (DL_FUNC) &_netcopula_dlogchol_arma, 3},
+    {"_netcopula_rlogchol_arma", (DL_FUNC) &_netcopula_rlogchol_arma, 2},
+    {"_netcopula_dmvt_arma", (DL_FUNC) &_netcopula_dmvt_arma, 5},
+    {"_netcopula_rmvt_arma", (DL_FUNC) &_netcopula_rmvt_arma, 4},
+    {"_netcopula_dmatvn_arma", (DL_FUNC) &_netcopula_dmatvn_arma, 5},
+    {"_netcopula_rmatvn_arma", (DL_FUNC) &_netcopula_rmatvn_arma, 3},
+    {"_netcopula_dmatvt_arma", (DL_FUNC) &_netcopula_dmatvt_arma, 6},
+    {"_netcopula_rmatvt_arma", (DL_FUNC) &_netcopula_rmatvt_arma, 4},
+    {"_netcopula_dinvgamma_rcpp", (DL_FUNC) &_netcopula_dinvgamma_rcpp, 4},
+    {"_netcopula_rinvgamma_rcpp", (DL_FUNC) &_netcopula_rinvgamma_rcpp, 3},
+    {"_netcopula_gausscopdens", (DL_FUNC) &_netcopula_gausscopdens, 4},
+    {"_netcopula_get_elements", (DL_FUNC) &_netcopula_get_elements, 3},
+    {"_netcopula_rev_col_subset", (DL_FUNC) &_netcopula_rev_col_subset, 3},
+    {"_netcopula_rev_row_subset", (DL_FUNC) &_netcopula_rev_row_subset, 3},
+    {"_netcopula_reverse_vec", (DL_FUNC) &_netcopula_reverse_vec, 1},
+    {"_netcopula_field_to_matrix", (DL_FUNC) &_netcopula_field_to_matrix, 1},
+    {"_netcopula_sum_field_vec", (DL_FUNC) &_netcopula_sum_field_vec, 1},
+    {"_netcopula_mudelta_logpost", (DL_FUNC) &_netcopula_mudelta_logpost, 16},
+    {"_netcopula_nc_mcmc_mh_new", (DL_FUNC) &_netcopula_nc_mcmc_mh_new, 8},
+    {"_netcopula_mudelta_logpost2", (DL_FUNC) &_netcopula_mudelta_logpost2, 17},
+    {"_netcopula_nc_mcmc_mh_new2", (DL_FUNC) &_netcopula_nc_mcmc_mh_new2, 8},
+    {"_netcopula_nc_loglik", (DL_FUNC) &_netcopula_nc_loglik, 7},
+    {"_netcopula_indic_a_b", (DL_FUNC) &_netcopula_indic_a_b, 5},
+    {"_netcopula_nc_logprior", (DL_FUNC) &_netcopula_nc_logprior, 7},
+    {"_netcopula_x_imputed", (DL_FUNC) &_netcopula_x_imputed, 3},
+    {"_netcopula_n_imputed", (DL_FUNC) &_netcopula_n_imputed, 1},
+    {"_netcopula_y_imputed", (DL_FUNC) &_netcopula_y_imputed, 6},
+    {"_netcopula_Gamma_logpost", (DL_FUNC) &_netcopula_Gamma_logpost, 3},
+    {"_netcopula_logpost", (DL_FUNC) &_netcopula_logpost, 8},
+    {"_netcopula_mu_logpost", (DL_FUNC) &_netcopula_mu_logpost, 9},
+    {"_netcopula_delta_logpost", (DL_FUNC) &_netcopula_delta_logpost, 10},
+    {"_netcopula_delta_logprior", (DL_FUNC) &_netcopula_delta_logprior, 6},
+    {"_netcopula_d_logprior", (DL_FUNC) &_netcopula_d_logprior, 3},
+    {"_netcopula_d_logpost_multi", (DL_FUNC) &_netcopula_d_logpost_multi, 8},
+    {"_netcopula_d_logpost", (DL_FUNC) &_netcopula_d_logpost, 8},
+    {"_netcopula_Sigma_M_logpost", (DL_FUNC) &_netcopula_Sigma_M_logpost, 7},
+    {"_netcopula_nc_mcmc_opt", (DL_FUNC) &_netcopula_nc_mcmc_opt, 8},
+    {"_netcopula_rwmh_adapt", (DL_FUNC) &_netcopula_rwmh_adapt, 13},
+    {"_netcopula_nc_mcmc_mh", (DL_FUNC) &_netcopula_nc_mcmc_mh, 8},
+    {"_netcopula_optim_rcpp", (DL_FUNC) &_netcopula_optim_rcpp, 5},
+    {"_netcopula_optimhess_rcpp", (DL_FUNC) &_netcopula_optimhess_rcpp, 4},
+    {"_netcopula_laplace_rcpp", (DL_FUNC) &_netcopula_laplace_rcpp, 4},
+    {"_netcopula_optim_rcpp_example", (DL_FUNC) &_netcopula_optim_rcpp_example, 0},
+    {"_netcopula_optimize_rcpp", (DL_FUNC) &_netcopula_optimize_rcpp, 5},
+    {"_netcopula_laplace_u_rcpp", (DL_FUNC) &_netcopula_laplace_u_rcpp, 6},
+    {"_netcopula_mat_block_diag", (DL_FUNC) &_netcopula_mat_block_diag, 2},
+    {"_netcopula_Sigma_block", (DL_FUNC) &_netcopula_Sigma_block, 2},
+    {"_netcopula_df_nm", (DL_FUNC) &_netcopula_df_nm, 2},
+    {"_netcopula_nm_stack", (DL_FUNC) &_netcopula_nm_stack, 1},
+    {"_netcopula_nv_unstack", (DL_FUNC) &_netcopula_nv_unstack, 2},
+    {"_netcopula_nv_omit", (DL_FUNC) &_netcopula_nv_omit, 1},
+    {"_netcopula_nv_na_index", (DL_FUNC) &_netcopula_nv_na_index, 3},
+    {"_netcopula_nv_miss_replace", (DL_FUNC) &_netcopula_nv_miss_replace, 3},
+    {"_netcopula_split_iv", (DL_FUNC) &_netcopula_split_iv, 2},
+    {"_netcopula_split_nm", (DL_FUNC) &_netcopula_split_nm, 2},
+    {"_netcopula_logit_rcpp", (DL_FUNC) &_netcopula_logit_rcpp, 1},
+    {"_netcopula_expit_rcpp", (DL_FUNC) &_netcopula_expit_rcpp, 1},
+    {"_netcopula_nm_omit", (DL_FUNC) &_netcopula_nm_omit, 2},
+    {"_netcopula_param_long", (DL_FUNC) &_netcopula_param_long, 3},
+    {"_netcopula_param_wide", (DL_FUNC) &_netcopula_param_wide, 4},
+    {"_netcopula_list_mat", (DL_FUNC) &_netcopula_list_mat, 1},
+    {"_netcopula_diag_tri", (DL_FUNC) &_netcopula_diag_tri, 1},
+    {"_netcopula_cube_to_mat", (DL_FUNC) &_netcopula_cube_to_mat, 3},
+    {"_netcopula_mat_to_vec", (DL_FUNC) &_netcopula_mat_to_vec, 3},
+    {"_netcopula_vec_to_mat", (DL_FUNC) &_netcopula_vec_to_mat, 4},
+    {"_netcopula_Sigma_M_to_beta", (DL_FUNC) &_netcopula_Sigma_M_to_beta, 1},
+    {"_netcopula_beta_to_Sigma_M", (DL_FUNC) &_netcopula_beta_to_Sigma_M, 2},
+    {"_netcopula_is_symmetric", (DL_FUNC) &_netcopula_is_symmetric, 1},
+    {"_netcopula_is_correlation", (DL_FUNC) &_netcopula_is_correlation, 1},
+    {"_netcopula_is_positive_definite", (DL_FUNC) &_netcopula_is_positive_definite, 2},
+    {"_netcopula_make_positive_definite", (DL_FUNC) &_netcopula_make_positive_definite, 1},
+    {"_netcopula_is_singular", (DL_FUNC) &_netcopula_is_singular, 1},
+    {"_netcopula_ols_coef", (DL_FUNC) &_netcopula_ols_coef, 4},
+    {"_netcopula_ols_pred", (DL_FUNC) &_netcopula_ols_pred, 2},
+    {"_netcopula_cov2cor_rcpp", (DL_FUNC) &_netcopula_cov2cor_rcpp, 1},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_netcopula(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

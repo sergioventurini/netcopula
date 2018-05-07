@@ -50,15 +50,15 @@ arma::mat mat_block_diag(const arma::mat& A, const int& n) {
 // [[Rcpp::export]]
 arma::mat Sigma_block(const arma::mat& Sigma_M, const int& n) {
   int M = Sigma_M.n_cols;
-  arma::mat Sigma_block(n*M, n*M, arma::fill::zeros);
+  arma::mat Sigma_b(n*M, n*M, arma::fill::zeros);
   for (unsigned int i = 0; i < n; i++) {
-    Sigma_block.submat(M*i, M*i, M*(i + 1) - 1, M*(i + 1) - 1) = Sigma_M;
+    Sigma_b.submat(M*i, M*i, M*(i + 1) - 1, M*(i + 1) - 1) = Sigma_M;
     for (unsigned int j = (i + 1); j < n; j++) {
-      Sigma_block.submat(M*i, M*j, M*(i + 1) - 1, M*(j + 1) - 1) = 0.5*Sigma_M;
-      Sigma_block.submat(M*j, M*i, M*(j + 1) - 1, M*(i + 1) - 1) = 0.5*Sigma_M;
+      Sigma_b.submat(M*i, M*j, M*(i + 1) - 1, M*(j + 1) - 1) = 0.5*Sigma_M;
+      Sigma_b.submat(M*j, M*i, M*(j + 1) - 1, M*(i + 1) - 1) = 0.5*Sigma_M;
     }
   }
-  return Sigma_block;
+  return Sigma_b;
 }
 
 //' @export
@@ -275,16 +275,21 @@ Rcpp::NumericMatrix param_wide(const Rcpp::NumericMatrix& prm_long, const Rcpp::
 // [[Rcpp::export]]
 arma::mat list_mat(const Rcpp::List& X) {
   arma::mat tmp = Rcpp::as<arma::mat>(X(0));
-  int nr = X.size(), M = tmp.n_rows, nc = M*(M - 1)/2, count = 0;
+  int nr = X.size(), M = tmp.n_rows, count = 0;
+  int nc = (M > 1) ? M*(M - 1)/2 : 1;
   arma::mat Y(nr, nc);
 
   for (unsigned int k = 0; k < nr; k++) {
     tmp = Rcpp::as<arma::mat>(X(k));
-    for (unsigned int j = 0; j < (M - 1); j++) {
-      for (unsigned int i = (j + 1); i < M; i++) {
-        Y(k, count) = tmp(i, j);
-        count++;
+    if (M > 1) {
+      for (unsigned int j = 0; j < (M - 1); j++) {
+        for (unsigned int i = (j + 1); i < M; i++) {
+          Y(k, count) = tmp(i, j);
+          count++;
+        }
       }
+    } else {
+      Y(k, 0) = tmp(0, 0);
     }
     count = 0;
   }
@@ -507,7 +512,8 @@ arma::vec ols_coef(const double& xmin, const double& xmax, const Rcpp::List& arg
     if (delta_par) {
       lp(i) = delta_logpost(x_grid(i), mu, tau, eta, y, n, w, gamma, eps, eps_ab);
     } else {
-      lp(i) = mu_logpost(x_grid(i), delta, y, n, w, gamma, mu_sigma, eps, eps_ab);
+      // TODO: the definition of mu_logpost has changed (24/01/2018)
+      lp(i) = 0; //mu_logpost(x_grid(i), delta, y, n, w, gamma, mu_sigma, eps, eps_ab);
     }
     if (!ISNA(lp(i))) {
       X.resize(count + 1, 3);

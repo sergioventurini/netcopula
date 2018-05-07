@@ -3,22 +3,22 @@
 
 #' @export
 qnorm_boost <- function(p, mean = 0.0, sd = 1.0, lower_tail = TRUE) {
-    .Call('netcopula_qnorm_boost', PACKAGE = 'netcopula', p, mean, sd, lower_tail)
+    .Call('_netcopula_qnorm_boost', PACKAGE = 'netcopula', p, mean, sd, lower_tail)
 }
 
 #' @export
 pnorm_boost <- function(x, mean = 0.0, sd = 1.0, lower_tail = TRUE) {
-    .Call('netcopula_pnorm_boost', PACKAGE = 'netcopula', x, mean, sd, lower_tail)
+    .Call('_netcopula_pnorm_boost', PACKAGE = 'netcopula', x, mean, sd, lower_tail)
 }
 
 #' @export
 qbinom_boost <- function(p, n, prob, lower_tail = TRUE) {
-    .Call('netcopula_qbinom_boost', PACKAGE = 'netcopula', p, n, prob, lower_tail)
+    .Call('_netcopula_qbinom_boost', PACKAGE = 'netcopula', p, n, prob, lower_tail)
 }
 
 #' @export
 pbinom_boost <- function(x, n, prob, lower_tail = TRUE) {
-    .Call('netcopula_pbinom_boost', PACKAGE = 'netcopula', x, n, prob, lower_tail)
+    .Call('_netcopula_pbinom_boost', PACKAGE = 'netcopula', x, n, prob, lower_tail)
 }
 
 #' Multivariate normal density.
@@ -51,7 +51,7 @@ pbinom_boost <- function(x, n, prob, lower_tail = TRUE) {
 #'           dmvn_arma(X, mean, sigma, FALSE),
 #'           order = "relative", replications = 100)[, 1:4]
 dmvn_arma <- function(x, mean, sigma, logd = FALSE) {
-    .Call('netcopula_dmvn_arma', PACKAGE = 'netcopula', x, mean, sigma, logd)
+    .Call('_netcopula_dmvn_arma', PACKAGE = 'netcopula', x, mean, sigma, logd)
 }
 
 #' Multivariate normal variates generation.
@@ -84,7 +84,7 @@ dmvn_arma <- function(x, mean, sigma, logd = FALSE) {
 #'           columns = c("test", "replications", "relative", "elapsed"),
 #'           order = "relative")
 rmvn_arma <- function(n, mean, sigma) {
-    .Call('netcopula_rmvn_arma', PACKAGE = 'netcopula', n, mean, sigma)
+    .Call('_netcopula_rmvn_arma', PACKAGE = 'netcopula', n, mean, sigma)
 }
 
 #' Inverse Wishart density.
@@ -116,7 +116,7 @@ rmvn_arma <- function(n, mean, sigma) {
 #'           apply(X, 1, dinvwish_arma, nu, S, FALSE),
 #'           order = "relative", replications = 100)[, 1:4]
 dinvwish_arma <- function(IW, nu, S, logd = FALSE) {
-    .Call('netcopula_dinvwish_arma', PACKAGE = 'netcopula', IW, nu, S, logd)
+    .Call('_netcopula_dinvwish_arma', PACKAGE = 'netcopula', IW, nu, S, logd)
 }
 
 #' Inverse Wishart variates generation.
@@ -150,7 +150,7 @@ dinvwish_arma <- function(IW, nu, S, logd = FALSE) {
 #'           columns = c("test", "replications", "relative", "elapsed"),
 #'           order = "relative")
 rinvwish_arma <- function(nu, S) {
-    .Call('netcopula_rinvwish_arma', PACKAGE = 'netcopula', nu, S)
+    .Call('_netcopula_rinvwish_arma', PACKAGE = 'netcopula', nu, S)
 }
 
 #' Compute the density function of a Lewandowski-Kurowicka-Joe distribution.
@@ -185,7 +185,7 @@ rinvwish_arma <- function(nu, S) {
 #' R <- rlkj_arma(K, 2) # eta = 2
 #' dlkj_arma(R, 2)
 dlkj_arma <- function(R, eta, logd = FALSE) {
-    .Call('netcopula_dlkj_arma', PACKAGE = 'netcopula', R, eta, logd)
+    .Call('_netcopula_dlkj_arma', PACKAGE = 'netcopula', R, eta, logd)
 }
 
 #' Generate random variate from a Lewandowski-Kurowicka-Joe distribution.
@@ -217,7 +217,7 @@ dlkj_arma <- function(R, eta, logd = FALSE) {
 #' rlkj_arma(K, 1) # eta = 1
 #' rlkj_arma(K, 2) # eta = 2
 rlkj_arma <- function(K, eta) {
-    .Call('netcopula_rlkj_arma', PACKAGE = 'netcopula', K, eta)
+    .Call('_netcopula_rlkj_arma', PACKAGE = 'netcopula', K, eta)
 }
 
 #' The truncated univariate normal distribution.
@@ -261,7 +261,7 @@ rlkj_arma <- function(K, eta) {
 #' set.seed(rng)
 #' rtruncnorm_rcpp(n, a, b, mean, sd)
 rtruncnorm_rcpp <- function(n, a, b, mean, sd) {
-    .Call('netcopula_rtruncnorm_rcpp', PACKAGE = 'netcopula', n, a, b, mean, sd)
+    .Call('_netcopula_rtruncnorm_rcpp', PACKAGE = 'netcopula', n, a, b, mean, sd)
 }
 
 #' The truncated univariate normal distribution.
@@ -302,7 +302,7 @@ rtruncnorm_rcpp <- function(n, a, b, mean, sd) {
 #' set.seed(rng)
 #' rtruncnorm2_rcpp(n, a, b, mean, sd)
 rtruncnorm2_rcpp <- function(n, a, b, mean, sd) {
-    .Call('netcopula_rtruncnorm2_rcpp', PACKAGE = 'netcopula', n, a, b, mean, sd)
+    .Call('_netcopula_rtruncnorm2_rcpp', PACKAGE = 'netcopula', n, a, b, mean, sd)
 }
 
 #' The truncated univariate normal distribution.
@@ -341,7 +341,7 @@ rtruncnorm2_rcpp <- function(n, a, b, mean, sd) {
 #' x <- rtruncnorm_rcpp(n, a, b, mean, sd)
 #' dtruncnorm_rcpp(x, a, b, mean, sd)
 dtruncnorm_rcpp <- function(x, a, b, mean, sd) {
-    .Call('netcopula_dtruncnorm_rcpp', PACKAGE = 'netcopula', x, a, b, mean, sd)
+    .Call('_netcopula_dtruncnorm_rcpp', PACKAGE = 'netcopula', x, a, b, mean, sd)
 }
 
 #' Log Cholesky prior distribution.
@@ -365,7 +365,7 @@ dtruncnorm_rcpp <- function(x, a, b, mean, sd) {
 #' Sigma <- rlogchol_arma(M, sigma_r)
 #' dlogchol_arma(Sigma, sigma_r)
 dlogchol_arma <- function(A, sigma_r, logd = FALSE) {
-    .Call('netcopula_dlogchol_arma', PACKAGE = 'netcopula', A, sigma_r, logd)
+    .Call('_netcopula_dlogchol_arma', PACKAGE = 'netcopula', A, sigma_r, logd)
 }
 
 #' Log Cholesky prior distribution.
@@ -391,7 +391,7 @@ dlogchol_arma <- function(A, sigma_r, logd = FALSE) {
 #' Sigma_sqrt <- solve(diag(diag(Sigma)))^0.5
 #' Sigma_sqrt %*% Sigma %*% Sigma_sqrt
 rlogchol_arma <- function(M, sigma_r) {
-    .Call('netcopula_rlogchol_arma', PACKAGE = 'netcopula', M, sigma_r)
+    .Call('_netcopula_rlogchol_arma', PACKAGE = 'netcopula', M, sigma_r)
 }
 
 #' Multivariate t density.
@@ -428,7 +428,7 @@ rlogchol_arma <- function(M, sigma_r) {
 #'           dmvt_arma(X, mean, sigma, df, FALSE),
 #'           order = "relative", replications = 100)[, 1:4]
 dmvt_arma <- function(x, mean, sigma, df, logd = FALSE) {
-    .Call('netcopula_dmvt_arma', PACKAGE = 'netcopula', x, mean, sigma, df, logd)
+    .Call('_netcopula_dmvt_arma', PACKAGE = 'netcopula', x, mean, sigma, df, logd)
 }
 
 #' Multivariate t variates generation.
@@ -464,7 +464,7 @@ dmvt_arma <- function(x, mean, sigma, df, logd = FALSE) {
 #'           columns = c("test", "replications", "relative", "elapsed"),
 #'           order = "relative")
 rmvt_arma <- function(n, mean, sigma, df) {
-    .Call('netcopula_rmvt_arma', PACKAGE = 'netcopula', n, mean, sigma, df)
+    .Call('_netcopula_rmvt_arma', PACKAGE = 'netcopula', n, mean, sigma, df)
 }
 
 #' Matrix variate normal density.
@@ -496,7 +496,7 @@ rmvt_arma <- function(n, mean, sigma, df) {
 #' V <- diag(p)
 #' dmatvn_arma(X, M, U, V)
 dmatvn_arma <- function(X, M, U, V, logd = FALSE) {
-    .Call('netcopula_dmatvn_arma', PACKAGE = 'netcopula', X, M, U, V, logd)
+    .Call('_netcopula_dmatvn_arma', PACKAGE = 'netcopula', X, M, U, V, logd)
 }
 
 #' Matrix variate normal generation.
@@ -526,7 +526,7 @@ dmatvn_arma <- function(X, M, U, V, logd = FALSE) {
 #' set.seed(123)
 #' rmvn_arma(n, rep(0, p), diag(p))
 rmatvn_arma <- function(M, U, V) {
-    .Call('netcopula_rmatvn_arma', PACKAGE = 'netcopula', M, U, V)
+    .Call('_netcopula_rmatvn_arma', PACKAGE = 'netcopula', M, U, V)
 }
 
 #' Matrix variate t density.
@@ -561,7 +561,7 @@ rmatvn_arma <- function(M, U, V) {
 #' df <- 5
 #' dmatvt_arma(X, M, Sigma, Omega, df)
 dmatvt_arma <- function(X, M, Sigma, Omega, df, logd = FALSE) {
-    .Call('netcopula_dmatvt_arma', PACKAGE = 'netcopula', X, M, Sigma, Omega, df, logd)
+    .Call('_netcopula_dmatvt_arma', PACKAGE = 'netcopula', X, M, Sigma, Omega, df, logd)
 }
 
 #' Matrix variate t generation.
@@ -595,7 +595,7 @@ dmatvt_arma <- function(X, M, Sigma, Omega, df, logd = FALSE) {
 #' df <- 5
 #' rmatvt_arma(M, Sigma, Omega, df)
 rmatvt_arma <- function(M, Sigma, Omega, df) {
-    .Call('netcopula_rmatvt_arma', PACKAGE = 'netcopula', M, Sigma, Omega, df)
+    .Call('_netcopula_rmatvt_arma', PACKAGE = 'netcopula', M, Sigma, Omega, df)
 }
 
 #' Inverse gamma density.
@@ -618,7 +618,7 @@ rmatvt_arma <- function(M, Sigma, Omega, df) {
 #' res <- dinvgamma_rcpp(x, alpha, beta)
 #' plot(x, res, type = "l", main = "Inverse Gamma density")
 dinvgamma_rcpp <- function(x, alpha, beta, logd = FALSE) {
-    .Call('netcopula_dinvgamma_rcpp', PACKAGE = 'netcopula', x, alpha, beta, logd)
+    .Call('_netcopula_dinvgamma_rcpp', PACKAGE = 'netcopula', x, alpha, beta, logd)
 }
 
 #' Inverse gamma variates generation.
@@ -643,7 +643,7 @@ dinvgamma_rcpp <- function(x, alpha, beta, logd = FALSE) {
 #'      main = "Inverse gamma variates")
 #' lines(x, dinvgamma_rcpp(x, alpha, beta))
 rinvgamma_rcpp <- function(n, alpha, beta) {
-    .Call('netcopula_rinvgamma_rcpp', PACKAGE = 'netcopula', n, alpha, beta)
+    .Call('_netcopula_rinvgamma_rcpp', PACKAGE = 'netcopula', n, alpha, beta)
 }
 
 #' Gaussian copula density evaluation.
@@ -678,7 +678,179 @@ rinvgamma_rcpp <- function(n, alpha, beta) {
 #' }
 #' persp(u1, u2, dens, theta = 120, phi = 25)
 gausscopdens <- function(u, Gamma, is_u, logd = FALSE) {
-    .Call('netcopula_gausscopdens', PACKAGE = 'netcopula', u, Gamma, is_u, logd)
+    .Call('_netcopula_gausscopdens', PACKAGE = 'netcopula', u, Gamma, is_u, logd)
+}
+
+#' Subset Non-connected Regions
+#'
+#' Replicates the subset functionality of a matrix in R.
+#' @param x       A \code{matrix} of dimensions M x N
+#' @param row_ind A \code{unsigned int vec} that contains the row indices within \eqn{[0,M-1]}.
+#' @param col_ind A \code{unsigned int vec} that contains the column indices within \eqn{[0,N-1]}.
+#' @return A \code{vec} with each element listed according to index specification.
+#' @author JJB
+#' @examples
+#' # Generate a Matrix
+#' m = matrix(1:12, nrow = 4)
+#'
+#' # Select Non-connect regions
+#' row_index = c(1, 2, 1)
+#' col_index = c(2, 2, 3)
+#'
+#' # Subset in R
+#' m[cbind(row_index, col_index)]
+#'
+#' # Subset with Armadillo
+#' get_elements(m, row_index - 1, col_index - 1)
+get_elements <- function(x, row_ind, col_ind) {
+    .Call('_netcopula_get_elements', PACKAGE = 'netcopula', x, row_ind, col_ind)
+}
+
+#' Reverse Subset Column
+#'
+#' Subsets the column by going from high indices to low (the reverse of the supported practice)
+#' @param x     A \code{matrix} of dimensions M x N
+#' @param start A \code{unsigned int} that indicates the starting column.
+#' @param end   A \code{unsigned int} that indicates the ending column.
+#' @return A \code{matrix} with matrix rows displayed in reverse order
+#' @details Consider a vector x=[[1,2],[3,4]].
+#' By setting \code{start=1} and \code{end=0}, the function would output x=[[2,1],[4,1]].
+#' Start and end must be valid C++ matrix locations. (e.g. matrix cols start at 0 and not 1)
+#' @author JJB
+#' @examples
+#' x = matrix(c(1,2,3,4), nrow = 2,byrow = TRUE)
+#' rev_col_subset(x, 1, 0)
+rev_col_subset <- function(x, start, end) {
+    .Call('_netcopula_rev_col_subset', PACKAGE = 'netcopula', x, start, end)
+}
+
+#' Reverse Subset Row
+#'
+#' Subsets the row by going from high indices to low (the reverse of the supported practice)
+#' @param x A \code{matrix} of dimensions M x N
+#' @param start A \code{unsigned int} that indicates the starting row.
+#' @param end A \code{unsigned int} that indicates the ending row.
+#' @return x A \code{matrix} with matrix rows displayed in reversed order
+#' @details Consider a vector x=[[1,2],[3,4]], the function would output x=[[3,4],[1,2]].
+#' Start and end must be valid C++ matrix locations. (e.g. matrix rows start at 0 and not 1)
+#' @author JJB
+#' @examples
+#' x = matrix(c(1,2,3,4), nrow=2,byrow=TRUE)
+#' rev_row_subset(x, 1, 0)
+rev_row_subset <- function(x, start, end) {
+    .Call('_netcopula_rev_row_subset', PACKAGE = 'netcopula', x, start, end)
+}
+
+#' Reverse Armadillo Vector
+#'
+#' Reverses the order of an Armadillo Vector
+#' @param x A \code{column vector} of length N
+#' @return A \code{column vector} with its contents reversed.
+#' @details Consider a vector x=[1,2,3,4,5], the function would output x=[5,4,3,2,1].
+#' @author JJB
+#' @examples
+#' x = 1:5
+#' reverse_vec(x)
+reverse_vec <- function(x) {
+    .Call('_netcopula_reverse_vec', PACKAGE = 'netcopula', x)
+}
+
+#' Transform an Armadillo field<vec> to a matrix
+#'
+#' Unlists vectors in a field and places them into a matrix
+#' @param x A \code{field<vec>}.
+#' @return A \code{mat} containing the field elements within a column.
+#' @author JJB
+field_to_matrix <- function(x) {
+    .Call('_netcopula_field_to_matrix', PACKAGE = 'netcopula', x)
+}
+
+#' Accumulation of Armadillo field<vec>
+#'
+#' Sums vectors in a field into a single variable.
+#' @param x A \code{field<vec>}.
+#' @return An \code{mat} containing the field elements within a column.
+#' @author JJB
+sum_field_vec <- function(x) {
+    .Call('_netcopula_sum_field_vec', PACKAGE = 'netcopula', x)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+mudelta_logpost <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab) {
+    .Call('_netcopula_mudelta_logpost', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param data pippo
+#' @param init pippo
+#' @param totiter pippo
+#' @param prior pippo
+#' @param prop pippo
+#' @param verbose pippo
+#'
+#' @return A list containing the output of the MCMC simulation.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+nc_mcmc_mh_new <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
+    .Call('_netcopula_nc_mcmc_mh_new', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+mudelta_logpost2 <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab) {
+    .Call('_netcopula_mudelta_logpost2', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param data pippo
+#' @param init pippo
+#' @param totiter pippo
+#' @param prior pippo
+#' @param prop pippo
+#' @param verbose pippo
+#'
+#' @return A list containing the output of the MCMC simulation.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+nc_mcmc_mh_new2 <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
+    .Call('_netcopula_nc_mcmc_mh_new2', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -699,17 +871,17 @@ gausscopdens <- function(u, Gamma, is_u, logd = FALSE) {
 #' @examples
 #' # nothing for now!
 nc_loglik <- function(y, n, x, trt, mu, delta, Gamma) {
-    .Call('netcopula_nc_loglik', PACKAGE = 'netcopula', y, n, x, trt, mu, delta, Gamma)
+    .Call('_netcopula_nc_loglik', PACKAGE = 'netcopula', y, n, x, trt, mu, delta, Gamma)
 }
 
 #' @export
 indic_a_b <- function(y_ikm, n_ikm, x_ikm, mu_ikm, delta_ikm) {
-    .Call('netcopula_indic_a_b', PACKAGE = 'netcopula', y_ikm, n_ikm, x_ikm, mu_ikm, delta_ikm)
+    .Call('_netcopula_indic_a_b', PACKAGE = 'netcopula', y_ikm, n_ikm, x_ikm, mu_ikm, delta_ikm)
 }
 
 #' @export
 nc_logprior <- function(mu, mu_sigma, d, d_sigma, Sigma_M, sigma_r, ref_trt) {
-    .Call('netcopula_nc_logprior', PACKAGE = 'netcopula', mu, mu_sigma, d, d_sigma, Sigma_M, sigma_r, ref_trt)
+    .Call('_netcopula_nc_logprior', PACKAGE = 'netcopula', mu, mu_sigma, d, d_sigma, Sigma_M, sigma_r, ref_trt)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -729,7 +901,7 @@ nc_logprior <- function(mu, mu_sigma, d, d_sigma, Sigma_M, sigma_r, ref_trt) {
 #' @examples
 #' # nothing for now!
 x_imputed <- function(x, Gamma, trt) {
-    .Call('netcopula_x_imputed', PACKAGE = 'netcopula', x, Gamma, trt)
+    .Call('_netcopula_x_imputed', PACKAGE = 'netcopula', x, Gamma, trt)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -749,7 +921,7 @@ x_imputed <- function(x, Gamma, trt) {
 #' @examples
 #' # nothing for now!
 n_imputed <- function(n_data) {
-    .Call('netcopula_n_imputed', PACKAGE = 'netcopula', n_data)
+    .Call('_netcopula_n_imputed', PACKAGE = 'netcopula', n_data)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -769,7 +941,7 @@ n_imputed <- function(n_data) {
 #' @examples
 #' # nothing for now!
 y_imputed <- function(y, x_imp, narms, mu, delta, n_imp) {
-    .Call('netcopula_y_imputed', PACKAGE = 'netcopula', y, x_imp, narms, mu, delta, n_imp)
+    .Call('_netcopula_y_imputed', PACKAGE = 'netcopula', y, x_imp, narms, mu, delta, n_imp)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -788,12 +960,12 @@ y_imputed <- function(y, x_imp, narms, mu, delta, n_imp) {
 #' @examples
 #' # nothing for now!
 Gamma_logpost <- function(Gamma, x, eta) {
-    .Call('netcopula_Gamma_logpost', PACKAGE = 'netcopula', Gamma, x, eta)
+    .Call('_netcopula_Gamma_logpost', PACKAGE = 'netcopula', Gamma, x, eta)
 }
 
 #' @export
 logpost <- function(mu, delta, y, n, w, gamma, eps, eps_ab) {
-    .Call('netcopula_logpost', PACKAGE = 'netcopula', mu, delta, y, n, w, gamma, eps, eps_ab)
+    .Call('_netcopula_logpost', PACKAGE = 'netcopula', mu, delta, y, n, w, gamma, eps, eps_ab)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -812,7 +984,7 @@ logpost <- function(mu, delta, y, n, w, gamma, eps, eps_ab) {
 #' @examples
 #' # nothing for now!
 mu_logpost <- function(mu, delta, y, n, w, gamma, mu_sigma, eps, eps_ab) {
-    .Call('netcopula_mu_logpost', PACKAGE = 'netcopula', mu, delta, y, n, w, gamma, mu_sigma, eps, eps_ab)
+    .Call('_netcopula_mu_logpost', PACKAGE = 'netcopula', mu, delta, y, n, w, gamma, mu_sigma, eps, eps_ab)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -831,7 +1003,7 @@ mu_logpost <- function(mu, delta, y, n, w, gamma, mu_sigma, eps, eps_ab) {
 #' @examples
 #' # nothing for now!
 delta_logpost <- function(delta, mu, tau, eta, y, n, w, gamma, eps, eps_ab) {
-    .Call('netcopula_delta_logpost', PACKAGE = 'netcopula', delta, mu, tau, eta, y, n, w, gamma, eps, eps_ab)
+    .Call('_netcopula_delta_logpost', PACKAGE = 'netcopula', delta, mu, tau, eta, y, n, w, gamma, eps, eps_ab)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -850,7 +1022,7 @@ delta_logpost <- function(delta, mu, tau, eta, y, n, w, gamma, eps, eps_ab) {
 #' @examples
 #' # nothing for now!
 delta_logprior <- function(delta, d, Sigma_M, trt_arms, baseline, narms) {
-    .Call('netcopula_delta_logprior', PACKAGE = 'netcopula', delta, d, Sigma_M, trt_arms, baseline, narms)
+    .Call('_netcopula_delta_logprior', PACKAGE = 'netcopula', delta, d, Sigma_M, trt_arms, baseline, narms)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -869,7 +1041,7 @@ delta_logprior <- function(delta, d, Sigma_M, trt_arms, baseline, narms) {
 #' @examples
 #' # nothing for now!
 d_logprior <- function(d, d_sigma, ref_trt) {
-    .Call('netcopula_d_logprior', PACKAGE = 'netcopula', d, d_sigma, ref_trt)
+    .Call('_netcopula_d_logprior', PACKAGE = 'netcopula', d, d_sigma, ref_trt)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -888,7 +1060,7 @@ d_logprior <- function(d, d_sigma, ref_trt) {
 #' @examples
 #' # nothing for now!
 d_logpost_multi <- function(d, delta, Sigma_M, trt_arms, baseline, narms, d_sigma, ref_trt) {
-    .Call('netcopula_d_logpost_multi', PACKAGE = 'netcopula', d, delta, Sigma_M, trt_arms, baseline, narms, d_sigma, ref_trt)
+    .Call('_netcopula_d_logpost_multi', PACKAGE = 'netcopula', d, delta, Sigma_M, trt_arms, baseline, narms, d_sigma, ref_trt)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -907,7 +1079,7 @@ d_logpost_multi <- function(d, delta, Sigma_M, trt_arms, baseline, narms, d_sigm
 #' @examples
 #' # nothing for now!
 d_logpost <- function(d, delta, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt) {
-    .Call('netcopula_d_logpost', PACKAGE = 'netcopula', d, delta, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
+    .Call('_netcopula_d_logpost', PACKAGE = 'netcopula', d, delta, Sigma_M, trt, baseline, narms_study, d_sigma, ref_trt)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -926,7 +1098,7 @@ d_logpost <- function(d, delta, Sigma_M, trt, baseline, narms_study, d_sigma, re
 #' @examples
 #' # nothing for now!
 Sigma_M_logpost <- function(d, delta, Sigma_M, trt, baseline, narms_study, sigma_r) {
-    .Call('netcopula_Sigma_M_logpost', PACKAGE = 'netcopula', d, delta, Sigma_M, trt, baseline, narms_study, sigma_r)
+    .Call('_netcopula_Sigma_M_logpost', PACKAGE = 'netcopula', d, delta, Sigma_M, trt, baseline, narms_study, sigma_r)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -946,7 +1118,7 @@ Sigma_M_logpost <- function(d, delta, Sigma_M, trt, baseline, narms_study, sigma
 #' @examples
 #' # nothing for now!
 nc_mcmc_opt <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
-    .Call('netcopula_nc_mcmc_opt', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
+    .Call('_netcopula_nc_mcmc_opt', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -966,8 +1138,8 @@ nc_mcmc_opt <- function(data, init, totiter, prior, prop, tuning, adapt, verbose
 #'
 #' @examples
 #' # nothing for now!
-rwmh_adapt <- function(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what) {
-    .Call('netcopula_rwmh_adapt', PACKAGE = 'netcopula', theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what)
+rwmh_adapt <- function(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what, diagonal) {
+    .Call('_netcopula_rwmh_adapt', PACKAGE = 'netcopula', theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter_cols, what, diagonal)
 }
 
 #' Log-likelihood of copula based model for a multivariate NMA.
@@ -987,186 +1159,186 @@ rwmh_adapt <- function(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter
 #' @examples
 #' # nothing for now!
 nc_mcmc_mh <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
-    .Call('netcopula_nc_mcmc_mh', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
+    .Call('_netcopula_nc_mcmc_mh', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 
 #' @export
 optim_rcpp <- function(par, fn, args, options, hessian = TRUE) {
-    .Call('netcopula_optim_rcpp', PACKAGE = 'netcopula', par, fn, args, options, hessian)
+    .Call('_netcopula_optim_rcpp', PACKAGE = 'netcopula', par, fn, args, options, hessian)
 }
 
 #' @export
 optimhess_rcpp <- function(par, fn, args, options) {
-    .Call('netcopula_optimhess_rcpp', PACKAGE = 'netcopula', par, fn, args, options)
+    .Call('_netcopula_optimhess_rcpp', PACKAGE = 'netcopula', par, fn, args, options)
 }
 
 #' @export
 laplace_rcpp <- function(logpost, guess, args, options) {
-    .Call('netcopula_laplace_rcpp', PACKAGE = 'netcopula', logpost, guess, args, options)
+    .Call('_netcopula_laplace_rcpp', PACKAGE = 'netcopula', logpost, guess, args, options)
 }
 
 #' @export
 optim_rcpp_example <- function() {
-    .Call('netcopula_optim_rcpp_example', PACKAGE = 'netcopula')
+    .Call('_netcopula_optim_rcpp_example', PACKAGE = 'netcopula')
 }
 
 #' @export
 optimize_rcpp <- function(fn, xmin, xmax, tol, args) {
-    .Call('netcopula_optimize_rcpp', PACKAGE = 'netcopula', fn, xmin, xmax, tol, args)
+    .Call('_netcopula_optimize_rcpp', PACKAGE = 'netcopula', fn, xmin, xmax, tol, args)
 }
 
 #' @export
 laplace_u_rcpp <- function(fn, xmin, xmax, tol, args, options) {
-    .Call('netcopula_laplace_u_rcpp', PACKAGE = 'netcopula', fn, xmin, xmax, tol, args, options)
+    .Call('_netcopula_laplace_u_rcpp', PACKAGE = 'netcopula', fn, xmin, xmax, tol, args, options)
 }
 
 #' @export
 mat_block_diag <- function(A, n) {
-    .Call('netcopula_mat_block_diag', PACKAGE = 'netcopula', A, n)
+    .Call('_netcopula_mat_block_diag', PACKAGE = 'netcopula', A, n)
 }
 
 #' @export
 Sigma_block <- function(Sigma_M, n) {
-    .Call('netcopula_Sigma_block', PACKAGE = 'netcopula', Sigma_M, n)
+    .Call('_netcopula_Sigma_block', PACKAGE = 'netcopula', Sigma_M, n)
 }
 
 #' @export
 df_nm <- function(x, cols) {
-    .Call('netcopula_df_nm', PACKAGE = 'netcopula', x, cols)
+    .Call('_netcopula_df_nm', PACKAGE = 'netcopula', x, cols)
 }
 
 #' @export
 nm_stack <- function(x) {
-    .Call('netcopula_nm_stack', PACKAGE = 'netcopula', x)
+    .Call('_netcopula_nm_stack', PACKAGE = 'netcopula', x)
 }
 
 #' @export
 nv_unstack <- function(x, nc) {
-    .Call('netcopula_nv_unstack', PACKAGE = 'netcopula', x, nc)
+    .Call('_netcopula_nv_unstack', PACKAGE = 'netcopula', x, nc)
 }
 
 #' @export
 nv_omit <- function(x) {
-    .Call('netcopula_nv_omit', PACKAGE = 'netcopula', x)
+    .Call('_netcopula_nv_omit', PACKAGE = 'netcopula', x)
 }
 
 #' @export
 nv_na_index <- function(x, dim, type) {
-    .Call('netcopula_nv_na_index', PACKAGE = 'netcopula', x, dim, type)
+    .Call('_netcopula_nv_na_index', PACKAGE = 'netcopula', x, dim, type)
 }
 
 #' @export
 nv_miss_replace <- function(x, miss, miss_i) {
-    .Call('netcopula_nv_miss_replace', PACKAGE = 'netcopula', x, miss, miss_i)
+    .Call('_netcopula_nv_miss_replace', PACKAGE = 'netcopula', x, miss, miss_i)
 }
 
 #' @export
 split_iv <- function(x, f) {
-    .Call('netcopula_split_iv', PACKAGE = 'netcopula', x, f)
+    .Call('_netcopula_split_iv', PACKAGE = 'netcopula', x, f)
 }
 
 #' @export
 split_nm <- function(x, f) {
-    .Call('netcopula_split_nm', PACKAGE = 'netcopula', x, f)
+    .Call('_netcopula_split_nm', PACKAGE = 'netcopula', x, f)
 }
 
 #' @export
 logit_rcpp <- function(p) {
-    .Call('netcopula_logit_rcpp', PACKAGE = 'netcopula', p)
+    .Call('_netcopula_logit_rcpp', PACKAGE = 'netcopula', p)
 }
 
 #' @export
 expit_rcpp <- function(x) {
-    .Call('netcopula_expit_rcpp', PACKAGE = 'netcopula', x)
+    .Call('_netcopula_expit_rcpp', PACKAGE = 'netcopula', x)
 }
 
 #' @export
 nm_omit <- function(x, rownum) {
-    .Call('netcopula_nm_omit', PACKAGE = 'netcopula', x, rownum)
+    .Call('_netcopula_nm_omit', PACKAGE = 'netcopula', x, rownum)
 }
 
 #' @export
 param_long <- function(prm_wide, narms, rowindex) {
-    .Call('netcopula_param_long', PACKAGE = 'netcopula', prm_wide, narms, rowindex)
+    .Call('_netcopula_param_long', PACKAGE = 'netcopula', prm_wide, narms, rowindex)
 }
 
 #' @export
 param_wide <- function(prm_long, narms, trt, baseline) {
-    .Call('netcopula_param_wide', PACKAGE = 'netcopula', prm_long, narms, trt, baseline)
+    .Call('_netcopula_param_wide', PACKAGE = 'netcopula', prm_long, narms, trt, baseline)
 }
 
 #' @export
 list_mat <- function(X) {
-    .Call('netcopula_list_mat', PACKAGE = 'netcopula', X)
+    .Call('_netcopula_list_mat', PACKAGE = 'netcopula', X)
 }
 
 #' @export
 diag_tri <- function(A) {
-    .Call('netcopula_diag_tri', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_diag_tri', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 cube_to_mat <- function(X, is_d, ref) {
-    .Call('netcopula_cube_to_mat', PACKAGE = 'netcopula', X, is_d, ref)
+    .Call('_netcopula_cube_to_mat', PACKAGE = 'netcopula', X, is_d, ref)
 }
 
 #' @export
 mat_to_vec <- function(X, is_d, ref) {
-    .Call('netcopula_mat_to_vec', PACKAGE = 'netcopula', X, is_d, ref)
+    .Call('_netcopula_mat_to_vec', PACKAGE = 'netcopula', X, is_d, ref)
 }
 
 #' @export
 vec_to_mat <- function(x, nc, is_d, ref) {
-    .Call('netcopula_vec_to_mat', PACKAGE = 'netcopula', x, nc, is_d, ref)
+    .Call('_netcopula_vec_to_mat', PACKAGE = 'netcopula', x, nc, is_d, ref)
 }
 
 #' @export
 Sigma_M_to_beta <- function(A) {
-    .Call('netcopula_Sigma_M_to_beta', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_Sigma_M_to_beta', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 beta_to_Sigma_M <- function(beta, M) {
-    .Call('netcopula_beta_to_Sigma_M', PACKAGE = 'netcopula', beta, M)
+    .Call('_netcopula_beta_to_Sigma_M', PACKAGE = 'netcopula', beta, M)
 }
 
 #' @export
 is_symmetric <- function(A) {
-    .Call('netcopula_is_symmetric', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_is_symmetric', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 is_correlation <- function(A) {
-    .Call('netcopula_is_correlation', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_is_correlation', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 is_positive_definite <- function(A, line) {
-    .Call('netcopula_is_positive_definite', PACKAGE = 'netcopula', A, line)
+    .Call('_netcopula_is_positive_definite', PACKAGE = 'netcopula', A, line)
 }
 
 #' @export
 make_positive_definite <- function(A) {
-    .Call('netcopula_make_positive_definite', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_make_positive_definite', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 is_singular <- function(A) {
-    .Call('netcopula_is_singular', PACKAGE = 'netcopula', A)
+    .Call('_netcopula_is_singular', PACKAGE = 'netcopula', A)
 }
 
 #' @export
 ols_coef <- function(xmin, xmax, args, delta_par) {
-    .Call('netcopula_ols_coef', PACKAGE = 'netcopula', xmin, xmax, args, delta_par)
+    .Call('_netcopula_ols_coef', PACKAGE = 'netcopula', xmin, xmax, args, delta_par)
 }
 
 #' @export
 ols_pred <- function(coef, x) {
-    .Call('netcopula_ols_pred', PACKAGE = 'netcopula', coef, x)
+    .Call('_netcopula_ols_pred', PACKAGE = 'netcopula', coef, x)
 }
 
 #' @export
 cov2cor_rcpp <- function(V) {
-    .Call('netcopula_cov2cor_rcpp', PACKAGE = 'netcopula', V)
+    .Call('_netcopula_cov2cor_rcpp', PACKAGE = 'netcopula', V)
 }
 

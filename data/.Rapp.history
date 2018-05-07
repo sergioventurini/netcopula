@@ -1,0 +1,11 @@
+load("/Users/Sergio/dev/netcopula/data/homesafety.RData")#
+ls()#
+str(homesafety)#
+homesafety#
+
+load("/Users/Sergio/dev/netcopula/data/alcoholdependence.RData")#
+
+ls()#
+
+alcoholdependence#
+
