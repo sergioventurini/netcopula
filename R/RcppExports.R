@@ -779,103 +779,6 @@ sum_field_vec <- function(x) {
 #'
 #' Evaluation of the log-likelihood.
 #'
-#' @param nc_data pippo
-#' @param x pippo
-#' @param mu pippo
-#' @param delta pippo
-#' @param Gamma pippo
-#'
-#' @return A length-one numeric vector.
-#' @export
-#'
-#' @examples
-#' # nothing for now!
-mudelta_logpost <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab) {
-    .Call('_netcopula_mudelta_logpost', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab)
-}
-
-#' Log-likelihood of copula based model for a multivariate NMA.
-#'
-#' Evaluation of the log-likelihood.
-#'
-#' @param data pippo
-#' @param init pippo
-#' @param totiter pippo
-#' @param prior pippo
-#' @param prop pippo
-#' @param verbose pippo
-#'
-#' @return A list containing the output of the MCMC simulation.
-#' @export
-#'
-#' @examples
-#' # nothing for now!
-nc_mcmc_mh_new <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
-    .Call('_netcopula_nc_mcmc_mh_new', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
-}
-
-#' Log-likelihood of copula based model for a multivariate NMA.
-#'
-#' Evaluation of the log-likelihood.
-#'
-#' @param nc_data pippo
-#' @param x pippo
-#' @param mu pippo
-#' @param delta pippo
-#' @param Gamma pippo
-#'
-#' @return A length-one numeric vector.
-#' @export
-#'
-#' @examples
-#' # nothing for now!
-mudelta_logpost2 <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab) {
-    .Call('_netcopula_mudelta_logpost2', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab)
-}
-
-#' Log-likelihood of copula based model for a multivariate NMA.
-#'
-#' Evaluation of the log-likelihood.
-#'
-#' @param nc_data pippo
-#' @param x pippo
-#' @param mu pippo
-#' @param delta pippo
-#' @param Gamma pippo
-#'
-#' @return A length-one numeric vector.
-#' @export
-#'
-#' @examples
-#' # nothing for now!
-r_logpost <- function(Gamma, x) {
-    .Call('_netcopula_r_logpost', PACKAGE = 'netcopula', Gamma, x)
-}
-
-#' Log-likelihood of copula based model for a multivariate NMA.
-#'
-#' Evaluation of the log-likelihood.
-#'
-#' @param data pippo
-#' @param init pippo
-#' @param totiter pippo
-#' @param prior pippo
-#' @param prop pippo
-#' @param verbose pippo
-#'
-#' @return A list containing the output of the MCMC simulation.
-#' @export
-#'
-#' @examples
-#' # nothing for now!
-nc_mcmc_mh_new2 <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
-    .Call('_netcopula_nc_mcmc_mh_new2', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
-}
-
-#' Log-likelihood of copula based model for a multivariate NMA.
-#'
-#' Evaluation of the log-likelihood.
-#'
 #' @param y pippo
 #' @param n pippo
 #' @param x pippo
@@ -1179,6 +1082,103 @@ rwmh_adapt <- function(theta, mu, rho, cov, ar, alpha, beta, gamma, tar, k, iter
 #' # nothing for now!
 nc_mcmc_mh <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
     .Call('_netcopula_nc_mcmc_mh', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+mudelta_logpost <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab) {
+    .Call('_netcopula_mudelta_logpost', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, m, mu_sigma, eps, eps_ab)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param data pippo
+#' @param init pippo
+#' @param totiter pippo
+#' @param prior pippo
+#' @param prop pippo
+#' @param verbose pippo
+#'
+#' @return A list containing the output of the MCMC simulation.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+nc_mcmc_mh_new <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
+    .Call('_netcopula_nc_mcmc_mh_new', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+mudelta_logpost2 <- function(mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab) {
+    .Call('_netcopula_mudelta_logpost2', PACKAGE = 'netcopula', mudelta, delta_arma, y, n, x, baseline, trt, study, narms, d, Sigma_M, Gamma, i, m, mu_sigma, eps, eps_ab)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+r_logpost <- function(Gamma, x) {
+    .Call('_netcopula_r_logpost', PACKAGE = 'netcopula', Gamma, x)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
+#' @param data pippo
+#' @param init pippo
+#' @param totiter pippo
+#' @param prior pippo
+#' @param prop pippo
+#' @param verbose pippo
+#'
+#' @return A list containing the output of the MCMC simulation.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+nc_mcmc_mh_new2 <- function(data, init, totiter, prior, prop, tuning, adapt, verbose) {
+    .Call('_netcopula_nc_mcmc_mh_new2', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 
 #' @export
