@@ -93,6 +93,36 @@ double mudelta_logpost2(const arma::vec& mudelta, const arma::mat& delta_arma, c
 //'
 //' Evaluation of the log-likelihood.
 //'
+//' @param nc_data pippo
+//' @param x pippo
+//' @param mu pippo
+//' @param delta pippo
+//' @param Gamma pippo
+//'
+//' @return A length-one numeric vector.
+//' @export
+//'
+//' @examples
+//' # nothing for now!
+// [[Rcpp::export]]
+double r_logpost(const arma::mat& Gamma, const arma::mat& x) {
+  int M = Gamma.n_rows, n = x.n_rows;
+
+  arma::mat S(M, M);
+  S = arma::trans(x) * x;
+
+  double logdet, logdet_sgn;
+  arma::log_det(logdet, logdet_sgn, Gamma);
+
+  double out = -0.5*(n*logdet + arma::trace(S * arma::inv_sympd(Gamma)));
+
+  return out;
+}
+
+//' Log-likelihood of copula based model for a multivariate NMA.
+//'
+//' Evaluation of the log-likelihood.
+//'
 //' @param data pippo
 //' @param init pippo
 //' @param totiter pippo
@@ -154,17 +184,35 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
   double eta_prior = prior["eta_prior"];
   double eta_prop = prop["eta_prop"];
   arma::mat Gamma_q_prop(M, M), D_prop_inv(M, M), Gamma_q_curr(M, M), Sigma_q_prop(M, M);
-  double ran_unif, mu_delta_rate, Gamma_rate, d_rate, Sigma_M_rate;
+  double ran_unif, mu_delta_rate, Gamma_rate, d_rate, Sigma_M_rate, r_rate;
   double Gamma_A = 0.0, Gamma_B = 0.0, target_Gamma_prop = 0.0, target_Gamma_curr = 0.0;
   arma::vec accept_Gamma_q = arma::zeros<arma::vec>(nGamma);
   arma::cube D_chain(nGamma, M, totiter), S_q_chain(nGamma, nn, totiter);
-  int Gamma_chain_dim = 0;
+  int nn_minus = 0;
   if (M > 1) {
-    Gamma_chain_dim = M*(M - 1)/2;
+    nn_minus = M*(M - 1)/2;
   } else {
-    Gamma_chain_dim = 1;
+    nn_minus = 1;
   }
-  arma::cube Gamma_chain(nGamma, Gamma_chain_dim, totiter);
+  arma::cube Gamma_chain(nGamma, nn_minus, totiter);
+
+  arma::mat r(nGamma, nn_minus);
+  arma::mat pippo;
+  for (unsigned q = 0; q < nGamma; q++) {
+    if (M > 1) {
+      r.row(q) = get_upper_tri(arma::chol(arma::inv_sympd(Rcpp::as<arma::mat>(Gamma(q)))), false);
+    } else {
+      r(q, 0) = 1;
+    }
+  }
+  arma::cube r_chain(nGamma, nn_minus, totiter);
+  double r_curr = 0.0, r_prop = 0.0;
+  double r_A = 0.0, r_B = 0.0, target_r_prop = 0.0, target_r_curr = 0.0;
+  double sigma_r_prop = prop["sigma_r_prop"];
+  arma::mat R_q_curr(M, M), R_q_prop(M, M), Sigma_q_curr(M, M);
+  arma::rowvec r_curr_vec(nn_minus), r_prop_vec(nn_minus);
+  arma::vec orig_idx(nn_minus), new_idx(nn_minus);
+  orig_idx = arma::linspace(0, nn_minus - 1, nn_minus);
 
   arma::mat Gamma_k(M, M), Gamma_k_m_m(1, M), Gamma_k_m(M, M), x_ik_m(1, M);
   double a_ikm = 0.0, b_ikm = 0.0, w_ikm = 0.0, gamma_ikm = 0.0, theta_ikm = 0.0, p_ikm = 0.0;
@@ -204,11 +252,31 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
   ar_d(0) = 1.0;
   Rcpp::List prop_d(4);
 
+  arma::vec rho_r = 2.38/sqrt(nn_minus)*arma::ones(nn_minus);
+  arma::vec mu_r_arma(1);
+  arma::vec cov_r = pow(sigma_r_prop, 2)*arma::ones(nn_minus);
+  arma::mat cov_r_arma(1, 1);
+  arma::vec mu_r(nn_minus);
+  arma::cube theta_r(nGamma, nn_minus, every);
+  arma::mat theta_r_reshaped(every, nn_minus*nGamma);
+  arma::mat ar_r_single_vec(nn_minus, totiter), ar_r(nn_minus, 2);
+  ar_r.col(0) = arma::ones<arma::vec>(nn_minus);
+  arma::mat accept_r_q = arma::zeros<arma::mat>(nGamma, nn_minus);
+
+  double rho_r_vec = 2.38/sqrt(nn_minus);
+  arma::mat cov_r_vec = arma::eye(nn_minus, nn_minus);
+  arma::vec mu_r_vec(nn_minus);
+  arma::cube theta_r_vec(nGamma, nn_minus, every);
+  arma::mat theta_r_vec_reshaped(every, nn_minus*nGamma);
+  arma::vec ar_r_vec_vec(totiter), ar_r_vec(2);
+  ar_r_vec(0) = 1.0;
+  Rcpp::List prop_r(4);
+
   double rho_beta = 2.38/sqrt(nn);
   arma::mat cov_beta = arma::eye(nn, nn);
   arma::mat Sigma_M_curr(Sigma_M), Sigma_M_prop(Sigma_M);
   arma::vec beta_curr(nn), beta_prop(nn);
-  double sigma_r = Rcpp::as<double>(prior["beta_sigma"]);
+  double sigma_b = Rcpp::as<double>(prior["beta_sigma"]);
   double Sigma_M_A = 0.0, Sigma_M_B = 0.0, target_Sigma_M_prop = 0.0, target_Sigma_M_curr = 0.0;
   arma::vec mu_beta(nn);
   arma::mat theta_beta(every, nn);
@@ -426,7 +494,6 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
             // adjust latent variables x according to the new scales in 'D_prop'
             D_prop_inv = arma::inv_sympd(D_prop);
             x_imp_arma = x_star_arma * D_prop_inv;
-            // x_imp_arma = x_imp_arma * D_prop_inv;
             for (unsigned int ik = 0; ik < n_datapoints; ik++) {
               for (unsigned int m = 0; m < M; m++) {
                 x_imp(ik, m) = x_imp_arma(ik, m);
@@ -436,7 +503,6 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
               }
             }
 
-            D = D_prop;
             Gamma_q_curr = Gamma_q_prop;
             accept_Gamma_q(0)++;
           }
@@ -458,7 +524,7 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
             Gamma_B = dlkj_arma(Gamma_q_curr, eta_prop, true) - dlkj_arma(Gamma_q_prop, eta_prop, true);
             Gamma_rate = exp(Gamma_A + Gamma_B);
             ran_unif = R::runif(0.0, 1.0);
-            if (ran_unif < exp(Gamma_rate)) {
+            if (ran_unif < Gamma_rate) {
               Gamma_q_curr = Gamma_q_prop;
               accept_Gamma_q(q)++;
             }
@@ -474,7 +540,7 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
           Gamma_B = dlkj_arma(Gamma_q_curr, eta_prop, true) - dlkj_arma(Gamma_q_prop, eta_prop, true);
           Gamma_rate = exp(Gamma_A + Gamma_B);
           ran_unif = R::runif(0.0, 1.0);
-          if (ran_unif < exp(Gamma_rate)) {
+          if (ran_unif < Gamma_rate) {
             Gamma_q_curr = Gamma_q_prop;
             accept_Gamma_q(0)++;
           }
@@ -496,12 +562,125 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
           D = arma::sqrt(arma::diagmat(Gamma_new));
           Gamma(0) = cov2cor_rcpp(Gamma_new);
         }
+      } else if (Gamma_update == "DanaherSmith") {
+        if (nGamma > 1) {
+          Rprintf("STILL TO DO!\n");
+          x2t_split = split_nm(x_imp, trt);
+          for (unsigned q = 0; q < n_trt; q++) {
+            x_q = Rcpp::as<arma::mat>(x2t_split[q]);
+            // Gamma_q_curr = Rcpp::as<arma::mat>(Gamma(q));
+            // Gamma_q_prop = rlkj_arma(M, eta_prop);
+
+            // target_Gamma_curr = Gamma_logpost(Gamma_q_curr, x_q, eta_prior);
+            // target_Gamma_prop = Gamma_logpost(Gamma_q_prop, x_q, eta_prior);
+            // Gamma_A = target_Gamma_prop - target_Gamma_curr;
+            // Gamma_B = dlkj_arma(Gamma_q_curr, eta_prop, true) - dlkj_arma(Gamma_q_prop, eta_prop, true);
+            // Gamma_rate = exp(Gamma_A + Gamma_B);
+            // ran_unif = R::runif(0.0, 1.0);
+            // if (ran_unif < Gamma_rate) {
+            //   Gamma_q_curr = Gamma_q_prop;
+            //   accept_Gamma_q(q)++;
+            // }
+            // Gamma(q) = Gamma_q_curr;
+          }
+        } else {
+          new_idx = arma::shuffle(orig_idx);
+          for (unsigned int v = 0; v < nn_minus; v++) {
+            // r_curr = r(0, new_idx(v));
+            r_curr = r(0, v);
+            // R_q_curr = put_upper_tri(r.row(0), false);
+            // R_q_curr.diag().ones();
+            // Sigma_q_curr = arma::inv_sympd(R_q_curr.t() * R_q_curr);
+            // Gamma_q_curr = cov2cor_rcpp(Sigma_q_curr);
+            Gamma_q_curr = Rcpp::as<arma::mat>(Gamma(0));
+
+            r_prop = Rcpp::rnorm(1, r_curr, sigma_r_prop)(0);
+            // r_prop = Rcpp::rnorm(1, r_curr, sd_multplier*rho_r(v)*sqrt(cov_r(v)))(0);
+            r_prop_vec = r.row(0);
+            // r_prop_vec(0, new_idx(v)) = r_prop;
+            r_prop_vec(0, v) = r_prop;
+            R_q_prop = put_upper_tri(r_prop_vec, false);
+            R_q_prop.diag().ones();
+            Sigma_q_prop = arma::inv_sympd(R_q_prop.t() * R_q_prop);
+            Gamma_q_prop = cov2cor_rcpp(Sigma_q_prop);
+
+            target_r_curr = r_logpost(Gamma_q_curr, x_imp_arma);
+            target_r_prop = r_logpost(Gamma_q_prop, x_imp_arma);
+
+            r_A = target_r_prop - target_r_curr;
+            r_B = 0;
+            r_rate = exp(r_A + r_B);
+            ran_unif = R::runif(0.0, 1.0);
+            if (ran_unif < r_rate) {
+              // r(0, new_idx(v)) = r_prop;
+              r(0, v) = r_prop;
+              Gamma_q_curr = Gamma_q_prop;
+              accept_r_q(0, v)++;
+              accept_Gamma_q(0)++;
+            }
+            Gamma(0) = Gamma_q_curr;
+
+            ar_r_single_vec(v, niter) = fmin(r_rate, 1);
+          }
+        }
+      } else if (Gamma_update == "JointR") {
+        if (nGamma > 1) {
+          Rprintf("STILL TO DO!\n");
+          x2t_split = split_nm(x_imp, trt);
+          for (unsigned q = 0; q < n_trt; q++) {
+            x_q = Rcpp::as<arma::mat>(x2t_split[q]);
+            // Gamma_q_curr = Rcpp::as<arma::mat>(Gamma(q));
+            // Gamma_q_prop = rlkj_arma(M, eta_prop);
+
+            // target_Gamma_curr = Gamma_logpost(Gamma_q_curr, x_q, eta_prior);
+            // target_Gamma_prop = Gamma_logpost(Gamma_q_prop, x_q, eta_prior);
+            // Gamma_A = target_Gamma_prop - target_Gamma_curr;
+            // Gamma_B = dlkj_arma(Gamma_q_curr, eta_prop, true) - dlkj_arma(Gamma_q_prop, eta_prop, true);
+            // Gamma_rate = exp(Gamma_A + Gamma_B);
+            // ran_unif = R::runif(0.0, 1.0);
+            // if (ran_unif < Gamma_rate) {
+            //   Gamma_q_curr = Gamma_q_prop;
+            //   accept_Gamma_q(q)++;
+            // }
+            // Gamma(q) = Gamma_q_curr;
+          }
+        } else {
+          // the difference with "DanaherSmith" is that here we propose all the r_ij elements jointly
+          r_curr_vec = r.row(0);
+          // R_q_curr = put_upper_tri(r_curr_vec, false);
+          // R_q_curr.diag().ones();
+          // Sigma_q_curr = arma::inv_sympd(R_q_curr.t() * R_q_curr);
+          // Gamma_q_curr = cov2cor_rcpp(Sigma_q_curr);
+          Gamma_q_curr = Rcpp::as<arma::mat>(Gamma(0));
+
+          r_prop_vec = arma::trans(arma::vectorise(rmvt_arma(1, arma::trans(r_curr_vec), pow(sd_multplier*rho_r_vec, 2)*cov_r_vec, 7)));
+          R_q_prop = put_upper_tri(r_prop_vec, false);
+          R_q_prop.diag().ones();
+          Sigma_q_prop = arma::inv_sympd(R_q_prop.t() * R_q_prop);
+          Gamma_q_prop = cov2cor_rcpp(Sigma_q_prop);
+
+          target_r_curr = r_logpost(Gamma_q_curr, x_imp_arma);
+          target_r_prop = r_logpost(Gamma_q_prop, x_imp_arma);
+
+          r_A = target_r_prop - target_r_curr;
+          r_B = 0;
+          r_rate = exp(r_A + r_B);
+          ran_unif = R::runif(0.0, 1.0);
+          if (ran_unif < r_rate) {
+            r.row(0) = r_prop_vec;
+            Gamma(0) = Gamma_q_prop;
+            accept_Gamma_q(0)++;
+          }
+
+          ar_r_vec_vec(niter) = fmin(r_rate, 1);
+        }
       } else {
-        error("the specified update method for the Gamma parameter is not available. use either 'IMH', 'PX-RPMH' or 'Talhouketal'.");
+        error("the specified update method for the Gamma parameter is not available. use either 'Danaher-Smith', 'IMH', 'JointR', 'PX-RPMH' or 'Talhouketal'.");
       }
     }
     D_chain(arma::span(0), arma::span::all, arma::span(niter)) = arma::diagvec(D);
     Gamma_chain.slice(niter) = list_mat(Gamma);
+    r_chain.slice(niter) = r;
     x_chain.slice(niter) = Rcpp::as<arma::mat>(x);
 
     // updating d (pooled treatment effects across trials)
@@ -533,12 +712,12 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
       Rprintf("Sigma_M_prop\n");
       Sigma_M_prop = make_positive_definite(Sigma_M_prop);
     }
-    target_Sigma_M_prop = Sigma_M_logpost(d, delta_arma, Sigma_M_prop, trt, baseline, narms_study, sigma_r);
-    target_Sigma_M_curr = Sigma_M_logpost(d, delta_arma, Sigma_M_curr, trt, baseline, narms_study, sigma_r);
+    target_Sigma_M_prop = Sigma_M_logpost(d, delta_arma, Sigma_M_prop, trt, baseline, narms_study, sigma_b);
+    target_Sigma_M_curr = Sigma_M_logpost(d, delta_arma, Sigma_M_curr, trt, baseline, narms_study, sigma_b);
     Sigma_M_A = target_Sigma_M_prop - target_Sigma_M_curr;
     // Sigma_M_B dovrebbe essere la differenza della proposal distribution, ma
     // e' simmetrica, quindi sparisce; la prior invece e' gia' dentro la target
-    Sigma_M_B = 0.0; //dlogchol_arma(Sigma_M_prop, sigma_r, true) - dlogchol_arma(Sigma_M_curr, sigma_r, true);
+    Sigma_M_B = 0.0; //dlogchol_arma(Sigma_M_prop, sigma_b, true) - dlogchol_arma(Sigma_M_curr, sigma_b, true);
     Sigma_M_rate = exp(Sigma_M_A + Sigma_M_B);
     ran_unif = R::runif(0.0, 1.0);
     if (ran_unif < Sigma_M_rate) {
@@ -585,6 +764,59 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
         }
       }
 
+      // R (elements of Cholesky decomposition of Gamma) proposal parameters
+      if (Gamma_update == "JointR") {
+        if (nGamma > 1) {
+          Rprintf("STILL TO DO!\n");
+        } else {
+          if (fabs(ar_r_vec(0) - tar) > tol) {
+            theta_r_vec = r_chain.slices(niter - every + 1, niter);
+            theta_r_vec_reshaped = cube_to_mat(theta_r_vec, false, ref_trt);
+            if (adapt_k == 0) {
+              // means by columns
+              mu_r_vec = arma::vectorise(arma::mean(theta_r_vec_reshaped, 0));
+            }
+            ar_r_vec(1) = arma::as_scalar(arma::mean(ar_r_vec_vec.subvec(niter - every + 1, niter)));
+            prop_r = rwmh_adapt(theta_r_vec_reshaped, mu_r_vec, rho_r_vec, cov_r_vec, ar_r_vec, alpha, beta, gamma, tar, adapt_k, false, 4, false);
+            rho_r_vec = Rcpp::as<double>(prop_r["rho"]);
+            cov_r_vec = Rcpp::as<arma::mat>(prop_r["covariance"]);
+            if (!is_positive_definite(cov_r_vec, 602)) {
+              Rprintf("cov_r_vec\n");
+              cov_r_vec = make_positive_definite(cov_r_vec);
+            }
+            mu_r_vec = Rcpp::as<arma::vec>(prop_r["mu"]);
+            ar_r_vec(0) = Rcpp::as<double>(prop_r["ar"]);
+          }
+        }
+      } else if (Gamma_update == "DanaherSmith") {
+        // if (nGamma > 1) {
+        //   Rprintf("STILL TO DO!\n");
+        // } else {
+        //   for (unsigned int v = 0; v < nn_minus; v++) {
+        //     if (fabs(ar_r(v, 0) - tar) > tol) {
+        //       theta_r = r_chain.subcube(0, v, niter - every + 1, 0, v, niter);
+        //       theta_r_reshaped = cube_to_mat(theta_r, false, ref_trt);
+        //       if (adapt_k == 0) {
+        //         // means by columns
+        //         mu_r(v) = arma::as_scalar(arma::mean(theta_r_reshaped, 0));
+        //       }
+        //       ar_r(v, 1) = arma::as_scalar(arma::mean(ar_r_single_vec.submat(v, niter - every + 1, v, niter), 1));
+        //       mu_r_arma(0) = mu_r(v);
+        //       cov_r_arma(0, 0) = cov_r(v);
+        //       prop_r = rwmh_adapt(theta_r_reshaped, mu_r_arma, arma::as_scalar(rho_r(v)), cov_r_arma, arma::trans(ar_r.row(v)), alpha, beta, gamma, tar, adapt_k, false, 4, false);
+        //       rho_r(v) = Rcpp::as<double>(prop_r["rho"]);
+        //       cov_r(v) = arma::as_scalar(Rcpp::as<arma::mat>(prop_r["covariance"]));
+        //       if (cov_r(v) <= 0) {
+        //         Rprintf("cov_r(%d)\n", v + 1);
+        //         // cov_r(v) = make_positive_definite(cov_r(v));
+        //       }
+        //       mu_r(v) = arma::as_scalar(Rcpp::as<arma::vec>(prop_r["mu"]));
+        //       ar_r(v, 0) = Rcpp::as<double>(prop_r["ar"]);
+        //     }
+        //   }
+        // }
+      }
+
       // d proposal parameters
       if (fabs(ar_d(0) - tar) > tol) {
         theta_d = d_chain.slices(niter - every + 1, niter);
@@ -629,11 +861,11 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
 
     // calculate the loglikelihood, logprior and logposterior
     // loglik(niter) = nc_loglik(y_imp, n_imp, x_imp, trt, mu, delta, Gamma); // c'e' il problema degli indicatori nella augmented likelihood
-    // logprior(niter) = nc_logprior(mu, mu_sigma, d, d_sigma, Sigma_M, sigma_r, ref_trt);
+    // logprior(niter) = nc_logprior(mu, mu_sigma, d, d_sigma, Sigma_M, sigma_b, ref_trt);
 
     // print the information
     if ((((niter + 1) % print_every) == 0) && verbose) {
-      Rprintf("   iter. %d/%d ==> d: %1.3f - Gamma: %1.3f - mu/delta: %1.3f - Sigma_M: %1.3f\n", (niter + 1), totiter, accept_d/(static_cast<double>(totiter)), arma::mean(accept_Gamma_q)/(static_cast<double>(totiter)), accept_mu_delta/(static_cast<double>(totiter*n_study*M)), accept_Sigma_M/(static_cast<double>(totiter)));
+      Rprintf("   iter. %d/%d ==> d: %1.3f - Gamma: %1.3f - mu/delta: %1.3f - Sigma_M: %1.3f\n", (niter + 1), totiter, accept_d/(static_cast<double>(totiter)), arma::mean(accept_Gamma_q)/(static_cast<double>(totiter*nn_minus)), accept_mu_delta/(static_cast<double>(totiter*n_study*M)), accept_Sigma_M/(static_cast<double>(totiter)));
     }
 
     niter++;
@@ -654,6 +886,7 @@ Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, co
                             Rcpp::Named("d") = d_chain,
                             Rcpp::Named("Sigma") = Sigma_M_chain,
                             Rcpp::Named("Gamma") = Gamma_chain,
+                            Rcpp::Named("r") = r_chain,
                             Rcpp::Named("x") = x_chain,
                             Rcpp::Named("x_unadj") = x_chain,
                             Rcpp::Named("loglik") = loglik,

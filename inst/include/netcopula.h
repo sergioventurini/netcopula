@@ -33,6 +33,8 @@ Rcpp::NumericMatrix param_long(const Rcpp::NumericMatrix& prm_wide, const Rcpp::
 Rcpp::NumericMatrix param_wide(const Rcpp::NumericMatrix& prm_long, const Rcpp::IntegerVector& narms, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& baseline);
 arma::mat list_mat(const Rcpp::List& X);
 arma::mat diag_tri(const arma::mat& A);
+arma::rowvec get_upper_tri(const arma::mat& A, const bool& main);
+arma::mat put_upper_tri(const arma::rowvec& a, const bool& main);
 arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref);
 arma::vec mat_to_vec(const arma::mat& X, const bool& is_d, const int& ref);
 arma::mat vec_to_mat(const arma::vec& x, const int& nc, const bool& is_d, const int& ref);
@@ -46,6 +48,7 @@ bool is_singular(const arma::mat& A);
 arma::vec ols_coef(const double& xmin, const double& xmax, const Rcpp::List& args, const bool& delta_par);
 double ols_pred(const arma::vec& coef, const double& x);
 arma::mat cov2cor_rcpp(const arma::mat& V);
+arma::mat spearman_mcmc(const arma::cube& Gamma_chain, const double& n, const double& M);
 
 // DISTRIBUTION FUNCTIONS -----------------------------------------------------
 arma::vec dmvn_arma(const arma::mat& x, const arma::vec& mean, const arma::mat& sigma, const  bool& logd);
@@ -78,6 +81,7 @@ int indic_a_b(const double& y_ikm, const int& n_ikm, const double& x_ikm, const 
 Rcpp::NumericMatrix x_imputed(const Rcpp::NumericMatrix& x, const Rcpp::List& Gamma, const Rcpp::IntegerVector& trt);
 Rcpp::NumericMatrix n_imputed(const Rcpp::NumericMatrix& n_data);Rcpp::NumericMatrix y_imputed(const Rcpp::NumericMatrix& y, const Rcpp::NumericMatrix& x_imp, const Rcpp::IntegerVector& narms, const Rcpp::NumericMatrix& mu, const Rcpp::NumericMatrix& delta, const Rcpp::NumericMatrix& n_imp);
 double Gamma_logpost(const arma::mat& Gamma, const arma::mat& x, const double& eta);
+double r_logpost(const arma::mat& Gamma, const arma::mat& x);
 double logpost(const double& mu, const double& delta, const double& y, const double& n, const double& w, const double& gamma, const double& eps, const double& eps_ab);
 double mudelta_logpost(const arma::vec& mudelta, const arma::mat& delta_arma, const arma::mat& y, const arma::mat& n, const arma::mat& x, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& study, const Rcpp::IntegerVector& narms, const arma::mat& d, const arma::mat& Sigma_M, const Rcpp::List& Gamma, const int& m, const double& mu_sigma, const double& eps, const double& eps_ab);
 double mudelta_logpost2(const arma::vec& mudelta, const arma::mat& delta_arma, const arma::mat& y, const arma::mat& n, const arma::mat& x, const Rcpp::IntegerVector& baseline, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& study, const Rcpp::IntegerVector& narms, const arma::mat& d, const arma::mat& Sigma_M, const Rcpp::List& Gamma, const int& i, const int& m, const double& mu_sigma, const double& eps, const double& eps_ab);

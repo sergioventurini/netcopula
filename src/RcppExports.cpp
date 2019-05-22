@@ -482,6 +482,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// r_logpost
+double r_logpost(const arma::mat& Gamma, const arma::mat& x);
+RcppExport SEXP _netcopula_r_logpost(SEXP GammaSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type Gamma(GammaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(r_logpost(Gamma, x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // nc_mcmc_mh_new2
 Rcpp::List nc_mcmc_mh_new2(const Rcpp::RObject& data, const Rcpp::List& init, const int& totiter, const Rcpp::List& prior, const Rcpp::List& prop, const Rcpp::List& tuning, const Rcpp::List& adapt, const bool& verbose);
 RcppExport SEXP _netcopula_nc_mcmc_mh_new2(SEXP dataSEXP, SEXP initSEXP, SEXP totiterSEXP, SEXP priorSEXP, SEXP propSEXP, SEXP tuningSEXP, SEXP adaptSEXP, SEXP verboseSEXP) {
@@ -1087,6 +1099,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_upper_tri
+arma::rowvec get_upper_tri(const arma::mat& A, const bool& main);
+RcppExport SEXP _netcopula_get_upper_tri(SEXP ASEXP, SEXP mainSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const bool& >::type main(mainSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_upper_tri(A, main));
+    return rcpp_result_gen;
+END_RCPP
+}
+// put_upper_tri
+arma::mat put_upper_tri(const arma::rowvec& a, const bool& main);
+RcppExport SEXP _netcopula_put_upper_tri(SEXP aSEXP, SEXP mainSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::rowvec& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type main(mainSEXP);
+    rcpp_result_gen = Rcpp::wrap(put_upper_tri(a, main));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cube_to_mat
 arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref);
 RcppExport SEXP _netcopula_cube_to_mat(SEXP XSEXP, SEXP is_dSEXP, SEXP refSEXP) {
@@ -1243,6 +1279,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// spearman_mcmc
+arma::mat spearman_mcmc(const arma::cube& Gamma_chain, const double& n, const double& M);
+RcppExport SEXP _netcopula_spearman_mcmc(SEXP Gamma_chainSEXP, SEXP nSEXP, SEXP MSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::cube& >::type Gamma_chain(Gamma_chainSEXP);
+    Rcpp::traits::input_parameter< const double& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double& >::type M(MSEXP);
+    rcpp_result_gen = Rcpp::wrap(spearman_mcmc(Gamma_chain, n, M));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_netcopula_qnorm_boost", (DL_FUNC) &_netcopula_qnorm_boost, 4},
@@ -1278,6 +1327,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_netcopula_mudelta_logpost", (DL_FUNC) &_netcopula_mudelta_logpost, 16},
     {"_netcopula_nc_mcmc_mh_new", (DL_FUNC) &_netcopula_nc_mcmc_mh_new, 8},
     {"_netcopula_mudelta_logpost2", (DL_FUNC) &_netcopula_mudelta_logpost2, 17},
+    {"_netcopula_r_logpost", (DL_FUNC) &_netcopula_r_logpost, 2},
     {"_netcopula_nc_mcmc_mh_new2", (DL_FUNC) &_netcopula_nc_mcmc_mh_new2, 8},
     {"_netcopula_nc_loglik", (DL_FUNC) &_netcopula_nc_loglik, 7},
     {"_netcopula_indic_a_b", (DL_FUNC) &_netcopula_indic_a_b, 5},
@@ -1320,6 +1370,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_netcopula_param_wide", (DL_FUNC) &_netcopula_param_wide, 4},
     {"_netcopula_list_mat", (DL_FUNC) &_netcopula_list_mat, 1},
     {"_netcopula_diag_tri", (DL_FUNC) &_netcopula_diag_tri, 1},
+    {"_netcopula_get_upper_tri", (DL_FUNC) &_netcopula_get_upper_tri, 2},
+    {"_netcopula_put_upper_tri", (DL_FUNC) &_netcopula_put_upper_tri, 2},
     {"_netcopula_cube_to_mat", (DL_FUNC) &_netcopula_cube_to_mat, 3},
     {"_netcopula_mat_to_vec", (DL_FUNC) &_netcopula_mat_to_vec, 3},
     {"_netcopula_vec_to_mat", (DL_FUNC) &_netcopula_vec_to_mat, 4},
@@ -1333,6 +1385,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_netcopula_ols_coef", (DL_FUNC) &_netcopula_ols_coef, 4},
     {"_netcopula_ols_pred", (DL_FUNC) &_netcopula_ols_pred, 2},
     {"_netcopula_cov2cor_rcpp", (DL_FUNC) &_netcopula_cov2cor_rcpp, 1},
+    {"_netcopula_spearman_mcmc", (DL_FUNC) &_netcopula_spearman_mcmc, 3},
     {NULL, NULL, 0}
 };
 

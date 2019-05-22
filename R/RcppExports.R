@@ -837,6 +837,25 @@ mudelta_logpost2 <- function(mudelta, delta_arma, y, n, x, baseline, trt, study,
 #'
 #' Evaluation of the log-likelihood.
 #'
+#' @param nc_data pippo
+#' @param x pippo
+#' @param mu pippo
+#' @param delta pippo
+#' @param Gamma pippo
+#'
+#' @return A length-one numeric vector.
+#' @export
+#'
+#' @examples
+#' # nothing for now!
+r_logpost <- function(Gamma, x) {
+    .Call('_netcopula_r_logpost', PACKAGE = 'netcopula', Gamma, x)
+}
+
+#' Log-likelihood of copula based model for a multivariate NMA.
+#'
+#' Evaluation of the log-likelihood.
+#'
 #' @param data pippo
 #' @param init pippo
 #' @param totiter pippo
@@ -1278,6 +1297,16 @@ diag_tri <- function(A) {
 }
 
 #' @export
+get_upper_tri <- function(A, main) {
+    .Call('_netcopula_get_upper_tri', PACKAGE = 'netcopula', A, main)
+}
+
+#' @export
+put_upper_tri <- function(a, main) {
+    .Call('_netcopula_put_upper_tri', PACKAGE = 'netcopula', a, main)
+}
+
+#' @export
 cube_to_mat <- function(X, is_d, ref) {
     .Call('_netcopula_cube_to_mat', PACKAGE = 'netcopula', X, is_d, ref)
 }
@@ -1340,5 +1369,10 @@ ols_pred <- function(coef, x) {
 #' @export
 cov2cor_rcpp <- function(V) {
     .Call('_netcopula_cov2cor_rcpp', PACKAGE = 'netcopula', V)
+}
+
+#' @export
+spearman_mcmc <- function(Gamma_chain, n, M) {
+    .Call('_netcopula_spearman_mcmc', PACKAGE = 'netcopula', Gamma_chain, n, M)
 }
 

@@ -315,6 +315,48 @@ arma::mat diag_tri(const arma::mat& A) {
 
 //' @export
 // [[Rcpp::export]]
+arma::rowvec get_upper_tri(const arma::mat& A, const bool& main) {
+  int M = A.n_rows, count = 0, out_dim;
+  if (main) {
+    out_dim = M*(M + 1)/2;
+  } else {
+    out_dim = M*(M - 1)/2;
+  }
+  arma::rowvec out(out_dim);
+
+  for (unsigned int i = 0; i < M; i++) {
+    for (unsigned int j = (i + !main); j < M; j++) {
+      out(count) = A(i, j);
+      count++;
+    }
+  }
+
+  return out;
+}
+
+//' @export
+// [[Rcpp::export]]
+arma::mat put_upper_tri(const arma::rowvec& a, const bool& main) {
+  int count = 0, m = a.n_elem, M = 0;
+  if (main) {
+    M = (-1 + sqrt(1 + 8*m))/2;
+  } else {
+    M = (1 + sqrt(1 + 8*m))/2;
+  }
+  arma::mat out(M, M, arma::fill::zeros);
+
+  for (unsigned int i = 0; i < M; i++) {
+    for (unsigned int j = (i + !main); j < M; j++) {
+      out(i, j) = a(count);
+      count++;
+    }
+  }
+
+  return out;
+}
+
+//' @export
+// [[Rcpp::export]]
 arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref) {
   int nr = X.n_rows, nc = X.n_cols, ns = X.n_slices, nc_out = (nr - 1)*nc, count = 0;
   if (!is_d) {
@@ -565,4 +607,51 @@ arma::mat cov2cor_rcpp(const arma::mat& V) {
   R.diag().ones();
 
   return R;
+}
+
+//' @export
+// [[Rcpp::export]]
+arma::mat spearman_mcmc(const arma::cube& Gamma_chain, const double& n, const double& M) {
+  // this code assumes that Gamma_chain only contains one Gamma matrix (i.e. q = 1)
+  if (M == 1) {
+      Rcpp::stop("Spearman's correlations can be estimated only when the number of outcomes is greater than one.");
+  }
+
+  int niter = Gamma_chain.n_slices, count = 0;
+  arma::mat Gamma_tmp, X_it(n, M), Gamma_it(M, M, arma::fill::ones), U_it(n, M);
+  arma::vec zero_vec(M, arma::fill::zeros);
+  arma::mat rho(M, M, arma::fill::zeros);
+
+  for (unsigned int it = 0; it < niter; it++) {
+    Gamma_tmp = Gamma_chain.slice(it);
+    for (unsigned int j = 0; j < (M - 1); j++) {
+      for (unsigned int i = (j + 1); i < M; i++) {
+        Gamma_it(i, j) = Gamma_tmp(0, count);
+        Gamma_it(j, i) = Gamma_it(i, j);
+        count++;
+      }
+    }
+    X_it = rmvn_arma(n, zero_vec, Gamma_it);
+    for (unsigned int i = 0; i < n; i++) {
+      for (unsigned int m = 0; m < M; m++) {
+        U_it(i, m) = R::pnorm(X_it(i, m), 0.0, 1.0, true, false);
+      }
+    }
+    for (unsigned int m = 0; m < (M - 1); m++) {
+      for (unsigned int k = (m + 1); k < M; k++) {
+        rho(m, k) += arma::dot(U_it.col(m), U_it.col(k));
+      }
+    }
+    count = 0;
+  }
+
+  for (unsigned int m = 0; m < (M - 1); m++) {
+    for (unsigned int k = (m + 1); k < M; k++) {
+      rho(m, k) = 12*rho(m, k)/(niter*n) - 3;
+      rho(k, m) = rho(m, k);
+    }
+  }
+  rho.diag().ones();
+
+  return rho;
 }

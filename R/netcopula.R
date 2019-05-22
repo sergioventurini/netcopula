@@ -50,7 +50,7 @@ NULL
 #' @seealso
 #' \code{\link{nc_data-class}},
 #' \code{\link{nc_mcmc}}
-nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
+nc_init <- function(data, prm_init, random_start = TRUE, init = NULL, prm_prior = NULL, prm_prop = NULL, tuning = NULL, adaptation = NULL) {
   if (!random_start & is.null(init)) {
     stop("either choose 'random_start = TRUE' or provide some starting values.")
   }
@@ -124,13 +124,35 @@ nc_init <- function(data, prm_init, random_start = TRUE, init = NULL) {
       D <- list()
       for (q in 1:prm_init$nGamma) {
         if (prm_init$nGamma == n_trt) {
-          D[[q]] <- as.matrix(diag(as.matrix(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2)))))
+          if (M > 1) {
+            D[[q]] <- as.matrix(diag(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2))))
+          } else {
+            D[[q]] <- as.matrix(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2)))
+          }
         } else if (prm_init$nGamma == 1) {
-          D[[q]] <- as.matrix(diag(as.matrix(sqrt(1/colSums(x^2)))))
+          if (M > 1) {
+            D[[q]] <- as.matrix(diag(sqrt(1/colSums(x^2))))
+          } else {
+            D[[q]] <- as.matrix(sqrt(1/colSums(x^2)))
+          }
         }
       }
 
       x[is.na(y)] <- NA # sets NA in the x matrix
+    } else if (!is.list(init)) {
+      if (init == "univariate") {
+        adaptation_uni <- adaptation
+        adaptation_uni$maxiter <- 160
+        start_vals <- init_univariate(data = data, burnin = 8000, nsim = 2000, nthin = 10, prm_prior = prm_prior, prm_prop = prm_prop, prm_init = prm_init, tuning = tuning, adaptation = adaptation_uni, verbose = FALSE)
+
+        mu <- start_vals$mu
+        delta <- start_vals$delta
+        d <- start_vals$d
+        Sigma_M <- start_vals$Sigma_M
+        Gamma <- start_vals$Gamma
+        D <- start_vals$D
+        x <- start_vals$x
+      }
     } else {
       mu <- init$mu
       delta <- init$delta
@@ -227,11 +249,6 @@ netcopula_old <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prio
     prm_init <- prm_prior
   }
   nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
-  mu <- nc_start$mu
-  delta <- nc_start$delta
-  d <- nc_start$d
-  Sigma <- nc_start$Sigma
-  Gamma <- nc_start$Gamma
 
   if (verbose) cat("done!\n")
 
@@ -374,11 +391,6 @@ netcopula <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prior, p
     prm_init <- prm_prior
   }
   nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
-  mu <- nc_start$mu
-  delta <- nc_start$delta
-  d <- nc_start$d
-  Sigma <- nc_start$Sigma
-  Gamma <- nc_start$Gamma
 
   if (verbose) cat("done!\n")
 
@@ -520,12 +532,13 @@ netcopula_new <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prio
   if (is.null(prm_init)) {
     prm_init <- prm_prior
   }
-  nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
-  mu <- nc_start$mu
-  delta <- nc_start$delta
-  d <- nc_start$d
-  Sigma <- nc_start$Sigma
-  Gamma <- nc_start$Gamma
+  if (!is.list(init) & !is.null(init)) {
+    if (init == "univariate") {
+      nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init, prm_prior = prm_prior, prm_prop = prm_prop, tuning = tuning, adaptation = adaptation)
+    }
+  } else {
+    nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
+  }
 
   if (verbose) cat("done!\n")
 
@@ -565,6 +578,150 @@ netcopula_new <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prio
     d = as.array(res[["d"]]),
     Sigma = as.mcmc(res[["Sigma"]]),
     Gamma = as.array(res[["Gamma"]]),
+    r = as.array(res[["r"]]),
+    x = as.array(res[["x"]]),
+    x_unadj = as.array(res[["x_unadj"]]),
+    # a = as.array(res[["a"]]),
+    # b = as.array(res[["b"]]),
+    # D = as.array(res[["D"]]),
+    # S_q = as.array(res[["S_q"]]),
+    # Sigma_q_prop = as.array(res[["Sigma_q_prop"]]),
+    # rho_mu = as.array(res[["rho_mu"]]),
+    # cov_mu = as.array(res[["cov_mu"]]),
+    # ar_mu_vec = as.array(res[["ar_mu_vec"]]),
+    # mu_rate = as.array(res[["mu_rate"]]),
+    # mu_prop = as.array(res[["mu_prop"]]),
+    # tp_mu = as.array(res[["tp_mu"]]),
+    # delta_prop = as.array(res[["delta_prop"]]),
+    accept = as.list(res[["accept"]]),
+    dens = list(loglik = as.numeric(res[["loglik"]]), logprior = as.numeric(res[["logprior"]]), logpost = as.numeric(res[["logpost"]])),
+    control = list(burnin = burnin, nsim = nsim, nthin = nthin, prm_prop = prm_prop, prm_prior = prm_prior),
+    dim = list(n_study = n, n_outcomes = M, n_datapoints = n_datapoints, n_treatments = slot(data, "n_treatments"), ref_trt = data@ref_trt),
+    data = data,
+    call = match.call()
+  )
+
+  return(out)
+}
+
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' @param data Object of class \code{nc_data} containing the data to analyze.
+#' @param burnin Length one integer vector providing the number of MCMC burnin
+#' iterations.
+#' @param nsim Length one integer vector providing the number of MCMC
+#' iterations.
+#' @param nthin Length one integer vector providing the thinning interval.
+#' @param prm_prior Named list of parameters for the proposal distributions of
+#' the \eqn{Z} latent positions and \eqn{\alpha} parameters; the elements'
+#' names must be \code{"z"} and \code{"alpha"} and both need to be a single
+#' number representing the standard deviations of the normal proposal
+#' distributions for each \eqn{z_{ih}^{g}}{z_ih^g} and \eqn{\alpha_g}
+#' respectively.
+#' @param prm_prop Named list of hyperparameters for the prior distributions
+#' of the \eqn{\sigma^2} and \eqn{\lambda} parameters; the elements' names
+#' must be \code{"sigma2"} and \code{"lambda"} with the first one a two-sized
+#' vector containing the \eqn{\sigma^2} prior hyperparameters and the second
+#' element a vector providing the \eqn{\lambda} hyperparameters.
+#' @param random_start Length-one logical vector; if \code{TRUE} (default), it
+#' allows the algorithm to start from a random starting point.
+#' @param init Named list providing user-defined starting values. If provided,
+#' it overrides the value given for \code{random_start}.
+#' @param tuning Named list of tuning parameters (see details).
+#' @param adaptation Named list of adaptation parameters (see details).
+#' @param verbose Length-one logical vector; if \code{TRUE}, messages
+#' informing about the progress of the computations will be printed.
+#'
+#' @return \code{netcopula_uni} returns an object of class \code{\link{nc_mcmc}}.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # netcopula_uni(...)
+#' }
+#'
+#' @references
+#' Venturini, S. and Graziani, R. (2016), "A Bayesian Copula Based Model for
+#' Multivariate Network Meta-Analysis". Technical report.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#'
+#' @seealso
+#' \code{\link{nc_data-class}},
+#' \code{\link{nc_mcmc}}
+netcopula_uni <- function(data, burnin = 10000, nsim = 5000, nthin = 1, prm_prior, prm_prop = NULL, prm_init, random_start = TRUE, init = NULL, tuning, adaptation, verbose = FALSE, mu_delta_mh = TRUE) {
+  if (class(data) != "nc_data") {
+    stop("the data argument must be a 'nc_data' object; see the help of the 'nc_data_create()' function.")
+  }
+  if (adaptation$maxiter > (burnin + nsim)/adaptation$every) {
+    stop("the 'maxiter' adaptation parameter is too large.")
+  }
+  if (adaptation$miniter > adaptation$maxiter) {
+    stop("the 'miniter' adaptation parameter must be smaller than or equal to 'maxiter'.")
+  }
+  if (adaptation$alpha < 0 | adaptation$alpha > 1 |
+    adaptation$beta < 0 | adaptation$beta > 1 |
+    adaptation$gamma < 0 | adaptation$gamma > 1 |
+    adaptation$tar < 0 | adaptation$tar > 1) {
+    stop("the 'alpha', 'beta', 'gamma' and 'tar' adaptation parameters must be in [0, 1].")
+  }
+  if (adaptation$tol <= 0) {
+    stop("the 'tol' adaptation parameter must be positive.")
+  }
+
+  n <- slot(data, "n_study")
+  M <- slot(data, "n_outcomes")
+  n_datapoints <- slot(data, "n_datapoints")
+  tot_iter <- burnin + nsim
+
+  if (verbose) cat("Initialization of the algorithm...")
+
+  if (is.null(prm_init)) {
+    prm_init <- prm_prior
+  }
+  nc_start <- nc_init(data = data, prm_init = prm_init, random_start = random_start, init = init)
+
+  if (verbose) cat("done!\n")
+
+  # start iteration
+  if (verbose) cat("Running the MCMC simulation...\n")
+
+  if (mu_delta_mh) {
+    res <- nc_mcmc_mh_new2(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  } else {
+    # TO DO: alla fine eliminare questa possibilita'
+    res <- nc_mcmc_opt(
+      data = data,
+      init = nc_start,
+      totiter = tot_iter,
+      prior = prm_prior,
+      prop = prm_prop,
+      tuning = tuning,
+      adapt = adaptation,
+      verbose = verbose
+    )
+  }
+
+  if (verbose) cat("done!\n")
+
+  out <- new("nc_mcmc",
+    mu = as.array(res[["mu"]]),
+    delta = as.array(res[["delta"]]),
+    d = as.array(res[["d"]]),
+    Sigma = as.mcmc(res[["Sigma"]]),
+    Gamma = as.array(res[["Gamma"]]),
+    r = as.array(res[["r"]]),
     x = as.array(res[["x"]]),
     x_unadj = as.array(res[["x_unadj"]]),
     # a = as.array(res[["a"]]),
@@ -972,4 +1129,119 @@ delta_logpost_quad <- function(delta, varargs) {
   x <- c(1, delta, delta^2)
 
   return(sum(coef*x))
+}
+
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' Estimation of copula based models for multivariate network meta-analysis.
+#'
+#' @param data Object of class \code{nc_data} containing the data to analyze.
+#' @param prm_init Named list of parameters for the proposal distributions of
+#' the \eqn{Z} latent positions and \eqn{\alpha} parameters; the elements'
+#' names must be \code{"z"} and \code{"alpha"} and both need to be a single
+#' number representing the standard deviations of the normal proposal
+#' distributions for each \eqn{z_{ih}^{g}}{z_ih^g} and \eqn{\alpha_g}
+#' respectively.
+#' @param random_start Length-one logical vector; if \code{TRUE} (default), it
+#' allows the algorithm to start from a random starting point.
+#' @param init Named list providing user-defined starting values. If provided,
+#' it overrides the value given for \code{random_start}.
+#'
+#' @return \code{init_univariate} returns an object of class \code{\link{nc_mcmc}}.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # init_univariate(...)
+#' }
+#'
+#' @references
+#' Venturini, S. and Graziani, R. (2016), "A Bayesian Copula Based Model for
+#' Multivariate Network Meta-Analysis". Technical report.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#'
+#' @seealso
+#' \code{\link{nc_data-class}},
+#' \code{\link{nc_mcmc}}
+init_univariate <- function(data, burnin, nsim, nthin, prm_prior, prm_prop, prm_init, tuning, adaptation, verbose) {
+  M <- data@n_outcomes
+  n_study <- data@n_study
+  n_datapoints <- data@n_datapoints
+  n_treatments <- data@n_treatments
+  ref_trt <- data@ref_trt
+  eps <- .001
+
+  res_uni <- list()
+  mu <- matrix(NA, nrow = n_study, ncol = M)
+  delta <- x <- matrix(NA, nrow = n_datapoints, ncol = M)
+  d <- matrix(NA, nrow = n_treatments, ncol = M)
+  Sigma_M <- matrix(0, nrow = M, ncol = M)
+  x_all <- array(NA, dim = c(n_datapoints, M, burnin + nsim))
+  y <- matrix(NA, nrow = n_datapoints, ncol = M)
+
+  data_tmp <- data@study_data
+  for (m in 1:M) {
+    data_m <- data_tmp[, c(2:6, 6 + m, 9 + m)]
+    colnames(data_m)[c(6, 7)] <- c("n1", "y1")
+    nc_data <- nc_data_create("binary", n_study, 1, n_datapoints, n_treatments, NULL, data_m, ref_trt)
+    
+    # MCMC simulation
+    res_uni[[m]] <- netcopula_uni(nc_data, burnin = burnin, nsim = nsim, nthin = nthin, prm_prior, prm_prop, prm_init, tuning = tuning, adaptation = adaptation, verbose = verbose, mu_delta_mh = TRUE, random_start = TRUE, init = NULL)
+
+    mu[, m] <- apply(drop(res_uni[[m]]@mu), 1, mean)
+    delta[, m] <- apply(drop(res_uni[[m]]@delta), 1, mean)
+    d[, m] <- apply(drop(res_uni[[m]]@d), 1, mean)
+    Sigma_M[m, m] <- mean(drop(res_uni[[m]]@Sigma))
+
+    mu_ikm <- res_uni[[m]]@mu
+    delta_ikm <- drop(res_uni[[m]]@delta)
+    mu_ikm <- apply(mu_ikm, 3, param_long, nc_data@study_id$narms, FALSE)
+    theta_ikm <- mu_ikm + delta_ikm
+    p_ikm <- apply(theta_ikm, 2, expit_rcpp)
+    n_ik <- nc_data@study_data$n1
+    y_ik <- nc_data@study_data$y1
+    y[, m] <- y_ik
+    phi_ikm <- x_ikm <- matrix(NA, nrow = n_datapoints, ncol = burnin + nsim)
+    for (ik in 1:n_datapoints) {
+      if (!is.na(y_ik[ik])) {
+        phi_ikm[ik, ] <- pbinom(y_ik[ik], size = n_ik[ik], prob = p_ikm[ik, ])
+        phi_ikm[ik, ][phi_ikm[ik, ] == 1] <- 1 - eps
+        phi_ikm[ik, ][phi_ikm[ik, ] == 0] <- eps
+        x_ikm[ik, ] <- qnorm(phi_ikm[ik, ])
+      } else {
+        x_ikm[ik, ] <- NA
+      }
+    }
+    x_all[, m, ] <- x_ikm
+  }
+  Corr_M <- diag(n_outcomes)
+  Corr_M[lower.tri(Corr_M)] <- Corr_M[upper.tri(Corr_M)] <- rep(0.5, M)
+  Sigma_M <- Sigma_M^0.5 %*% Corr_M %*% Sigma_M^0.5
+
+  x <- apply(x_all, c(1, 2), mean, na.rm = TRUE)
+  x[is.na(y)] <- NA # sets NA in the x matrix
+
+  Gamma <- D <- list()
+  for (q in 1:prm_init$nGamma) {
+    if (prm_init$nGamma == n_trt) {
+      if (M > 1) {
+        Gamma[[q]] <- cor(x[data@study_data[, "trt"] == q, ])
+        D[[q]] <- as.matrix(diag(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2, na.rm = TRUE))))
+      } else {
+        Gamma[[q]] <- as.matrix(1)
+        D[[q]] <- as.matrix(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2, na.rm = TRUE)))
+      }
+    } else if (prm_init$nGamma == 1) {
+      if (M > 1) {
+        Gamma[[q]] <- cor(x)
+        D[[q]] <- as.matrix(diag(sqrt(1/colSums(x^2, na.rm = TRUE))))
+      } else {
+        Gamma[[q]] <- as.matrix(1)
+        D[[q]] <- as.matrix(sqrt(1/colSums(x^2, na.rm = TRUE)))
+      }
+    }
+  }
+
+  return(list(mu = mu, delta = delta, d = d, Sigma_M = Sigma_M, Gamma = Gamma, D = D, x = x))
 }

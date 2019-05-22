@@ -1257,9 +1257,7 @@ Rcpp::List rwmh_adapt(const arma::mat& theta, const arma::vec& mu, const double&
   double ar_new = (1 - alpha)*ar(0) + alpha*ar(1);
   double beta_k = beta/pow(k + 1, gamma);
   double rho_new = rho*exp(beta_k*(R::qnorm(ar_new/2.0, 0.0, 1.0, 1, 0) - R::qnorm(tar/2.0, 0.0, 1.0, 1, 0)));
-  // if (ISNAN(rho_new)) {
-  //   Rprintf("what = %d - ar(0) = %4.5f - ar(1) = %4.5f - ar_new = %4.5f - beta_k = %4.5f - rho_new = %4.5f\n", what, ar(0), ar(1), ar_new, beta_k, rho_new);
-  // }
+
   arma::mat theta_k;
   if (iter_cols) {
     theta_k.set_size(arma::size(theta));

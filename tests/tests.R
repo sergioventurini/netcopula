@@ -1884,3 +1884,16 @@ for (i_iter in 1:max_iter) {
 
 corr_x <- apply(x_all, 3, cor)
 matrix(rowMeans(corr_x), nrow = 3, ncol = 3)
+
+###
+
+set.seed(101)
+
+M <- 3
+eta <- 1
+C <- rlkj_arma(M, eta)
+
+x1 <- rmvn_arma(n, rep(0, 3), C)
+x2 <- rmvn_arma(n, rep(0, 3), C)
+gausscopdens_logpost(x1, C) - gausscopdens_logpost(x2, C)
+r_logpost(C, x1) - r_logpost(C, x2)
