@@ -11,6 +11,8 @@ dlkj_arma(R, eta, logd = FALSE)
 
 \item{eta}{Length-one numeric vector representing the parameter of the
 distribution.}
+
+\item{logd}{Boolean length-one vector; if TRUE the log density is returned.}
 }
 \value{
 A length-one numeric vector.

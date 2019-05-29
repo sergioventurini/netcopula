@@ -3,6 +3,7 @@
 \docType{class}
 \name{nc_mcmc-class}
 \alias{nc_mcmc-class}
+\alias{nc_mcmc}
 \title{An S4 class to represent a MCMC run for a model in the \code{netcopula}
 package.}
 \description{
@@ -27,6 +28,10 @@ the MCMC algorithm for the study-specific baseline effects.}
 
 \item{\code{Gamma}}{An object of class \code{array}; posterior draws from
 the MCMC algorithm for the copula correlation matrix.}
+
+\item{\code{r}}{An object of class \code{array}; posterior draws from
+the MCMC algorithm for the copula correlation matrix elements (used only
+if Gamma.update is set to 'JointR').}
 
 \item{\code{d}}{An object of class \code{array}; posterior draws from
 the MCMC algorithm for the pooled effects (across trials) of each

@@ -228,6 +228,7 @@ arma::mat rinvwish_arma(const int& nu, const arma::mat& S) {
 //' @param R A numeric matrix that representing the correlation matrix.
 //' @param eta Length-one numeric vector representing the parameter of the
 //' distribution.
+//' @param logd Boolean length-one vector; if TRUE the log density is returned.
 //'
 //' @return A length-one numeric vector.
 //' @export
@@ -609,6 +610,7 @@ Rcpp::NumericVector dtruncnorm_rcpp(const Rcpp::NumericVector& x, const double& 
 //' @param sigma_r Length-one numeric vector providing the standard deviation
 //' of the underlying normal distributions used to generate the Cholesky
 //' factors.
+//' @param logd Boolean length-one vector; if TRUE the log density is returned.
 //'
 //' @return A length-one numeric vector.
 //' @export
@@ -862,24 +864,8 @@ arma::vec rinvgamma_rcpp(const int& n, const double& alpha, const double& beta) 
 //'
 //' @return A length-one numeric vector.
 //' @export
-//'
-//' @examples
-//' u <- rep(0.1, 3)
-//' Gamma <- c(.3, .5, .2)
-//' gausscopdens(u, Gamma)
-//' 
-//' Gamma <- .3
-//' len <- 100
-//' u1 <- u2 <- seq(.01, .99, length.out = len)
-//' dens <- matrix(NA, nrow = len, ncol = len)
-//' for (i in 1:len) {
-//'   for (j in 1:len) {
-//'     dens[i, j] <- gausscopdens(c(u1[i], u2[j]), Gamma)
-//'   }
-//' }
-//' persp(u1, u2, dens, theta = 120, phi = 25)
 // [[Rcpp::export]]
-double gausscopdens(const Rcpp::NumericVector& u, const arma::mat& Gamma, const bool& is_u, const bool& logd = false) {
+double gausscopdens(const Rcpp::NumericVector& u, const arma::mat& Gamma, const bool& is_u = false, const bool& logd = false) {
   int M = u.size();
 
   arma::vec x(M);

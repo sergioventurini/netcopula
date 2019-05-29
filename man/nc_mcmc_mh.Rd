@@ -12,6 +12,8 @@ nc_mcmc_mh(data, init, totiter, prior, prop, tuning, adapt, verbose)
 
 \item{init}{internal data structure}
 
+\item{totiter}{internal data structure}
+
 \item{prior}{internal data structure}
 
 \item{prop}{internal data structure}
@@ -21,8 +23,6 @@ nc_mcmc_mh(data, init, totiter, prior, prop, tuning, adapt, verbose)
 \item{adapt}{internal data structure}
 
 \item{verbose}{internal data structure}
-
-\item{totite}{internal data structure}
 }
 \description{
 For internal use only.

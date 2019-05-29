@@ -33,11 +33,12 @@ corresponding slot description for more details).}
 \item{study_data}{A data frame containing the outcome data for each study
 (see the corresponding slot description for more details).}
 
+\item{ref_trt}{A length-one integer vector providing the reference treatment
+(which should not be confused with the baseline treatment for each study).}
+
 \item{object}{An object of class \code{\link{nc_data}}.}
 
 \item{\ldots}{Optional arguments to the function in its next call.}
-
-\item{object}{An object of class \code{\link{nc_data}}.}
 }
 \description{
 An S4 class to represent a set of data for use in the \code{netcopula}
@@ -86,9 +87,6 @@ Its first five columns must be named \code{study}, \code{arm}, \code{trt},
 match with those in the same column of the \code{study_id} slot. Outcomes
 must occupy the last \code{n_outcomes} columns. Finally, the columns right
 before the outcomes must provide the sample sizes for each study.}
-
-\item{\code{ref_trt}}{A length-one integer vector providing the reference treatment
-(which should not be confused with the baseline treatment for each study).}
 
 \item{\code{ref_trt}}{A length-one integer vector providing the reference treatment
 (which should not be confused with the baseline treatment for each study).}

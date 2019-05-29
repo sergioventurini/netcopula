@@ -30,6 +30,8 @@ copula correlation matrices.}
 
 \item{eta_prior}{A length-one numeric vector representing the Gaussian
 copula correlation matrices prior parameter.}
+
+\item{prior}{A named list of prior hyperparameters.}
 }
 \value{
 A list with the prior hyperparameters as components.

@@ -23,6 +23,7 @@
 #'   copula correlation matrices.
 #' @param eta_prior A length-one numeric vector representing the Gaussian
 #'   copula correlation matrices prior parameter.
+#' @param prior A named list of prior hyperparameters.
 #' @return A list with the prior hyperparameters as components.
 #' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
 #' @seealso \code{\link{netcopula}()}

@@ -19,11 +19,13 @@
 #'   iterations (usually to be discarded).
 #' @param thin A length-one numeric vector for the number of iterations between
 #'   consecutive draws.
-#' @param z.prop A length-one numeric vector providing the standard deviation of the
-#'   proposal distribution for the jump in the individual latent space
-#'   position.
-#' @param alpha.prop A length-one numeric vector providing the standard deviation
-#'   of the proposal distribution for the jump in the individual random effect value.
+#' @param Gamma.update A length-one character vector providing the algorithm to
+#'   use for updating the Gaussian copula correlation matrices.
+#' @param eta.prop A length-one numeric vector providing the parameter of the
+#'   proposal distribution for the Gaussian copula correlation matrices.
+#' @param sigma.r.prop A length-one numeric vector providing the parameter of the
+#'   proposal distribution for the Gaussian copula correlation matrices (used only
+#'   when Gamma.update is set to 'DanaherSmith').
 #' @param random.start A length-one logical vector. If \code{TRUE} the starting
 #'   values are drawn randomly, otherwise.
 #' @param store.burnin A logical scalar. If \code{TRUE}, the samples from the
@@ -34,16 +36,7 @@
 #' @return A named list with the control options as components.
 #' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
 #' @seealso \code{\link{netcopula}()}
-#' @keywords model based clustering
-#' @examples
-#' \dontrun{
-#' data(simdiss, package = "netcopula")
-#' # Shorter run than default.
-#' sim.fit <- netcopula(simdiss,
-#'   control = nc_control(burnin = 1000, nsim = 2000, thin = 5, verbose = TRUE))
-#' }
-#' 
-#' @export
+#' @keywords NMA
 nc_control <- function(nsim = 50000,
                        burnin = 100000,
                        thin = 1,

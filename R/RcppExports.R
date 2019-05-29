@@ -141,6 +141,7 @@ rinvwish_arma <- function(nu, S) {
 #' @param R A numeric matrix that representing the correlation matrix.
 #' @param eta Length-one numeric vector representing the parameter of the
 #' distribution.
+#' @param logd Boolean length-one vector; if TRUE the log density is returned.
 #'
 #' @return A length-one numeric vector.
 #' @export
@@ -292,6 +293,7 @@ dtruncnorm_rcpp <- function(x, a, b, mean, sd) {
 #' @param sigma_r Length-one numeric vector providing the standard deviation
 #' of the underlying normal distributions used to generate the Cholesky
 #' factors.
+#' @param logd Boolean length-one vector; if TRUE the log density is returned.
 #'
 #' @return A length-one numeric vector.
 #' @export
@@ -469,23 +471,7 @@ rinvgamma_rcpp <- function(n, alpha, beta) {
 #'
 #' @return A length-one numeric vector.
 #' @export
-#'
-#' @examples
-#' u <- rep(0.1, 3)
-#' Gamma <- c(.3, .5, .2)
-#' gausscopdens(u, Gamma)
-#' 
-#' Gamma <- .3
-#' len <- 100
-#' u1 <- u2 <- seq(.01, .99, length.out = len)
-#' dens <- matrix(NA, nrow = len, ncol = len)
-#' for (i in 1:len) {
-#'   for (j in 1:len) {
-#'     dens[i, j] <- gausscopdens(c(u1[i], u2[j]), Gamma)
-#'   }
-#' }
-#' persp(u1, u2, dens, theta = 120, phi = 25)
-gausscopdens <- function(u, Gamma, is_u, logd = FALSE) {
+gausscopdens <- function(u, Gamma, is_u = FALSE, logd = FALSE) {
     .Call('_netcopula_gausscopdens', PACKAGE = 'netcopula', u, Gamma, is_u, logd)
 }
 
@@ -505,7 +491,7 @@ field_to_matrix <- function(x) {
 #'
 #' @param data internal data structure
 #' @param init internal data structure
-#' @param totite internal data structure
+#' @param totiter internal data structure
 #' @param prior internal data structure
 #' @param prop internal data structure
 #' @param tuning internal data structure
@@ -519,32 +505,82 @@ nc_mcmc_mh <- function(data, init, totiter, prior, prop, tuning, adapt, verbose)
     .Call('_netcopula_nc_mcmc_mh', PACKAGE = 'netcopula', data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param Sigma_M internal data structure
+#' @param n internal data structure
+#'
+#' @aliases Sigma_block
+#'
 Sigma_block <- function(Sigma_M, n) {
     .Call('_netcopula_Sigma_block', PACKAGE = 'netcopula', Sigma_M, n)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param p internal data structure
+#'
+#' @aliases logit_rcpp
+#'
 logit_rcpp <- function(p) {
     .Call('_netcopula_logit_rcpp', PACKAGE = 'netcopula', p)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param x internal data structure
+#'
+#' @aliases expit_rcpp
+#'
 expit_rcpp <- function(x) {
     .Call('_netcopula_expit_rcpp', PACKAGE = 'netcopula', x)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param prm_wide internal data structure
+#' @param narms internal data structure
+#' @param rowindex internal data structure
+#'
+#' @aliases param_long
+#'
 param_long <- function(prm_wide, narms, rowindex) {
     .Call('_netcopula_param_long', PACKAGE = 'netcopula', prm_wide, narms, rowindex)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param prm_long internal data structure
+#' @param narms internal data structure
+#' @param trt internal data structure
+#' @param baseline internal data structure
+#'
+#' @aliases param_wide
+#'
 param_wide <- function(prm_long, narms, trt, baseline) {
     .Call('_netcopula_param_wide', PACKAGE = 'netcopula', prm_long, narms, trt, baseline)
 }
 
-#' @export
+#' Internal functions.
+#'
+#' For internal use only.
+#'
+#' @param Gamma_chain internal data structure
+#' @param n internal data structure
+#' @param M internal data structure
+#'
+#' @aliases spearman_mcmc
+#'
 spearman_mcmc <- function(Gamma_chain, n, M) {
     .Call('_netcopula_spearman_mcmc', PACKAGE = 'netcopula', Gamma_chain, n, M)
 }

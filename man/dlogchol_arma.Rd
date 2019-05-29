@@ -12,6 +12,8 @@ dlogchol_arma(A, sigma_r, logd = FALSE)
 \item{sigma_r}{Length-one numeric vector providing the standard deviation
 of the underlying normal distributions used to generate the Cholesky
 factors.}
+
+\item{logd}{Boolean length-one vector; if TRUE the log density is returned.}
 }
 \value{
 A length-one numeric vector.

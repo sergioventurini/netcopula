@@ -137,7 +137,7 @@ setClass(Class = "nc_data",
 #' corresponding slot description for more details).
 #' @param study_data A data frame containing the outcome data for each study
 #' (see the corresponding slot description for more details).
-#' @slot ref_trt A length-one integer vector providing the reference treatment
+#' @param ref_trt A length-one integer vector providing the reference treatment
 #' (which should not be confused with the baseline treatment for each study).
 #' @param \ldots Optional arguments to the function in its next call.
 #'
@@ -219,8 +219,6 @@ setMethod("show", signature(object = "nc_data"),
 
 #' @describeIn nc_data Provide a summary of a \code{\link{nc_data}} class
 #' instance.
-#'
-#' @param object An object of class \code{\link{nc_data}}.
 #'
 #' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
 #'
@@ -335,6 +333,9 @@ setMethod("summary", signature(object = "nc_data"),
 #'   the MCMC algorithm for the study-specific baseline effects.
 #' @slot Gamma An object of class \code{array}; posterior draws from
 #'   the MCMC algorithm for the copula correlation matrix.
+#' @slot r An object of class \code{array}; posterior draws from
+#'   the MCMC algorithm for the copula correlation matrix elements (used only
+#'   if Gamma.update is set to 'JointR').
 #' @slot d An object of class \code{array}; posterior draws from
 #'   the MCMC algorithm for the pooled effects (across trials) of each
 #'   treatment relative to the baseline.
@@ -358,7 +359,7 @@ setMethod("summary", signature(object = "nc_data"),
 #'
 #' @name nc_mcmc-class
 #' @rdname nc_mcmc-class
-#' @aliases nc_mcmc-class
+#' @aliases nc_mcmc
 #'
 #' @exportClass nc_mcmc
 #'

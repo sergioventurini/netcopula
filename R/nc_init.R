@@ -59,7 +59,7 @@ init_univariate <- function(data, burnin, nsim, nthin, prm_prior, prm_prop, prm_
     }
     x_all[, m, ] <- x_ikm
   }
-  Corr_M <- diag(n_outcomes)
+  Corr_M <- diag(M)
   Corr_M[lower.tri(Corr_M)] <- Corr_M[upper.tri(Corr_M)] <- rep(0.5, M)
   Sigma_M <- Sigma_M^0.5 %*% Corr_M %*% Sigma_M^0.5
 
@@ -68,7 +68,7 @@ init_univariate <- function(data, burnin, nsim, nthin, prm_prior, prm_prop, prm_
 
   Gamma <- D <- list()
   for (q in 1:prm_init$nGamma) {
-    if (prm_init$nGamma == n_trt) {
+    if (prm_init$nGamma == n_treatments) {
       if (M > 1) {
         Gamma[[q]] <- cor(x[data@study_data[, "trt"] == q, ])
         D[[q]] <- as.matrix(diag(sqrt(1/colSums(x[data@study_data[, "trt"] == q, ]^2, na.rm = TRUE))))

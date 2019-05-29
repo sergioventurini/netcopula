@@ -26,6 +26,16 @@ iterations (usually to be discarded).}
 \item{thin}{A length-one numeric vector for the number of iterations between
 consecutive draws.}
 
+\item{Gamma.update}{A length-one character vector providing the algorithm to
+use for updating the Gaussian copula correlation matrices.}
+
+\item{eta.prop}{A length-one numeric vector providing the parameter of the
+proposal distribution for the Gaussian copula correlation matrices.}
+
+\item{sigma.r.prop}{A length-one numeric vector providing the parameter of the
+proposal distribution for the Gaussian copula correlation matrices (used only
+when Gamma.update is set to 'DanaherSmith').}
+
 \item{random.start}{A length-one logical vector. If \code{TRUE} the starting
 values are drawn randomly, otherwise.}
 
@@ -36,13 +46,6 @@ burnin are also stored and returned.}
 printed out about the progress of the fitting.}
 
 \item{control}{A list of control options.}
-
-\item{z.prop}{A length-one numeric vector providing the standard deviation of the
-proposal distribution for the jump in the individual latent space
-position.}
-
-\item{alpha.prop}{A length-one numeric vector providing the standard deviation
-of the proposal distribution for the jump in the individual random effect value.}
 }
 \value{
 A named list with the control options as components.
@@ -61,21 +64,10 @@ A named list with the control options as components.
   \code{\link{netcopula}()}.
 }
 }
-\examples{
-\dontrun{
-data(simdiss, package = "netcopula")
-# Shorter run than default.
-sim.fit <- netcopula(simdiss,
-  control = nc_control(burnin = 1000, nsim = 2000, thin = 5, verbose = TRUE))
-}
-
-}
 \seealso{
 \code{\link{netcopula}()}
 }
 \author{
 Sergio Venturini \email{sergio.venturini@unibocconi.it}
 }
-\keyword{based}
-\keyword{clustering}
-\keyword{model}
+\keyword{NMA}

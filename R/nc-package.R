@@ -21,16 +21,9 @@
 #' @section \pkg{netcopula} classes:
 #' The \pkg{netcopula} package defines the following new classes:
 #' \itemize{
-#'   \item{\code{\link{netcopula_data}}: }{defines the data to use in a netcopula model.}
-#'   \item{\code{\link{netcopula_model}}: }{defines a netcopula model.}
-#'   \item{\code{\link{netcopula_fit}}: }{defines the results of a netcopula analysis
+#'   \item{\code{\link{nc_data}}: }{defines the data to use in a netcopula model.}
+#'   \item{\code{\link{nc_mcmc}}: }{defines the results of a netcopula analysis
 #'     for a single MCMC chain.}
-#'   \item{\code{\link{netcopula_fit_list}}: }{defines the results of a netcopula analysis
-#'     for multiple MCMC chains.}
-#'   \item{\code{\link{netcopula_ic}}: }{defines the results of the computation of
-#'     the information criterion for a netcopula analysis.}
-#'   \item{\code{\link{netcopula_config}}: }{defines the estimate of the latent
-#'     configuration for a netcopula analysis.}
 #' }
 #' The package includes \code{print}, \code{summary} and \code{plot} methods
 #'   for each one of these classes.
@@ -62,13 +55,13 @@
 #'   Package in \code{R}", Technical report.
 #'
 #' @useDynLib netcopula
-#' @import methods
-#' @import utils
 #' @import bayesplot
 #' @import coda
 #' @import ggplot2
 #' @import graphics
+#' @import methods
 #' @import stats
+#' @import utils
 NULL
 
 #' Home safety data

@@ -525,7 +525,7 @@ double r_logpost(const arma::mat& Gamma, const arma::mat& x) {
 //'
 //' @param data internal data structure
 //' @param init internal data structure
-//' @param totite internal data structure
+//' @param totiter internal data structure
 //' @param prior internal data structure
 //' @param prop internal data structure
 //' @param tuning internal data structure

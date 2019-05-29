@@ -18,7 +18,15 @@ arma::mat mat_block_diag(const arma::mat& A, const int& n) {
   return A_block;
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param Sigma_M internal data structure
+//' @param n internal data structure
+//'
+//' @aliases Sigma_block
+//'
 // [[Rcpp::export]]
 arma::mat Sigma_block(const arma::mat& Sigma_M, const int& n) {
   int M = Sigma_M.n_cols;
@@ -158,13 +166,27 @@ double expit_double(const double& x) {
   return 1/(1 + exp(-x));
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param p internal data structure
+//'
+//' @aliases logit_rcpp
+//'
 // [[Rcpp::export]]
 Rcpp::NumericVector logit_rcpp(Rcpp::NumericVector p) {
   return log(p/(1 - p));
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param x internal data structure
+//'
+//' @aliases expit_rcpp
+//'
 // [[Rcpp::export]]
 Rcpp::NumericVector expit_rcpp(Rcpp::NumericVector x) {
   return 1/(1 + exp(-x));
@@ -184,7 +206,16 @@ arma::vec nm_omit(const Rcpp::NumericMatrix& x, const int& rownum) {
   return y;
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param prm_wide internal data structure
+//' @param narms internal data structure
+//' @param rowindex internal data structure
+//'
+//' @aliases param_long
+//'
 // [[Rcpp::export]]
 Rcpp::NumericMatrix param_long(const Rcpp::NumericMatrix& prm_wide, const Rcpp::IntegerVector& narms, const bool& rowindex) {
   int n = narms.size(), M = prm_wide.ncol(), cumul = 0, cumul_arms = 1;
@@ -207,7 +238,17 @@ Rcpp::NumericMatrix param_long(const Rcpp::NumericMatrix& prm_wide, const Rcpp::
   return prm_long;
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param prm_long internal data structure
+//' @param narms internal data structure
+//' @param trt internal data structure
+//' @param baseline internal data structure
+//'
+//' @aliases param_wide
+//'
 // [[Rcpp::export]]
 Rcpp::NumericMatrix param_wide(const Rcpp::NumericMatrix& prm_long, const Rcpp::IntegerVector& narms, const Rcpp::IntegerVector& trt, const Rcpp::IntegerVector& baseline) {
   int n = narms.size(), ndata = prm_long.nrow(), M = prm_long.ncol(), cum = 0;
@@ -373,10 +414,6 @@ arma::vec Sigma_M_to_beta(const arma::mat& A) {
   int M = A.n_cols, nn = M*(M + 1)/2;
   
   arma::mat A_inv = arma::solve(A, arma::eye(M, M));
-  // if (!is_positive_definite(A_inv, 391)) {
-  //   Rprintf("Sigma_M_to_beta\n");
-  //   A_inv = make_positive_definite(A_inv);
-  // }
   arma::mat R = arma::chol(A_inv);
   R.diag() = arma::log(R.diag());
   arma::vec beta(nn);
@@ -416,9 +453,7 @@ bool is_correlation(const arma::mat& A) {
 bool is_positive_definite(const arma::mat& A, const int& line) {
   int d = A.n_rows;
 
-  // Rprintf("is_positive_definite_IN_%d\n", line);
   arma::vec eigval = arma::eig_sym(A);;
-  // Rprintf("is_positive_definite_OUT_%d\n", line);
   double tol = d*arma::max(arma::abs(eigval))*machine_eps;
 
   return arma::all(eigval > tol);
@@ -458,7 +493,16 @@ arma::mat cov2cor_rcpp(const arma::mat& V) {
   return R;
 }
 
-//' @export
+//' Internal functions.
+//'
+//' For internal use only.
+//'
+//' @param Gamma_chain internal data structure
+//' @param n internal data structure
+//' @param M internal data structure
+//'
+//' @aliases spearman_mcmc
+//'
 // [[Rcpp::export]]
 arma::mat spearman_mcmc(const arma::cube& Gamma_chain, const double& n, const double& M) {
   // this code assumes that Gamma_chain only contains one Gamma matrix (i.e. q = 1)

@@ -4,7 +4,7 @@
 \alias{gausscopdens}
 \title{Gaussian copula density evaluation.}
 \usage{
-gausscopdens(u, Gamma, is_u, logd = FALSE)
+gausscopdens(u, Gamma, is_u = FALSE, logd = FALSE)
 }
 \arguments{
 \item{u}{A numeric vector providing the point at which to evaluate the
@@ -24,20 +24,4 @@ A length-one numeric vector.
 }
 \description{
 Evaluates a Gaussian copula density.
-}
-\examples{
-u <- rep(0.1, 3)
-Gamma <- c(.3, .5, .2)
-gausscopdens(u, Gamma)
-
-Gamma <- .3
-len <- 100
-u1 <- u2 <- seq(.01, .99, length.out = len)
-dens <- matrix(NA, nrow = len, ncol = len)
-for (i in 1:len) {
-  for (j in 1:len) {
-    dens[i, j] <- gausscopdens(c(u1[i], u2[j]), Gamma)
-  }
-}
-persp(u1, u2, dens, theta = 120, phi = 25)
 }
