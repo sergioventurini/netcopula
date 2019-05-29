@@ -7,12 +7,12 @@
 rmvt_arma(n, mean, sigma, df)
 }
 \arguments{
-\item{n}{Numeric length-one vector providing the number of draws to
+\item{n}{A length-one numeric vector providing the number of draws to
 generate.}
 
-\item{mean}{Numeric vector containing the univariate means.}
+\item{mean}{A numeric vector containing the univariate means.}
 
-\item{sigma}{Numeric positive definite matrix representing the covariance
+\item{sigma}{A positive definite numeric matrix representing the covariance
 matrix of the distribution.}
 
 \item{df}{Integer length-one vector providing the number of degrees of
@@ -22,7 +22,7 @@ freedom.}
 A numeric matrix.
 }
 \description{
-Generate of multivariate t variates.
+Generation of multivariate t variates.
 }
 \examples{
 set.seed(123)
@@ -42,4 +42,3 @@ benchmark(mvtnorm::rmvt(n, sigma, df, mu),
 \references{
 \url{http://gallery.rcpp.org/articles/simulate-multivariate-normal/}
 }
-

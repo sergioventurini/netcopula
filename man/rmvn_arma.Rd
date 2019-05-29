@@ -7,19 +7,19 @@
 rmvn_arma(n, mean, sigma)
 }
 \arguments{
-\item{n}{Numeric length-one vector providing the number of draws to
+\item{n}{A length-one numeric vector providing the number of draws to
 generate.}
 
-\item{mean}{Numeric vector containing the univariate means.}
+\item{mean}{A numeric vector containing the univariate means.}
 
-\item{sigma}{Numeric positive definite matrix representing the covariance
+\item{sigma}{A positive definite numeric matrix representing the covariance
 matrix of the distribution.}
 }
 \value{
 A numeric matrix.
 }
 \description{
-Generate of multivariate normal variates.
+Generation of multivariate normal variates.
 }
 \examples{
 set.seed(123)
@@ -38,4 +38,3 @@ benchmark(mvtnorm::rmvnorm(n, mu, sigma),
 \references{
 \url{http://gallery.rcpp.org/articles/simulate-multivariate-normal/}
 }
-

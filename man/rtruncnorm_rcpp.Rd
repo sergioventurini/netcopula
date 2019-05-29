@@ -9,15 +9,15 @@ rtruncnorm_rcpp(n, a, b, mean, sd)
 \arguments{
 \item{n}{Length-one numeric vector representing the number of draws.}
 
-\item{a}{Numeric vector providing the lower bounds. These may be
+\item{a}{A numeric vector providing the lower bounds. These may be
 \code{-Inf}.}
 
-\item{b}{Numeric vector providing the upper bounds. These may be
+\item{b}{A numeric vector providing the upper bounds. These may be
 \code{Inf}.}
 
-\item{mean}{Numeric vector of means.}
+\item{mean}{A numeric vector of means.}
 
-\item{sd}{Numeric vector of standard deviations.}
+\item{sd}{A numeric vector of standard deviations.}
 }
 \value{
 A numeric vector.
@@ -51,4 +51,3 @@ and Statistics: Proceedings of the 23rd Symposium on the Interface, ed. E.
 Keramidas and S. Kaufman, pp. 571-8. Fairfax Station, VA: Interface
 Foundation of North America.
 }
-

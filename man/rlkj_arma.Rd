@@ -36,4 +36,3 @@ Lewandowski, D., Kurowicka, D., and Joe, H. (2009). Generating random
 correlation matrices based on vines and extended onion method. Journal of
 Multivariate Analysis, 100:1989-2001.
 }
-

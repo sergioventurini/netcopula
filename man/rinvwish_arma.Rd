@@ -38,4 +38,3 @@ benchmark(apply(rWishart(n, nu, S), 3, solve),
 \url{https://en.wikipedia.org/wiki/
 Wishart_distribution#Bartlett_decomposition}
 }
-

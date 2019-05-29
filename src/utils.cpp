@@ -7,36 +7,8 @@
 #include <Rmath.h>
 #include "netcopula.h"
 
-#define both_non_NA(a,b) (!ISNAN(a) && !ISNAN(b))
-
 // [[Rcpp::depends("RcppArmadillo")]]
 
-void tableC(int* counts, const int* x, int nelem, int ndistelem){
-  int* xtmp = new int[nelem];
-  for(int i = 0; i < nelem; i++){
-    xtmp[i] = x[i];
-  }
-  // R_isort(xtmp, nelem);
-  R_qsort_int(xtmp, 1, nelem);
-  
-  int xlead = 1;
-  counts[xlead - 1] = 0;
-  for(int i = 0; i < nelem; i++){
-    if(xtmp[i] != xlead){
-      xlead++;
-      counts[xlead - 1] = 0;
-    }
-    counts[xlead - 1]++;
-  }
-
-  delete[] xtmp;
-}
-
-// THE FOLLOWING FUNCTIONS ARE EXPORTED ONLY FOR CHECKING.
-// IN THE FINAL RELEASE THEY WILL NOT BE EXPORTED.
-
-//' @export
-// [[Rcpp::export]]
 arma::mat mat_block_diag(const arma::mat& A, const int& n) {
   int d = A.n_cols;
   arma::mat A_block(n*d, n*d, arma::fill::zeros);
@@ -61,8 +33,6 @@ arma::mat Sigma_block(const arma::mat& Sigma_M, const int& n) {
   return Sigma_b;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::NumericMatrix df_nm(const Rcpp::DataFrame& x, const Rcpp::IntegerVector& cols) {
   int nrows = x.nrows(), ncols = cols.size();
   Rcpp::NumericMatrix y(nrows, ncols);
@@ -72,8 +42,6 @@ Rcpp::NumericMatrix df_nm(const Rcpp::DataFrame& x, const Rcpp::IntegerVector& c
   return y;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::NumericVector nm_stack(const Rcpp::NumericMatrix& x) {
   int nr = x.nrow(), nc = x.ncol();
   Rcpp::NumericVector y(nr*nc);
@@ -85,8 +53,6 @@ Rcpp::NumericVector nm_stack(const Rcpp::NumericMatrix& x) {
   return y;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::NumericMatrix nv_unstack(const Rcpp::NumericVector& x, const int& nc) {
   int n = x.size(), nr = n/nc;
   Rcpp::NumericMatrix y(nr, nc);
@@ -98,14 +64,10 @@ Rcpp::NumericMatrix nv_unstack(const Rcpp::NumericVector& x, const int& nc) {
   return y;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::NumericVector nv_omit(const Rcpp::NumericVector& x) {
   return x[!is_na(x)];
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::uvec nv_na_index(const Rcpp::NumericVector& x, const int& dim, const bool& type) {
   int n = x.size(), cum = 0;
   Rcpp::LogicalVector x_na = is_na(x);
@@ -119,8 +81,6 @@ arma::uvec nv_na_index(const Rcpp::NumericVector& x, const int& dim, const bool&
   return y;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::NumericVector nv_miss_replace(const Rcpp::NumericVector& x, const arma::vec& miss, const arma::uvec& miss_i) {
   int n_miss = miss_i.n_elem;
   Rcpp::NumericVector y = x;
@@ -130,8 +90,6 @@ Rcpp::NumericVector nv_miss_replace(const Rcpp::NumericVector& x, const arma::ve
   return y;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::List split_iv(const Rcpp::IntegerVector& x, const Rcpp::IntegerVector& f) {
   if (f.size() <= 0) {
     Rcpp::stop("f must be a vector with at least one element.");
@@ -163,8 +121,6 @@ Rcpp::List split_iv(const Rcpp::IntegerVector& x, const Rcpp::IntegerVector& f) 
   return res;
 }
 
-//' @export
-// [[Rcpp::export]]
 Rcpp::List split_nm(const Rcpp::NumericMatrix& x, const Rcpp::IntegerVector& f) {
   if (f.size() <= 0) {
     Rcpp::stop("f must be a vector with at least one element.");
@@ -214,8 +170,6 @@ Rcpp::NumericVector expit_rcpp(Rcpp::NumericVector x) {
   return 1/(1 + exp(-x));
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::vec nm_omit(const Rcpp::NumericMatrix& x, const int& rownum) {
   int n_col = x.ncol(), cum = 0;
   arma::vec y(n_col);
@@ -271,8 +225,6 @@ Rcpp::NumericMatrix param_wide(const Rcpp::NumericMatrix& prm_long, const Rcpp::
   return prm_wide;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat list_mat(const Rcpp::List& X) {
   arma::mat tmp = Rcpp::as<arma::mat>(X(0));
   int nr = X.size(), M = tmp.n_rows, count = 0;
@@ -297,8 +249,6 @@ arma::mat list_mat(const Rcpp::List& X) {
   return Y;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat diag_tri(const arma::mat& A) {
   int M = A.n_rows, count = 0;
   arma::mat out(1, M*(M + 1)/2);
@@ -313,8 +263,6 @@ arma::mat diag_tri(const arma::mat& A) {
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::rowvec get_upper_tri(const arma::mat& A, const bool& main) {
   int M = A.n_rows, count = 0, out_dim;
   if (main) {
@@ -334,8 +282,6 @@ arma::rowvec get_upper_tri(const arma::mat& A, const bool& main) {
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat put_upper_tri(const arma::rowvec& a, const bool& main) {
   int count = 0, m = a.n_elem, M = 0;
   if (main) {
@@ -355,8 +301,6 @@ arma::mat put_upper_tri(const arma::rowvec& a, const bool& main) {
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref) {
   int nr = X.n_rows, nc = X.n_cols, ns = X.n_slices, nc_out = (nr - 1)*nc, count = 0;
   if (!is_d) {
@@ -387,8 +331,6 @@ arma::mat cube_to_mat(const arma::cube& X, const bool& is_d, const int& ref) {
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::vec mat_to_vec(const arma::mat& X, const bool& is_d, const int& ref) {
   int nr = X.n_rows, nc = X.n_cols, n_out = (nr - 1)*nc, count = 0;
   if (!is_d) {
@@ -412,8 +354,6 @@ arma::vec mat_to_vec(const arma::mat& X, const bool& is_d, const int& ref) {
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat vec_to_mat(const arma::vec& x, const int& nc, const bool& is_d, const int& ref) {
   int n = x.n_elem, nr_out = (n/nc);
   arma::mat out(nr_out, nc);
@@ -429,8 +369,6 @@ arma::mat vec_to_mat(const arma::vec& x, const int& nc, const bool& is_d, const 
   return out;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::vec Sigma_M_to_beta(const arma::mat& A) {
   int M = A.n_cols, nn = M*(M + 1)/2;
   
@@ -451,8 +389,6 @@ arma::vec Sigma_M_to_beta(const arma::mat& A) {
   return beta;
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat beta_to_Sigma_M(const arma::vec& beta, const int& M) {
   int position = 0;
   arma::mat ret = arma::zeros(M, M);  
@@ -467,22 +403,16 @@ arma::mat beta_to_Sigma_M(const arma::vec& beta, const int& M) {
   return (R_inv * arma::trans(R_inv));
 }
 
-//' @export
-// [[Rcpp::export]]
 bool is_symmetric(const arma::mat& A) {
   arma::umat Z = (A == arma::trans(A));
 
   return arma::all(arma::vectorise(Z) == 1);
 }
 
-//' @export
-// [[Rcpp::export]]
 bool is_correlation(const arma::mat& A) {
   return (arma::all(arma::diagvec(A) == 1) && is_positive_definite(A, 434));
 }
 
-//' @export
-// [[Rcpp::export]]
 bool is_positive_definite(const arma::mat& A, const int& line) {
   int d = A.n_rows;
 
@@ -494,8 +424,6 @@ bool is_positive_definite(const arma::mat& A, const int& line) {
   return arma::all(eigval > tol);
 }
 
-//' @export
-// [[Rcpp::export]]
 arma::mat make_positive_definite(const arma::mat& A) {
   // (from corpcor::make.positive.definite)
   // (see also sfsmisc::posdefify and Matrix::nearPD)
@@ -514,89 +442,10 @@ arma::mat make_positive_definite(const arma::mat& A) {
   return A + dA;
 }
 
-//' @export
-// [[Rcpp::export]]
 bool is_singular(const arma::mat& A) {
   return ((arma::det(A) == 0) ? true : false);
 }
 
-//' @export
-// [[Rcpp::export]]
-arma::vec ols_coef(const double& xmin, const double& xmax, const Rcpp::List& args, const bool& delta_par) {
-  int n_val = 1e+02, count = 0;
-  double step = (xmax - xmin)/static_cast<double>(n_val);
-  arma::vec x_grid(n_val + 1), lp(n_val + 1);
-  double mu = 0.0, delta = 0.0, tau = 0.0, eta = 0.0, y = 0.0, n = 0.0, w = 0.0, gamma = 0.0, mu_sigma = 0.0, eps = 0.0, eps_ab = 0.0;
-  arma::vec y_val(1);
-  arma::mat X(1, 3);
-  if (delta_par) {
-    mu = Rcpp::as<double>(args["mu"]);
-    tau = Rcpp::as<double>(args["tau"]);
-    eta = Rcpp::as<double>(args["eta"]);
-    y = Rcpp::as<double>(args["y"]);
-    n = Rcpp::as<double>(args["n"]);
-    w = Rcpp::as<double>(args["w"]);
-    gamma = Rcpp::as<double>(args["gamma"]);
-    eps = Rcpp::as<double>(args["eps"]);
-    eps_ab = Rcpp::as<double>(args["eps_ab"]);
-  } else {
-    delta = Rcpp::as<double>(args["delta"]);
-    y = Rcpp::as<double>(args["y"]);
-    n = Rcpp::as<double>(args["n"]);
-    w = Rcpp::as<double>(args["w"]);
-    gamma = Rcpp::as<double>(args["gamma"]);
-    mu_sigma = Rcpp::as<double>(args["mu_sigma"]);
-    eps = Rcpp::as<double>(args["eps"]);
-    eps_ab = Rcpp::as<double>(args["eps_ab"]);
-  }
-  for (unsigned int i = 0; i < (n_val + 1); i++) {
-    x_grid(i) = xmin + i*step;
-    if (delta_par) {
-      lp(i) = delta_logpost(x_grid(i), mu, tau, eta, y, n, w, gamma, eps, eps_ab);
-    } else {
-      // TODO: the definition of mu_logpost has changed (24/01/2018)
-      lp(i) = 0; //mu_logpost(x_grid(i), delta, y, n, w, gamma, mu_sigma, eps, eps_ab);
-    }
-    if (!ISNA(lp(i))) {
-      X.resize(count + 1, 3);
-      y_val.resize(count + 1);
-      X(count, 0) = 1;
-      X(count, 1) = x_grid(i);
-      X(count, 2) = pow(x_grid(i), 2);
-      y_val(count) = lp(i);
-      count++;
-    }
-  }
-
-  arma::vec coef(3);
-  if (count > 1) {
-    coef = arma::solve(X, y_val);
-  } else {
-    coef.fill(NA_REAL);
-  }
-
-  return coef;
-}
-
-//' @export
-// [[Rcpp::export]]
-double ols_pred(const arma::vec& coef, const double& x) {
-  arma::rowvec X(3);
-  X(0) = 1;
-  X(1) = x;
-  X(2) = pow(x, 2);
-
-  double pred = arma::as_scalar(X*coef);
-  if (ISNAN(pred)) {
-    coef.print();
-    X.print();
-  }
-
-  return pred;
-}
-
-//' @export
-// [[Rcpp::export]]
 arma::mat cov2cor_rcpp(const arma::mat& V) {
   int p = V.n_rows, d = V.n_cols;
   if (p != d) {
@@ -614,7 +463,7 @@ arma::mat cov2cor_rcpp(const arma::mat& V) {
 arma::mat spearman_mcmc(const arma::cube& Gamma_chain, const double& n, const double& M) {
   // this code assumes that Gamma_chain only contains one Gamma matrix (i.e. q = 1)
   if (M == 1) {
-      Rcpp::stop("Spearman's correlations can be estimated only when the number of outcomes is greater than one.");
+    Rcpp::stop("Spearman's correlations can be estimated only when the number of outcomes is greater than one.");
   }
 
   int niter = Gamma_chain.n_slices, count = 0;

@@ -41,4 +41,3 @@ for (i in 1:len) {
 }
 persp(u1, u2, dens, theta = 120, phi = 25)
 }
-

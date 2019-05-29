@@ -2,30 +2,28 @@
 % Please edit documentation in R/RcppExports.R
 \name{nc_mcmc_mh}
 \alias{nc_mcmc_mh}
-\title{Log-likelihood of copula based model for a multivariate NMA.}
+\alias{netcopula-internal}
+\title{Internal functions for MCMC simulation.}
 \usage{
 nc_mcmc_mh(data, init, totiter, prior, prop, tuning, adapt, verbose)
 }
 \arguments{
-\item{data}{pippo}
+\item{data}{internal data structure}
 
-\item{init}{pippo}
+\item{init}{internal data structure}
 
-\item{totiter}{pippo}
+\item{prior}{internal data structure}
 
-\item{prior}{pippo}
+\item{prop}{internal data structure}
 
-\item{prop}{pippo}
+\item{tuning}{internal data structure}
 
-\item{verbose}{pippo}
-}
-\value{
-A list containing the output of the MCMC simulation.
+\item{adapt}{internal data structure}
+
+\item{verbose}{internal data structure}
+
+\item{totite}{internal data structure}
 }
 \description{
-Evaluation of the log-likelihood.
+For internal use only.
 }
-\examples{
-# nothing for now!
-}
-

@@ -7,7 +7,7 @@
 dlkj_arma(R, eta, logd = FALSE)
 }
 \arguments{
-\item{R}{Numeric matrix that representing the correlation matrix.}
+\item{R}{A numeric matrix that representing the correlation matrix.}
 
 \item{eta}{Length-one numeric vector representing the parameter of the
 distribution.}
@@ -39,4 +39,3 @@ Lewandowski, D., Kurowicka, D., and Joe, H. (2009). Generating random
 correlation matrices based on vines and extended onion method. Journal of
 Multivariate Analysis, 100:1989-2001.
 }
-

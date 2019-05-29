@@ -7,18 +7,18 @@
 dtruncnorm_rcpp(x, a, b, mean, sd)
 }
 \arguments{
-\item{x}{Numeric vector containing the values at which to evaluate the
+\item{x}{A numeric vector containing the values at which to evaluate the
 density.}
 
-\item{a}{Numeric vector providing the lower bounds. These may be
+\item{a}{A numeric vector providing the lower bounds. These may be
 \code{-Inf}.}
 
-\item{b}{Numeric vector providing the upper bounds. These may be
+\item{b}{A numeric vector providing the upper bounds. These may be
 \code{Inf}.}
 
-\item{mean}{Numeric vector of means.}
+\item{mean}{A numeric vector of means.}
 
-\item{sd}{Numeric vector of standard deviations.}
+\item{sd}{A numeric vector of standard deviations.}
 }
 \value{
 A numeric vector.
@@ -46,4 +46,3 @@ n <- 20
 x <- rtruncnorm_rcpp(n, a, b, mean, sd)
 dtruncnorm_rcpp(x, a, b, mean, sd)
 }
-

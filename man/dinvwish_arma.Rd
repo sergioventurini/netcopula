@@ -7,7 +7,7 @@
 dinvwish_arma(IW, nu, S, logd = FALSE)
 }
 \arguments{
-\item{IW}{Numeric matrix at which to evaluate the density.}
+\item{IW}{A numeric matrix at which to evaluate the density.}
 
 \item{nu}{Integer length-one vector providing the number of degrees of
 freedom.}
@@ -38,4 +38,3 @@ benchmark(apply(X, 1, MCMCpack::diwish, nu, S),
           apply(X, 1, dinvwish_arma, nu, S, FALSE),
           order = "relative", replications = 100)[, 1:4]
 }
-

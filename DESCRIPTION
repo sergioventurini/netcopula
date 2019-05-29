@@ -1,21 +1,29 @@
 Package: netcopula
 Type: Package
-Title: Copula Based Models for Multivariate Network Meta-Analysis (NMA)
+Title: Copula-Based Model for Multivariate Network Meta-Analysis (NMA)
 Version: 0.1.0
-Date: 2016-05-01
+Date: 2019-06-01
 Authors@R: c(
-	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@unibocconi.it"),
+	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@sdabocconi.it"),
 	person("Rebecca", "Graziani", role=c("aut"), email = "rebecca.graziani@unibocconi.it"))
 Author: Sergio Venturini [aut, cre],
     Rebecca Graziani [aut]
-Maintainer: Sergio Venturini <sergio.venturini@unibocconi.it>
-Description: Methods for fitting a copula based model for multivariate network
+Maintainer: Sergio Venturini <sergio.venturini@sdabocconi.it>
+Description: Methods for fitting a copula-based model for multivariate network
     meta-analysis within a fully Bayesian framework. Currently, it includes methods
-    for binary data only.
-License: GPL (>= 2) | License
+    only for binary data.
+License: GPL (>= 2) | file LICENSE
 NeedsCompilation: yes
 Repository: CRAN
 LazyData: TRUE
+Imports:
+    abind,
+    bayesplot (>= 1.7.0),
+    coda (>= 0.19-2),
+    ggplot2 (>= 3.1.0),
+    ggrepel (>= 0.8.0),
+    graphics,
+    tools
 Suggests:
     bayesm,
     knitr,
@@ -26,13 +34,12 @@ Suggests:
     rbenchmark,
     testthat,
     truncnorm
-VignetteBuilder: knitr
 Depends:
-    mcmcplots,
     methods,
+    R (>= 3.5.0),
+    stats,
     utils
-Imports:
-    Rcpp (>= 0.12.4),
-    coda
-LinkingTo: Rcpp, RcppArmadillo, BH
-RoxygenNote: 5.0.1
+LinkingTo: Rcpp, RcppArmadillo
+BugReports: https://github.com/sergioventurini/netcopula/issues
+Encoding: UTF-8
+RoxygenNote: 6.1.1

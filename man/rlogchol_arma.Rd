@@ -30,4 +30,3 @@ all(eigen(Sigma)$values > 0)
 Sigma_sqrt <- solve(diag(diag(Sigma)))^0.5
 Sigma_sqrt \%*\% Sigma \%*\% Sigma_sqrt
 }
-

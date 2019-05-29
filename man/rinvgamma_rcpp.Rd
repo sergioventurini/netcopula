@@ -7,7 +7,7 @@
 rinvgamma_rcpp(n, alpha, beta)
 }
 \arguments{
-\item{n}{Numeric length-one vector providing the number of draws to
+\item{n}{A length-one numeric vector providing the number of draws to
 generate.}
 
 \item{alpha}{Inverse gamma shape parameter. Must be strictly positive.}
@@ -18,7 +18,7 @@ generate.}
 A numeric vector.
 }
 \description{
-Generate of inverse gamma variates.
+Generation of inverse gamma variates.
 }
 \examples{
 set.seed(123)
@@ -30,4 +30,3 @@ hist(x, breaks = 30, xlab = "x", freq = FALSE,
      main = "Inverse gamma variates")
 lines(x, dinvgamma_rcpp(x, alpha, beta))
 }
-

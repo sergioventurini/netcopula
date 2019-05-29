@@ -12,17 +12,14 @@ static const double t4 = 0.45;
 
 // [[Rcpp::depends("RcppArmadillo")]]
 
-// TO DO:
-//   1. add checks to all the functions below
-
 //' Multivariate normal density.
 //'
 //' Evaluate the multivariate normal density.
 //'
-//' @param x Numeric matrix whose rows represent the points at which to
+//' @param x A numeric matrix whose rows represent the points at which to
 //' evaluate the density.
-//' @param mean Numeric vector containing the univariate means.
-//' @param sigma Numeric positive definite matrix representing the covariance
+//' @param mean A numeric vector containing the univariate means.
+//' @param sigma A positive definite numeric matrix representing the covariance
 //' matrix of the distribution.
 //' @param logd Boolean length-one vector; if TRUE the log density is returned.
 //'
@@ -67,12 +64,12 @@ arma::vec dmvn_arma(const arma::mat& x, const arma::vec& mean, const arma::mat& 
 
 //' Multivariate normal variates generation.
 //'
-//' Generate of multivariate normal variates.
+//' Generation of multivariate normal variates.
 //'
-//' @param n Numeric length-one vector providing the number of draws to
+//' @param n A length-one numeric vector providing the number of draws to
 //' generate.
-//' @param mean Numeric vector containing the univariate means.
-//' @param sigma Numeric positive definite matrix representing the covariance
+//' @param mean A numeric vector containing the univariate means.
+//' @param sigma A positive definite numeric matrix representing the covariance
 //' matrix of the distribution.
 //'
 //' @return A numeric matrix.
@@ -114,7 +111,7 @@ arma::mat rmvn_arma(const int& n, const arma::vec& mean, const arma::mat& sigma)
 //'
 //' Evaluation of the inverse Wishart density.
 //'
-//' @param IW Numeric matrix at which to evaluate the density.
+//' @param IW A numeric matrix at which to evaluate the density.
 //' @param nu Integer length-one vector providing the number of degrees of
 //' freedom.
 //' @param S Symmetric, positive definite numeric matrix representing the
@@ -228,7 +225,7 @@ arma::mat rinvwish_arma(const int& nu, const arma::mat& S) {
 //' Compute the density function of a Lewandowski-Kurowicka-Joe distribution
 //' for a correlation matrix.
 //'
-//' @param R Numeric matrix that representing the correlation matrix.
+//' @param R A numeric matrix that representing the correlation matrix.
 //' @param eta Length-one numeric vector representing the parameter of the
 //' distribution.
 //'
@@ -490,12 +487,12 @@ static R_INLINE double r_truncnorm(double a, double b, double mean, double sd) {
 //' to \code{mean} and standard deviation equal to \code{sd}.
 //'
 //' @param n Length-one numeric vector representing the number of draws.
-//' @param a Numeric vector providing the lower bounds. These may be
+//' @param a A numeric vector providing the lower bounds. These may be
 //' \code{-Inf}.
-//' @param b Numeric vector providing the upper bounds. These may be
+//' @param b A numeric vector providing the upper bounds. These may be
 //' \code{Inf}.
-//' @param mean Numeric vector of means.
-//' @param sd Numeric vector of standard deviations.
+//' @param mean A numeric vector of means.
+//' @param sd A numeric vector of standard deviations.
 //'
 //' @return A numeric vector.
 //' @export
@@ -548,69 +545,17 @@ Rcpp::NumericVector rtruncnorm_rcpp(const int& n, const double& a, const double&
 
 //' The truncated univariate normal distribution.
 //'
-//' Generation of draws from a truncated normal distribution with mean equal
-//' to \code{mean} and standard deviation equal to \code{sd}.
-//'
-//' @param n Length-one numeric vector representing the number of draws.
-//' @param a Numeric vector providing the lower bounds. These may be
-//' \code{-Inf}.
-//' @param b Numeric vector providing the upper bounds. These may be
-//' \code{Inf}.
-//' @param mean Numeric vector of means.
-//' @param sd Numeric vector of standard deviations.
-//'
-//' @return A numeric vector.
-//' @export
-//'
-//' @references
-//' Robert, C. (1995). Simulation of Truncated Normal Variables. Statistics
-//' and Computing, 5, 121–125.
-//' 
-//' @details
-//' The values of \code{a}, \code{b}, \code{mean} and \code{sd} are recycled as
-//' needed.
-//'
-//' This function is a Rcpp port of the corresponding 
-//' \code{\link[bayesm]{rtrun}} function from the \code{bayesm}
-//' package.
-//' 
-//' @examples
-//' n <- 20
-//' a <- 0
-//' b <- Inf
-//' mean <- 0
-//' sd <- 1
-//' rng <- round(runif(1, 1, 10000))
-//' set.seed(rng)
-//' rtruncnorm2_rcpp(n, a, b, mean, sd)
-// [[Rcpp::export]]
-Rcpp::NumericVector rtruncnorm2_rcpp(const int& n, const double& a, const double& b, const double& mean, const double& sd) {
-  Rcpp::NumericVector ret(n);
-  
-  double FA = R::pnorm((a - mean)/sd, 0.0, 1.0, 1, 0);
-  double FB = R::pnorm((b - mean)/sd, 0.0, 1.0, 1, 0);
-  
-  for (unsigned int i = 0; i < n; i++) {
-    ret(i) = mean + sd*R::qnorm(R::runif(0.0, 1.0)*(FB - FA) + FA, 0.0, 1.0, 1, 0);
-    R_CheckUserInterrupt();
-  }
-
-  return ret;
-}
-
-//' The truncated univariate normal distribution.
-//'
 //' Density of a truncated normal distribution with mean equal to \code{mean}
 //' and standard deviation equal to \code{sd}.
 //'
-//' @param x Numeric vector containing the values at which to evaluate the
+//' @param x A numeric vector containing the values at which to evaluate the
 //' density.
-//' @param a Numeric vector providing the lower bounds. These may be
+//' @param a A numeric vector providing the lower bounds. These may be
 //' \code{-Inf}.
-//' @param b Numeric vector providing the upper bounds. These may be
+//' @param b A numeric vector providing the upper bounds. These may be
 //' \code{Inf}.
-//' @param mean Numeric vector of means.
-//' @param sd Numeric vector of standard deviations.
+//' @param mean A numeric vector of means.
+//' @param sd A numeric vector of standard deviations.
 //'
 //' @return A numeric vector.
 //' @export
@@ -660,7 +605,7 @@ Rcpp::NumericVector dtruncnorm_rcpp(const Rcpp::NumericVector& x, const double& 
 //' Evaluation of the prior distribution based on the log Cholesky
 //' factorization for a covariance matrix \eqn{\Sigma_M} .
 //'
-//' @param A Numeric matrix at which to evaluate the prior density.
+//' @param A A numeric matrix at which to evaluate the prior density.
 //' @param sigma_r Length-one numeric vector providing the standard deviation
 //' of the underlying normal distributions used to generate the Cholesky
 //' factors.
@@ -727,10 +672,10 @@ arma::mat rlogchol_arma(const int& M, const double& sigma_r) {
 //'
 //' Evaluate the multivariate t density.
 //'
-//' @param x Numeric matrix whose rows represent the points at which to
+//' @param x A numeric matrix whose rows represent the points at which to
 //' evaluate the density.
-//' @param mean Numeric vector containing the univariate means.
-//' @param sigma Numeric positive definite matrix representing the covariance
+//' @param mean A numeric vector containing the univariate means.
+//' @param sigma A positive definite numeric matrix representing the covariance
 //' matrix of the distribution.
 //' @param df Integer length-one vector providing the number of degrees of
 //' freedom.
@@ -782,12 +727,12 @@ Rcpp::NumericVector dmvt_arma(const arma::mat& x, const arma::vec& mean, const a
 
 //' Multivariate t variates generation.
 //'
-//' Generate of multivariate t variates.
+//' Generation of multivariate t variates.
 //'
-//' @param n Numeric length-one vector providing the number of draws to
+//' @param n A length-one numeric vector providing the number of draws to
 //' generate.
-//' @param mean Numeric vector containing the univariate means.
-//' @param sigma Numeric positive definite matrix representing the covariance
+//' @param mean A numeric vector containing the univariate means.
+//' @param sigma A positive definite numeric matrix representing the covariance
 //' matrix of the distribution.
 //' @param df Integer length-one vector providing the number of degrees of
 //' freedom.
@@ -826,170 +771,11 @@ arma::mat rmvt_arma(const int& n, const arma::vec& mean, const arma::mat& sigma,
   return t;
 }
 
-//' Matrix variate normal density.
-//'
-//' Evaluate the matrix variate normal density.
-//'
-//' @param X Numeric matrix at which to evaluate the density.
-//' @param M Numeric matrix containing the univariate means.
-//' @param U Numeric positive definite matrix representing the covariance
-//' matrix among the X rows.
-//' @param V Numeric positive definite matrix representing the covariance
-//' matrix among the X columns.
-//' @param logd Boolean length-one vector; if TRUE the log density is returned.
-//'
-//' @return A length-one numeric vector.
-//' @export
-//'
-//' @references
-//' \url{https://en.wikipedia.org/wiki/Matrix_normal_distribution}
-//' 
-//' @examples
-//' set.seed(123)
-//' n <- 10
-//' p <- 3
-//' x <- rnorm(n*p)
-//' X <- matrix(x, nrow = n, ncol = p)
-//' M <- matrix(0, nrow = n, ncol = p)
-//' U <- diag(n)
-//' V <- diag(p)
-//' dmatvn_arma(X, M, U, V)
-// [[Rcpp::export]]
-double dmatvn_arma(const arma::mat& X, const arma::mat& M, const arma::mat& U, const arma::mat& V, const bool& logd = false) {
-
-  arma::mat x = arma::trans(arma::vectorise(X));
-  arma::vec mean = arma::vectorise(M);
-  arma::mat sigma = arma::kron(V, U);
-
-  double out = arma::as_scalar(dmvn_arma(x, mean, sigma, logd));
-
-  return out;
-}
-
-//' Matrix variate normal generation.
-//'
-//' Generate of a single matrix normal variate.
-//'
-//' @param M Numeric matrix containing the univariate means.
-//' @param U Numeric positive definite matrix representing the covariance
-//' matrix among the X rows.
-//' @param V Numeric positive definite matrix representing the covariance
-//' matrix among the X columns.
-//'
-//' @return A numeric matrix.
-//' @export
-//'
-//' @references
-//' \url{https://en.wikipedia.org/wiki/Matrix_normal_distribution}
-//' 
-//' @examples
-//' set.seed(123)
-//' n <- 10
-//' p <- 3
-//' M <- matrix(0, nrow = n, ncol = p)
-//' U <- diag(n)
-//' V <- diag(p)
-//' rmatvn_arma(M, U, V)
-//' set.seed(123)
-//' rmvn_arma(n, rep(0, p), diag(p))
-// [[Rcpp::export]]
-arma::mat rmatvn_arma(const arma::mat& M, const arma::mat& U, const arma::mat& V) {
-  int n = U.n_rows, p = V.n_rows;
-
-  arma::mat Z = arma::randn(n, p);
-  return M + arma::chol(U, "lower") * Z * arma::trans(arma::chol(V, "lower"));
-}
-
-//' Matrix variate t density.
-//'
-//' Evaluate the matrix variate t density.
-//'
-//' @param X Numeric matrix at which to evaluate the density.
-//' @param M Numeric matrix containing the univariate means.
-//' @param Omega Numeric positive definite matrix representing the covariance
-//' matrix among the X rows.
-//' @param Sigma Numeric positive definite matrix representing the covariance
-//' matrix among the X columns.
-//' @param df Integer length-one vector providing the number of degrees of
-//' freedom.
-//' @param logd Boolean length-one vector; if TRUE the log density is returned.
-//'
-//' @return A length-one numeric vector.
-//' @export
-//'
-//' @references
-//' \url{https://en.wikipedia.org/wiki/Matrix_t_distribution}
-//' 
-//' @examples
-//' set.seed(123)
-//' n <- 10
-//' p <- 3
-//' x <- rnorm(n*p)
-//' X <- matrix(x, nrow = n, ncol = p)
-//' M <- matrix(0, nrow = n, ncol = p)
-//' Sigma <- diag(n)
-//' Omega <- diag(p)
-//' df <- 5
-//' dmatvt_arma(X, M, Sigma, Omega, df)
-// [[Rcpp::export]]
-double dmatvt_arma(const arma::mat& X, const arma::mat& M, const arma::mat& Sigma, const arma::mat& Omega, const int& df, const bool& logd = false) {
-
-  arma::mat x = arma::trans(arma::vectorise(X));
-  arma::vec mean = arma::vectorise(M);
-  arma::mat sigma = arma::kron(Sigma, Omega);
-
-  double out = Rcpp::as<double>(dmvt_arma(x, mean, sigma, df, logd));
-
-  return out;
-}
-
-//' Matrix variate t generation.
-//'
-//' Generate of a single matrix t variate.
-//'
-//' @param M Numeric matrix containing the univariate means.
-//' @param Omega Numeric positive definite matrix representing the covariance
-//' matrix among the X rows.
-//' @param Sigma Numeric positive definite matrix representing the covariance
-//' matrix among the X columns.
-//' @param df Integer length-one vector providing the number of degrees of
-//' freedom.
-//'
-//' @return A numeric matrix.
-//' @export
-//'
-//' @references
-//' Kollo, T., van Rosen, D. (2005). Advanced Multivariate Statistics
-//' with Matrices. Springer.
-//' \url{https://en.wikipedia.org/wiki/Matrix_t_distribution}
-//' 
-//' @examples
-//' set.seed(123)
-//' n <- 10
-//' p <- 3
-//' x <- rnorm(n*p)
-//' M <- matrix(0, nrow = n, ncol = p)
-//' Sigma <- diag(n)
-//' Omega <- diag(p)
-//' df <- 5
-//' rmatvt_arma(M, Sigma, Omega, df)
-// [[Rcpp::export]]
-arma::mat rmatvt_arma(const arma::mat& M, const arma::mat& Sigma, const arma::mat& Omega, const int& df) {
-  int n = Sigma.n_rows, p = Omega.n_rows;
-
-  arma::vec mean = arma::vectorise(M);
-  arma::mat sigma = arma::kron(Sigma, Omega);
-  arma::mat x = rmvt_arma(1, mean, sigma, df);
-  arma::mat X = reshape(x, n, p);
-
-  return X;
-}
-
 //' Inverse gamma density.
 //'
 //' Evaluate the inverse gamma density.
 //'
-//' @param x Numeric vector whose representing the points at which to evaluate
+//' @param x A numeric vector whose representing the points at which to evaluate
 //' the density.
 //' @param alpha Inverse gamma shape parameter. Must be strictly positive.
 //' @param beta Inverse gamma scale parameter. Must be strictly positive.
@@ -1027,9 +813,9 @@ arma::vec dinvgamma_rcpp(const arma::vec& x, const double& alpha, const double& 
 
 //' Inverse gamma variates generation.
 //'
-//' Generate of inverse gamma variates.
+//' Generation of inverse gamma variates.
 //'
-//' @param n Numeric length-one vector providing the number of draws to
+//' @param n A length-one numeric vector providing the number of draws to
 //' generate.
 //' @param alpha Inverse gamma shape parameter. Must be strictly positive.
 //' @param beta Inverse gamma scale parameter. Must be strictly positive.

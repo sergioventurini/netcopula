@@ -7,12 +7,12 @@
 dmvt_arma(x, mean, sigma, df, logd = FALSE)
 }
 \arguments{
-\item{x}{Numeric matrix whose rows represent the points at which to
+\item{x}{A numeric matrix whose rows represent the points at which to
 evaluate the density.}
 
-\item{mean}{Numeric vector containing the univariate means.}
+\item{mean}{A numeric vector containing the univariate means.}
 
-\item{sigma}{Numeric positive definite matrix representing the covariance
+\item{sigma}{A positive definite numeric matrix representing the covariance
 matrix of the distribution.}
 
 \item{df}{Integer length-one vector providing the number of degrees of
@@ -44,4 +44,3 @@ benchmark(mvtnorm::dmvt(X, mean, sigma, df, log = FALSE),
 \references{
 \url{http://gallery.rcpp.org/articles/dmvnorm_arma/}
 }
-

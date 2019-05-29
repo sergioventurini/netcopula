@@ -7,12 +7,12 @@
 dmvn_arma(x, mean, sigma, logd = FALSE)
 }
 \arguments{
-\item{x}{Numeric matrix whose rows represent the points at which to
+\item{x}{A numeric matrix whose rows represent the points at which to
 evaluate the density.}
 
-\item{mean}{Numeric vector containing the univariate means.}
+\item{mean}{A numeric vector containing the univariate means.}
 
-\item{sigma}{Numeric positive definite matrix representing the covariance
+\item{sigma}{A positive definite numeric matrix representing the covariance
 matrix of the distribution.}
 
 \item{logd}{Boolean length-one vector; if TRUE the log density is returned.}
@@ -39,4 +39,3 @@ benchmark(mvtnorm::dmvnorm(X, mean, sigma, log = FALSE),
 \references{
 \url{http://gallery.rcpp.org/articles/dmvnorm_arma/}
 }
-

@@ -7,7 +7,7 @@
 dlogchol_arma(A, sigma_r, logd = FALSE)
 }
 \arguments{
-\item{A}{Numeric matrix at which to evaluate the prior density.}
+\item{A}{A numeric matrix at which to evaluate the prior density.}
 
 \item{sigma_r}{Length-one numeric vector providing the standard deviation
 of the underlying normal distributions used to generate the Cholesky
@@ -28,4 +28,3 @@ set.seed(rng)
 Sigma <- rlogchol_arma(M, sigma_r)
 dlogchol_arma(Sigma, sigma_r)
 }
-

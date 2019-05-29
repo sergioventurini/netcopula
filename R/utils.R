@@ -1,183 +1,3 @@
-#' Estimation of copula based models for multivariate network meta-analysis.
-#'
-#' Estimation of copula based models for multivariate network meta-analysis.
-#'
-#' @param data Object of class \code{nc_data} containing the data to analyze.
-#' @param prm_init Named list of parameters for the proposal distributions of
-#' the \eqn{Z} latent positions and \eqn{\alpha} parameters; the elements'
-#' names must be \code{"z"} and \code{"alpha"} and both need to be a single
-#' number representing the standard deviations of the normal proposal
-#' distributions for each \eqn{z_{ih}^{g}}{z_ih^g} and \eqn{\alpha_g}
-#' respectively.
-#' @param random_start Length-one logical vector; if \code{TRUE} (default), it
-#' allows the algorithm to start from a random starting point.
-#' @param init Named list providing user-defined starting values. If provided,
-#' it overrides the value given for \code{random_start}.
-#'
-#' @return \code{netcopula} returns an object of class \code{\link{nc_mcmc}}.
-#' @export
-#'
-#' @examples
-#' betabinexch <- function(theta, varargs) {
-#'   eta <- exp(theta[1])/(1 + exp(theta[1]))
-#'   K <- exp(theta[2])
-#'   data <- varargs[[1]]
-#'   y <- data[, 1]
-#'   n <- data[, 2]
-#'   N <- length(y)
-#'   logf <- function(y, n, K, eta) lbeta(K * eta + y, K * (1 - eta) + n - y) -
-#'   lbeta(K * eta, K * (1 - eta))
-#'   val <- sum(logf(y, n, K, eta))
-#'   val <- val + theta[2] - 2 * log(1 + exp(theta[2]))
-#'   return(val)
-#' }
-#' data(cancermortality, package = "LearnBayes")
-#' laplace(betabinexch, c(-7, 6), list(cancermortality))
-#'
-#' @references
-#' Venturini, S. and Graziani, R. (2016), "A Bayesian Copula Based Model for
-#' Multivariate Network Meta-Analysis". Technical report.
-#'
-#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
-#'
-#' @seealso
-#' \code{\link{nc_data-class}},
-#' \code{\link{nc_mcmc}}
-laplace <- function(logpost, mode, ...) {
-    options(warn = -1)
-    
-    fit <- optim(mode, logpost, gr = NULL, ..., hessian = TRUE, control = list(fnscale = -1))
-    
-    options(warn = 0)
-
-    mode <- fit$par
-    h <- -solve(fit$hessian)
-    p <- length(mode)
-    int <- p/2 * log(2 * pi) + 0.5 * log(det(h)) + logpost(mode, ...)
-    
-    out <- list(mode = mode, var = h, int = int, converge = fit$convergence ==  0)
-    
-    return(out)
-}
-
-#' @export
-betabinexch <- function(theta, varargs) {
-  eta <- exp(theta[1])/(1 + exp(theta[1]))
-  K <- exp(theta[2])
-  data <- varargs[[1]]
-  y <- data[, 1]
-  n <- data[, 2]
-  N <- length(y)
-  logf <- function(y, n, K, eta) lbeta(K * eta + y, K * (1 - eta) + n - y) -
-  lbeta(K * eta, K * (1 - eta))
-  val <- sum(logf(y, n, K, eta))
-  val <- val + theta[2] - 2 * log(1 + exp(theta[2]))
-  return(val)
-}
-
-#' @export
-betabinT <- function(theta, datapar) {
-  tpar <- datapar$par
-  d <- betabinexch(theta, datapar) - dmvt_arma(t(as.matrix(theta)), tpar$m, tpar$var, tpar$df, TRUE)
-  return(d)
-}
-
-#' @export
-groupeddatapost <- function(theta, varargs) {
-  dj <- function(f, int.lo, int.hi, mu, sigma) {
-    f * log(pnorm(int.hi, mu, sigma) - pnorm(int.lo, mu, sigma))
-  }
-  data <- varargs[[1]]
-  mu <- theta[1]
-  sigma <- exp(theta[2])
-  sum(dj(data$f, data$int.lo, data$int.hi, mu, sigma))
-}
-
-#' @export
-transplantpost <- function(theta, varargs) {
-  data <- varargs[[1]]
-  x <- data[, 1]
-  y <- data[, 3]
-  t <- data[, 2]
-  d <- data[, 4]
-  tau <- exp(theta[1])
-  lambda <- exp(theta[2])
-  p <- exp(theta[3])
-  xnt <- x[t == 0]
-  dnt <- d[t == 0]
-  z <- x[t == 1]
-  y <- y[t == 1]
-  dt <- d[t == 1]
-  logf <- function(xnt, dnt, lambda, p) {
-    (dnt == 0) * (p * log(lambda) + log(p) - (p + 1) * log(lambda + xnt)) + (dnt == 1) * p * log(lambda/(lambda + xnt))
-  }
-  logg <- function(z, y, tau, lambda, p) {
-    (dt == 0) * (p * log(lambda) + log(p * tau) - (p + 1) * log(lambda + y + tau * z)) + (dt == 1) * p * log(lambda/(lambda + y + tau * z))
-  }
-  val <- sum(logf(xnt, dnt, lambda, p)) + sum(logg(z, y, tau, lambda, p))
-  val <- val + theta[1] + theta[2] + theta[3]
-  return(val)
-}
-
-#' @export
-weibullregpost <- function(theta, varargs) {
-  logf <- function(t, c, x, sigma, mu, beta) {
-    z = (log(t) - mu - x %*% beta)/sigma
-    f = 1/sigma * exp(z - exp(z))
-    S = exp(-exp(z))
-    c * log(f) + (1 - c) * log(S)
-  }
-  data <- varargs[[1]]
-  k <- dim(data)[2]
-  p <- k - 2
-  t <- data[, 1]
-  c <- data[, 2]
-  X <- data[, 3:k]
-  sigma <- exp(theta[1])
-  mu <- theta[2]
-  beta <- array(theta[3:k], c(p, 1))
-  return(sum(logf(t, c, X, sigma, mu, beta)))
-}
-
-#' @export
-my_plot <- function(logf, limits, data, npoints = 50, type = "contour", ...) {
-    if (type == "contour" | type == "persp") {
-      logf_tmp <- function(theta, data) {
-          if (is.matrix(theta) == TRUE) {
-              val <- matrix(0, c(dim(theta)[1], 1))
-              for (j in 1:dim(theta)[1]) {
-                val[j] <- logf(theta[j, ], data)
-              }
-          }
-          else val = logf(theta, data)
-          return(val)
-      }
-      x0 <- seq(limits[1], limits[2], len = npoints)
-      y0 <- seq(limits[3], limits[4], len = npoints)
-      X <- outer(x0, rep(1, npoints))
-      Y <- outer(rep(1, npoints), y0)
-      n2 <- npoints^2
-      Z <- logf_tmp(cbind(X[1:n2], Y[1:n2]), data)
-      Z <- matrix(Z, c(npoints, npoints))
-      if (type == "contour") {
-        contour(x0, y0, Z, lwd = 2, ...)
-      } else if (type == "persp") {
-        persp(x0, y0, Z, ...)
-      }
-    } else if (type == "scatter") {
-      logf_tmp <- function(theta, data) {
-          val <- numeric(length(theta))
-          for (i in 1:length(theta)) {
-            val[i] <- logf(theta[i], data)
-          }
-          return(val)
-      }
-      x0 <- seq(limits[1], limits[2], len = npoints)
-      Y <- logf_tmp(x0, data)
-      plot(x0, Y, type = "l", ...)
-    }
-}
-
 #' @export
 build_output <- function(a) {
   nparams <- ifelse(length(dim(a)) < 3, 1, dim(a)[length(dim(a))])
@@ -258,4 +78,168 @@ plot_est <- function(res_sum, true_values, param, main = NULL) {
   points(res_sum$statistics[idx, 1], res_sum$statistics[idx, 1],
     pch = 20, col = "lightblue")
   points(res_sum$statistics[idx, 1], tv_tmp, pch = 20, col = "orange")
+}
+
+#' Auxiliary function to recursively check NAs in a list.
+#'
+#' \code{check_list_na()} compares two lists and fills in the missing
+#'   elements in the first with those included in the second. The
+#'   comparison is recursive in the sense that the process is repeated for
+#'   all lists included in those given.
+#'
+#' @param orig A list whose content must be checked.
+#' @param des A list to use as a reference with which compare the first one.
+#'
+#' @return A list with all elements added.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@sdabocconi.it}
+#'
+#' @export
+check_list_na <- function(orig, des) {
+  check_it <- function(o, d) {
+    d.nm <- names(d)
+    d.na <- is.na(match(d.nm, names(o)))
+    if (any(d.na))
+      o <- c(o, d[d.nm[which(d.na)]])
+
+    return(o)
+  }
+
+  if (!is.list(orig))
+    stop("the 'orig' argument must be a list")
+  if (!is.list(des))
+    stop("the 'des' argument must be a list")
+
+  orig_new <- check_it(orig_new <- orig, des)
+
+  for (el in 1:length(orig_new)) {
+    if (is.list(orig_new[[el]]))
+      orig_new[[el]] <- check_list_na(orig_new[[el]], des[[el]])
+  }
+
+  return(orig_new)
+}
+
+#' Check for suggested package (requireNamespace) and throw error if necessary
+#'
+#' @noRd
+#' @param pkg Package name as a string.
+#' @param min_version Optionally, a minimum version number as a string.
+#' @return TRUE, invisibly, if no error is thrown.
+#'
+suggested_package <- function(pkg, min_version = NULL) {
+  stopifnot(length(pkg) == 1, is.character(pkg))
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop(
+      "Please install the ",
+      pkg, " package to use this function.",
+      call. = FALSE
+    )
+  }
+
+  if (!is.null(min_version)) {
+    stopifnot(is.character(min_version))
+    if (utils::packageVersion(pkg) < package_version(min_version)) {
+      stop(
+        "Version >=", min_version, " of the ",
+        pkg, " package is required to use this function.",
+        call. = FALSE
+      )
+    }
+  }
+
+  invisible(TRUE)
+}
+
+#' Explicit and/or regex parameter selection
+#'
+#' @noRd
+#' @param explicit Character vector of selected parameter names.
+#' @param patterns Character vector of regular expressions.
+#' @param complete Character vector of all possible parameter names.
+#' @return Characeter vector of combined explicit and matched (via regex)
+#'   parameter names, unless an error is thrown.
+#'
+select_pars <- function(explicit = character(), patterns = character(), complete = character()) {
+  stopifnot(is.character(explicit),
+            is.character(patterns),
+            is.character(complete))
+
+  if (!length(explicit) && !length(patterns))
+    return(complete)
+
+  if (length(explicit)) {
+    if (!all(explicit %in% complete)) {
+      not_found <- which(!explicit %in% complete)
+      stop(
+        "Some 'pars' don't match parameter names: ",
+        paste(explicit[not_found], collapse = ", ")
+      )
+    }
+  }
+
+  if (!length(patterns)) {
+    return(unique(explicit))
+  } else {
+    regex_pars <-
+      unlist(lapply(seq_along(patterns), function(j) {
+        grep(patterns[j], complete, value = TRUE)
+      }))
+    if (!length(regex_pars))
+      stop("no matches for 'regex_pars'.", call. = FALSE)
+  }
+
+  unique(c(explicit, regex_pars))
+}
+
+choose_colors <- function(n) {
+  all_clrs <- unlist(bayesplot::color_scheme_get())
+  clrs <- switch(
+    as.character(n),
+    "1" = get_color("m"),
+    "2" = get_color(c("l", "d")),
+    "3" = get_color(c("l", "m", "d")),
+    "4" = all_clrs[-c(2, 4)],
+    "5" = all_clrs[-3],
+    "6" = all_clrs,
+    rep_len(all_clrs, n)
+  )
+  unname(rev(clrs))
+}
+
+# Access a subset of the scheme colors
+#
+# @param level A character vector of level names (see scheme_level_names()). The
+#   abbreviations "l", "lh", "m", "mh", "d", and "dh" can also be used instead
+#   of the full names.
+# @return A character vector of color values.
+#
+# [Source: bayesplot]
+get_color <- function(levels) {
+  sel <- which(!levels %in% scheme_level_names())
+  if (length(sel)) {
+    levels[sel] <- sapply(levels[sel], full_level_name)
+  }
+  stopifnot(all(levels %in% scheme_level_names()))
+  color_vals <- bayesplot::color_scheme_get()[levels]
+  unlist(color_vals, use.names = FALSE)
+}
+
+full_level_name <- function(x) {
+  switch(x,
+         l = "light", lh = "light_highlight",
+         m = "mid", mh = "mid_highlight",
+         d = "dark", dh = "dark_highlight")
+}
+
+# Color scheme level names
+#
+# [Source: bayesplot]
+scheme_level_names <- function() {
+  c("light",
+    "light_highlight",
+    "mid",
+    "mid_highlight",
+    "dark",
+    "dark_highlight")
 }

@@ -7,7 +7,7 @@
 dinvgamma_rcpp(x, alpha, beta, logd = FALSE)
 }
 \arguments{
-\item{x}{Numeric vector whose representing the points at which to evaluate
+\item{x}{A numeric vector whose representing the points at which to evaluate
 the density.}
 
 \item{alpha}{Inverse gamma shape parameter. Must be strictly positive.}
@@ -29,4 +29,3 @@ beta <- 5
 res <- dinvgamma_rcpp(x, alpha, beta)
 plot(x, res, type = "l", main = "Inverse Gamma density")
 }
-

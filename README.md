@@ -8,6 +8,8 @@
 ###### R version required: at least 3.6.0
 `R` package implementing a Bayesian copula-based model for multivariate network meta-analysis (NMA).
 
+## Installation
+
 Since the package requires some code to be compiled, you need a working C++
 compiler. To get it:
 
@@ -15,5 +17,12 @@ compiler. To get it:
 - On Mac, install Xcode from the app store.
 - On Linux, `sudo apt-get install r-base-dev` or similar.
 
+``` r
+# Then, the easiest way to get netcopula is to install it from GitHub:
+# install.packages("devtools")
+devtools::install_github("sergioventurini/netcopula")
+```
+
 See the help pages of the `netcopula()` function for some examples
 or have a look at the demos in the package.
+
