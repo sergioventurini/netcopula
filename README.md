@@ -17,8 +17,9 @@ compiler. To get it:
 - On Mac, install Xcode from the app store.
 - On Linux, `sudo apt-get install r-base-dev` or similar.
 
+Then, the easiest way to get the package is to install it from GitHub:
+
 ``` r
-# Then, the easiest way to get netcopula is to install it from GitHub:
 # install.packages("devtools")
 devtools::install_github("sergioventurini/netcopula")
 ```
