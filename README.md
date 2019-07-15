@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 
+[![](http://cranlogs.r-pkg.org/badges/grand-total/netcopula?color=blue)](https://cran.r-project.org/package=netcopula)
 [![Travis build status](https://travis-ci.org/sergioventurini/netcopula.svg?branch=master)](https://travis-ci.org/sergioventurini/netcopula)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/netcopula)](https://cran.r-project.org/package=netcopula)
