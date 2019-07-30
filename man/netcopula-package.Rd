@@ -47,9 +47,8 @@ The package includes \code{print}, \code{summary} and \code{plot} methods
 }
 
 \references{
-Venturini, S., Piccarreta, R. (2019), "A Bayesian Approach for Model-Based
-  Clustering of Several Binary Dissimilarity Matrices: the \pkg{netcopula}
-  Package in \code{R}", Technical report.
+Graziani, R., Venturini, S. (2019), "Network Meta-Analysis for Adverse Events:
+  An Exact (Bayesian) Approach Using Gaussian Copulas", Technical report.
 }
 \seealso{
 \code{\link[bayesplot]{theme_default}} for the default ggplot theme
