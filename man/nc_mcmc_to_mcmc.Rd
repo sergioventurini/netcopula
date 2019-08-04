@@ -20,7 +20,8 @@ An object of type \code{mcmc}.
 }
 \description{
 \code{nc_mcmc_to_mcmc} converts an object of class \code{nc_mcmc}
-  to an object with class \code{mcmc}.
+  to an object with class \code{\link{mcmc}} from the \code{coda}
+  package.
 }
 \seealso{
 \code{\link{netcopula}()} for for fitting a copula-based multivariate

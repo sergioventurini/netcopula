@@ -61,9 +61,9 @@ summary(res, include.burnin = TRUE, regex_pars = "d")
 summary(res, include.burnin = TRUE, regex_pars = "Sigma")
 summary(res, include.burnin = TRUE, regex_pars = "Gamma")
 
-plot(x = res, regex_pars = "Gamma", what = "trace")
+plot(x = res, regex_pars = "Gamma", what = "trace") + ggplot2::ylim(-1, 1)
 plot(x = res, regex_pars = "Sigma", what = "trace")
-plot(x = res, regex_pars = "Sigma", what = "hist")
+plot(x = res, regex_pars = "Sigma", what = "hist", freq = FALSE)
 plot(x = res, regex_pars = "Sigma", what = "pairs")
 res_mcmc <- nc_mcmc_to_mcmc(res)
 pars <- sort(colnames(res_mcmc)[startsWith(colnames(res_mcmc), "d[")])[-(1:3)]

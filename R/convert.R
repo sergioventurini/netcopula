@@ -1,7 +1,8 @@
 #' Conversion of an \code{nc_mcmc} object to an object of class \code{mcmc}.
 #' 
 #' \code{nc_mcmc_to_mcmc} converts an object of class \code{nc_mcmc}
-#'   to an object with class \code{mcmc}.
+#'   to an object with class \code{\link{mcmc}} from the \code{coda}
+#'   package.
 #' 
 #' @param res An object of type \code{nc_mcmc}.
 #' @param include.burnin A logical scalar. If \code{TRUE} the burnin

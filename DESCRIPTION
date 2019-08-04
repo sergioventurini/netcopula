@@ -1,8 +1,8 @@
 Package: netcopula
 Type: Package
 Title: Copula-Based Model for Multivariate Network Meta-Analysis (NMA)
-Version: 0.1.1
-Date: 2019-08-01
+Version: 0.1.2
+Date: 2019-08-04
 Authors@R: c(
 	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@sdabocconi.it"),
 	person("Rebecca", "Graziani", role=c("aut"), email = "rebecca.graziani@unibocconi.it"))
@@ -23,6 +23,7 @@ Imports:
     ggplot2 (>= 3.1.0),
     ggrepel (>= 0.8.0),
     graphics,
+    gridExtra,
     tools
 Suggests:
     bayesm,

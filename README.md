@@ -10,7 +10,7 @@ status](https://www.r-pkg.org/badges/version/netcopula)](https://cran.r-project.
 
 ## Overview
 
-###### Current release: 0.1.1
+###### Current release: 0.1.2
 ###### R version required: at least 3.6.0
 `R` package implementing a Bayesian copula-based model for multivariate network meta-analysis (NMA).
 
