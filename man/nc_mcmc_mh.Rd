@@ -3,6 +3,7 @@
 \name{nc_mcmc_mh}
 \alias{nc_mcmc_mh}
 \alias{netcopula-internal}
+\alias{netcopula_internal}
 \title{Internal functions for MCMC simulation.}
 \usage{
 nc_mcmc_mh(data, init, totiter, prior, prop, tuning, adapt, verbose)

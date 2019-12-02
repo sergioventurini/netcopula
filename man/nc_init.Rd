@@ -5,8 +5,16 @@
 \title{Function to compute the starting values before fitting a models with the
   \code{netcopula} package.}
 \usage{
-nc_init(data, prm_init, random_start, init = NULL, prm_prior = NULL,
-  prm_prop = NULL, tuning = NULL, adaptation = NULL)
+nc_init(
+  data,
+  prm_init,
+  random_start,
+  init = NULL,
+  prm_prior = NULL,
+  prm_prop = NULL,
+  tuning = NULL,
+  adaptation = NULL
+)
 }
 \arguments{
 \item{data}{An object of class \code{link{nc_data-class}} containing the data

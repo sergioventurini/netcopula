@@ -6,11 +6,21 @@
 \alias{check_prior}
 \title{Auxiliary Function for Setting Model Priors.}
 \usage{
-nc_prior(mu_sigma2 = 10^3, d_sigma2 = 10^3, beta_sigma = 10^(-1/8),
-  nGamma = 1, eta_prior = 1)
+nc_prior(
+  mu_sigma2 = 10^3,
+  d_sigma2 = 10^3,
+  beta_sigma = 10^(-1/8),
+  nGamma = 1,
+  eta_prior = 1
+)
 
-prior_nc(mu_sigma2 = 10^3, d_sigma2 = 10^3, beta_sigma = 10^(-1/8),
-  nGamma = 1, eta_prior = 1)
+prior_nc(
+  mu_sigma2 = 10^3,
+  d_sigma2 = 10^3,
+  beta_sigma = 10^(-1/8),
+  nGamma = 1,
+  eta_prior = 1
+)
 
 check_prior(prior)
 }

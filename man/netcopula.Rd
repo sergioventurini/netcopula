@@ -4,8 +4,15 @@
 \alias{netcopula}
 \title{Estimation of a Copula-Based Model for Multivariate Network Meta-Analysis.}
 \usage{
-netcopula(data, control = nc_control(), prior, prm_init, init = NULL,
-  tuning, adaptation)
+netcopula(
+  data,
+  control = nc_control(),
+  prior,
+  prm_init,
+  init = NULL,
+  tuning,
+  adaptation
+)
 }
 \arguments{
 \item{data}{Object of class \code{nc_data} containing the data to analyze.}

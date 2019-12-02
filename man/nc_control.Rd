@@ -6,13 +6,29 @@
 \alias{check_control}
 \title{Auxiliary Function for Controlling Model Fitting in the \code{netcopula } Package}
 \usage{
-nc_control(nsim = 50000, burnin = 1e+05, thin = 1,
-  Gamma.update = "PX-RPMH", eta.prop = 0.5, sigma.r.prop = 0.01,
-  random.start = TRUE, store.burnin = TRUE, verbose = FALSE)
+nc_control(
+  nsim = 50000,
+  burnin = 1e+05,
+  thin = 1,
+  Gamma.update = "PX-RPMH",
+  eta.prop = 0.5,
+  sigma.r.prop = 0.01,
+  random.start = TRUE,
+  store.burnin = TRUE,
+  verbose = FALSE
+)
 
-control_nc(nsim = 50000, burnin = 1e+05, thin = 1,
-  Gamma.update = "PX-RPMH", eta.prop = 0.5, sigma.r.prop = 0.01,
-  random.start = TRUE, store.burnin = TRUE, verbose = FALSE)
+control_nc(
+  nsim = 50000,
+  burnin = 1e+05,
+  thin = 1,
+  Gamma.update = "PX-RPMH",
+  eta.prop = 0.5,
+  sigma.r.prop = 0.01,
+  random.start = TRUE,
+  store.burnin = TRUE,
+  verbose = FALSE
+)
 
 check_control(control)
 }

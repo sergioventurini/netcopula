@@ -4,8 +4,18 @@
 \alias{nc_data_simulate}
 \title{Data simulation for the 'netcopula' package.}
 \usage{
-nc_data_simulate(d, sigma2_vec, rho_vec, gamma_vec, n_studies, n_trt,
-  n_bin, n_outcomes, mu_sigma2, ref_trt)
+nc_data_simulate(
+  d,
+  sigma2_vec,
+  rho_vec,
+  gamma_vec,
+  n_studies,
+  n_trt,
+  n_bin,
+  n_outcomes,
+  mu_sigma2,
+  ref_trt
+)
 }
 \arguments{
 \item{d}{Numeric matrix with dimension (#treatement - 1, #outcomes) containing

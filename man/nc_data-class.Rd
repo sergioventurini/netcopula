@@ -5,13 +5,15 @@
 \alias{nc_data-class}
 \alias{nc_data}
 \alias{initialize,nc_data-method}
+\alias{nc_data-initialize}
 \alias{show,nc_data-method}
+\alias{nc_data-show}
 \alias{summary,nc_data-method}
+\alias{nc_data-summary}
 \title{An S4 class to represent a set of data for use in the \code{netcopula}
 package.}
 \usage{
-\S4method{initialize}{nc_data}(.Object, ..., type, n_study, study_id,
-  study_data, ref_trt)
+\S4method{initialize}{nc_data}(.Object, ..., type, n_study, study_id, study_data, ref_trt)
 
 \S4method{show}{nc_data}(object)
 

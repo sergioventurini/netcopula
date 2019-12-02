@@ -4,6 +4,7 @@
 \name{netcopula-package}
 \alias{netcopula-package}
 \alias{netcopula-pkg}
+\alias{netcopula-p}
 \title{Copula-Based Model for Multivariate Network Meta-Analysis.}
 \description{
 The \pkg{netcopula} package implements a Bayesian algorithm for fitting

@@ -33,8 +33,12 @@
 #' @param verbose A logical scalar. If \code{TRUE}, causes information to be
 #'   printed out about the progress of the fitting.
 #' @param control A list of control options.
+#'
 #' @return A named list with the control options as components.
+#' @export
+#'
 #' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#'
 #' @seealso \code{\link{netcopula}()}
 #' @keywords NMA
 nc_control <- function(nsim = 50000,
