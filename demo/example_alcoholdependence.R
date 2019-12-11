@@ -24,8 +24,7 @@ nGamma <- 1 # nc_data@n_treatments
 summary(nc_data)
 
 # inizialization parameters
-rng <- 101
-set.seed(rng)
+set.seed(1406)
 prm.init <- list(mu_sigma2 = 10^-1, d_sigma2 = 10^-1, beta_sigma = 10^(-1/8),
   nGamma = nGamma, eta_prior = 1)
 
