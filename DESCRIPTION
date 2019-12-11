@@ -1,8 +1,8 @@
 Package: netcopula
 Type: Package
 Title: Copula-Based Model for Multivariate Network Meta-Analysis (NMA)
-Version: 0.1.3
-Date: 2019-12-03
+Version: 0.1.4
+Date: 2019-12-11
 Authors@R: c(
 	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@sdabocconi.it"),
 	person("Rebecca", "Graziani", role=c("aut"), email = "rebecca.graziani@unibocconi.it"))
@@ -43,4 +43,4 @@ Depends:
 LinkingTo: Rcpp, RcppArmadillo
 BugReports: https://github.com/sergioventurini/netcopula/issues
 Encoding: UTF-8
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2

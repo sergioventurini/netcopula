@@ -33,7 +33,7 @@ prm.prior <- nc_prior(mu_sigma2 = 10^3, d_sigma2 = 10^3,
 # MCMC settings
 burnin <- 250000
 nsim <- 50000
-nthin <- 100
+nthin <- 1
 prm.prop <- list(Gamma.update = "PX-RPMH", eta = .5, sigma.r = .01)
 control <- list(burnin = burnin, nsim = nsim,
   Gamma.update = prm.prop[["Gamma.update"]], eta.prop = prm.prop[["eta"]],
@@ -54,9 +54,9 @@ set.seed(seed)
 res <- netcopula(nc_data, control, prm.prior, prm.init, tuning = tuning,
   adaptation = adaptation)
 
-summary(res, include.burnin = TRUE, regex_pars = "d")
-summary(res, include.burnin = TRUE, regex_pars = "Sigma")
-summary(res, include.burnin = TRUE, regex_pars = "Gamma")
+summary(res, include.burnin = FALSE, regex_pars = "d")
+summary(res, include.burnin = FALSE, regex_pars = "Sigma")
+summary(res, include.burnin = FALSE, regex_pars = "Gamma")
 
 plot(x = res, regex_pars = "Gamma", what = "trace") + ggplot2::ylim(-1, 1)
 plot(x = res, regex_pars = "Sigma", what = "trace")
