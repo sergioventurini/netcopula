@@ -100,8 +100,8 @@ init_univariate <- function(data, burnin, nsim, nthin, prm_prior, prm_prop, prm_
 #'   to analyze.
 #' @param prm_init An object of class \code{list} containing the parameters to
 #'   use for initialization.
-#' @param random_start A length-one logical vector. If \code{TRUE} the starting
-#'   values are drawn randomly, otherwise.
+#' @param random_start A length-one logical vector. If \code{TRUE}, the starting
+#'   values are drawn randomly.
 #' @param init Either a length-one character vector or a named \code{list}
 #'   \code{list} providing user-defined starting values.
 #' @param prm_prior An object of class \code{list} containing the prior
@@ -122,12 +122,12 @@ init_univariate <- function(data, burnin, nsim, nthin, prm_prior, prm_prop, prm_
 #'     \item{\code{D}: }{numeric vector of sigma2 starting values}
 #'     \item{\code{x}: }{numeric vector of lambda starting values}
 #'   }
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #' @seealso \code{\link{netcopula}()} for fitting a model with the
 #'   \code{netcopula} package.
 #' @export
-nc_init <- function(data, prm_init, random_start, init = NULL, prm_prior = NULL, prm_prop = NULL,
-  tuning = NULL, adaptation = NULL) {
+nc_init <- function(data, prm_init, random_start = TRUE, init = NULL, prm_prior = NULL,
+  prm_prop = NULL, tuning = NULL, adaptation = NULL) {
   if (!random_start & is.null(init)) {
     stop("either choose 'random_start = TRUE' or provide some starting values.")
   }

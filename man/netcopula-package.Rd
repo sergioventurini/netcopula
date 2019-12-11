@@ -42,7 +42,7 @@ The package includes \code{print}, \code{summary} and \code{plot} methods
  \item{\strong{General questions and help}:}{
  To ask a question about \pkg{netcopula} send and email to:
 
- \email{sergio.venturini@sdabocconi.it}.
+ \email{sergio.venturini@unito.it}.
 }
 }
 }

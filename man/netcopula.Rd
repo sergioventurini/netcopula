@@ -51,5 +51,5 @@ demo("example_homesafety", package = "netcopula")
 \code{\link{nc_mcmc}}
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

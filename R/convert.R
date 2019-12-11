@@ -15,7 +15,7 @@
 #'     network meta-analysis model;
 #'   \code{\link{nc_mcmc-class}};
 #'   \code{\link[coda]{mcmc}}.
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #' @export
 nc_mcmc_to_mcmc <- function(res, include.burnin = FALSE, verbose = TRUE) {
   control <- res@control
@@ -156,7 +156,7 @@ nc_mcmc_to_mcmc <- function(res, include.burnin = FALSE, verbose = TRUE) {
 #'   \code{\link{netcopula}()} for for fitting a copula-based multivariate
 #'     network meta-analysis model;
 #'   \code{\link{nc_mcmc-class}}.
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #' @export
 nc_mcmc_to_list <- function(res, include.burnin = FALSE, verbose = TRUE) {
   control <- res@control

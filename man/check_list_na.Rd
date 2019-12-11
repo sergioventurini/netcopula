@@ -21,5 +21,5 @@ A list with all elements added.
   all lists included in those given.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@sdabocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

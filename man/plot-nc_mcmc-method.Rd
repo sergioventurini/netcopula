@@ -28,7 +28,8 @@ details see the documentation of the \pkg{\link{bayesplot}} package,
 starting from \code{\link[=MCMC-overview]{this overview page}}.}
 
 \item{pars}{An optional character vector of parameter names. If neither 
-\code{pars} nor \code{regex_pars} is specified, the default is to use all parameters.}
+\code{pars} nor \code{regex_pars} is specified, the default is to use all
+parameters.}
 
 \item{regex_pars}{An optional \code{\link[=grep]{regular expression}} to use for
 parameter selection. Can be specified instead of \code{pars} or in addition to
@@ -42,9 +43,13 @@ burnin iterations (if available) are included in the summary.}
 
 \item{...}{Further arguments to pass on.}
 }
+\value{
+An invisible \code{\link{ggplot}} object providing the required graphical
+ representation.
+}
 \description{
 Provide a graphical summary of a \code{nc_mcmc} class instance.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

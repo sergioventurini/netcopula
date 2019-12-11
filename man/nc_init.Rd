@@ -8,7 +8,7 @@
 nc_init(
   data,
   prm_init,
-  random_start,
+  random_start = TRUE,
   init = NULL,
   prm_prior = NULL,
   prm_prop = NULL,
@@ -23,8 +23,8 @@ to analyze.}
 \item{prm_init}{An object of class \code{list} containing the parameters to
 use for initialization.}
 
-\item{random_start}{A length-one logical vector. If \code{TRUE} the starting
-values are drawn randomly, otherwise.}
+\item{random_start}{A length-one logical vector. If \code{TRUE}, the starting
+values are drawn randomly.}
 
 \item{init}{Either a length-one character vector or a named \code{list}
 \code{list} providing user-defined starting values.}
@@ -62,5 +62,5 @@ A named \code{list} with the following items:
   \code{netcopula} package.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

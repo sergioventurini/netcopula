@@ -18,9 +18,12 @@ parameter selection.}
 
 \item{...}{Further arguments to pass on (currently ignored).}
 }
+\value{
+A list object containing the summary of the \code{nc_mcmc} object.
+}
 \description{
 Provide a summary of a \code{nc_mcmc} class instance.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

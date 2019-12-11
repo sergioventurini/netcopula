@@ -28,5 +28,5 @@ An object of type \code{mcmc}.
   \code{\link{nc_mcmc-class}}.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

@@ -10,7 +10,7 @@
 #'
 #' @return A list with all elements added.
 #'
-#' @author Sergio Venturini \email{sergio.venturini@sdabocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @export
 check_list_na <- function(orig, des) {

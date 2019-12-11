@@ -30,5 +30,5 @@ An object of type \code{mcmc}.
   \code{\link[coda]{mcmc}}.
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }

@@ -23,7 +23,7 @@
 #' demo("example_homesafety", package = "netcopula")
 #' }
 #'
-#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @seealso
 #' \code{\link{nc_data-class}},
@@ -152,7 +152,7 @@ netcopula <- function(data, control = nc_control(), prior, prm_init, init = NULL
 #' demo("example_homesafety", package = "netcopula")
 #' }
 #'
-#' @author Sergio Venturini \email{sergio.venturini@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @seealso
 #' \code{\link{nc_data-class}},

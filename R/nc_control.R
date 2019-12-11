@@ -37,7 +37,7 @@
 #' @return A named list with the control options as components.
 #' @export
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @seealso \code{\link{netcopula}()}
 #' @keywords NMA

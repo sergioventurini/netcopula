@@ -25,7 +25,7 @@
 #'   copula correlation matrices prior parameter.
 #' @param prior A named list of prior hyperparameters.
 #' @return A list with the prior hyperparameters as components.
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #' @seealso \code{\link{netcopula}()}
 #' @keywords NMA
 #' @export

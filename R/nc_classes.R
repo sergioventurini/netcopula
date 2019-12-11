@@ -33,7 +33,7 @@ setClassUnion(name = "null_or_data_frame", members = c("data.frame", "NULL"))
 #' @rdname nc_data-class
 #' @aliases nc_data
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @exportClass nc_data
 #'
@@ -141,7 +141,7 @@ setClass(Class = "nc_data",
 #' (which should not be confused with the baseline treatment for each study).
 #' @param \ldots Optional arguments to the function in its next call.
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases initialize,nc_data-method
 #' @aliases nc_data-initialize
@@ -182,7 +182,7 @@ setMethod("initialize", signature(.Object = "nc_data"),
 #'
 #' @aliases show,nc_data-method
 #' 
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases show,nc_data-method
 #' @aliases nc_data-show
@@ -220,7 +220,7 @@ setMethod("show", signature(object = "nc_data"),
 #' @describeIn nc_data Provide a summary of a \code{\link{nc_data}} class
 #' instance.
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases summary,nc_data-method
 #' @aliases nc_data-summary
@@ -389,7 +389,7 @@ setClass(Class = "nc_mcmc",
 #'
 #' @param object An object of class \code{\link{nc_mcmc}}.
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases show,nc_mcmc-method
 #' @aliases nc_mcmc-show
@@ -418,7 +418,9 @@ setMethod("show",
 #'   parameter selection.
 #' @param ... Further arguments to pass on (currently ignored).
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @return A list object containing the summary of the \code{nc_mcmc} object.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases summary,nc_mcmc-method
 #' @aliases nc_mcmc-summary
@@ -455,7 +457,8 @@ setMethod("summary",
 #'   details see the documentation of the \pkg{\link{bayesplot}} package,
 #'   starting from \code{\link[=MCMC-overview]{this overview page}}.
 #' @param pars An optional character vector of parameter names. If neither 
-#'   \code{pars} nor \code{regex_pars} is specified, the default is to use all parameters.
+#'   \code{pars} nor \code{regex_pars} is specified, the default is to use all
+#'   parameters.
 #' @param regex_pars An optional \code{\link[=grep]{regular expression}} to use for
 #'   parameter selection. Can be specified instead of \code{pars} or in addition to
 #'   \code{pars}.
@@ -465,7 +468,10 @@ setMethod("summary",
 #'   \code{\link[bayesplot]{mcmc_combo}}).
 #' @param ... Further arguments to pass on.
 #'
-#' @author Sergio Venturini \email{sergio.venturini@@unibocconi.it}
+#' @return An invisible \code{\link{ggplot}} object providing the required graphical
+#'  representation.
+#'
+#' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases plot,nc_mcmc-method
 #' @aliases nc_mcmc-plot
@@ -479,6 +485,9 @@ setMethod("plot",
               is.character(regex_pars),
               is.character(what))
     
+    if (is.character(what) & (length(what) == 0))
+      stop("specify the plot type with the 'what' argument.")
+
     if (!(what %in% unlist(all_plots_list, use.names = FALSE)))
       stop("the plot type specified is not available.")
 
@@ -611,5 +620,6 @@ setMethod("plot",
     options(ow) # reset to previous, typically 'warn = 0'
 
     p
+    invisible(p)
   }
 )

@@ -63,6 +63,6 @@ A list with the prior hyperparameters as components.
 \code{\link{netcopula}()}
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }
 \keyword{NMA}

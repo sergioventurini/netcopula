@@ -4,11 +4,11 @@ Title: Copula-Based Model for Multivariate Network Meta-Analysis (NMA)
 Version: 0.1.4
 Date: 2019-12-11
 Authors@R: c(
-	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@sdabocconi.it"),
+	person("Sergio", "Venturini", role=c("aut", "cre"), email = "sergio.venturini@unito.it"),
 	person("Rebecca", "Graziani", role=c("aut"), email = "rebecca.graziani@unibocconi.it"))
 Author: Sergio Venturini [aut, cre],
     Rebecca Graziani [aut]
-Maintainer: Sergio Venturini <sergio.venturini@sdabocconi.it>
+Maintainer: Sergio Venturini <sergio.venturini@unito.it>
 Description: Methods for fitting a copula-based model for multivariate network
     meta-analysis within a fully Bayesian framework. Currently, it includes methods
     only for binary data.

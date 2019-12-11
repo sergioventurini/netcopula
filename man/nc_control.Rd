@@ -84,6 +84,6 @@ A named list with the control options as components.
 \code{\link{netcopula}()}
 }
 \author{
-Sergio Venturini \email{sergio.venturini@unibocconi.it}
+Sergio Venturini \email{sergio.venturini@unito.it}
 }
 \keyword{NMA}
