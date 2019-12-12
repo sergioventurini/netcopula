@@ -49,7 +49,7 @@ nc_mcmc_to_mcmc <- function(res, include.burnin = FALSE, verbose = TRUE) {
   }
 
   theta <- matrix(NA, nrow = length(tokeep), ncol = ((n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3))
+    2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes))
   theta_nm <- character(ncol(theta))
   count_z <- 1
   for (m in 1:n_outcomes) {
@@ -107,19 +107,6 @@ nc_mcmc_to_mcmc <- function(res, include.burnin = FALSE, verbose = TRUE) {
     }
   }
 
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 1] <- res@dens$loglik[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 1] <- paste0("loglik")
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 2] <- res@dens$logprior[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 2] <- paste0("logprior")
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3] <- res@dens$logpost[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3] <- paste0("logpost")
-  
   colnames(theta) <- theta_nm
 
   for (j in ncol(theta):1) {
@@ -190,7 +177,7 @@ nc_mcmc_to_list <- function(res, include.burnin = FALSE, verbose = TRUE) {
   }
 
   theta <- matrix(NA, nrow = length(tokeep), ncol = ((n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3))
+      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes))
   theta_nm <- character(ncol(theta))
   count_z <- 1
   for (m in 1:n_outcomes) {
@@ -248,19 +235,6 @@ nc_mcmc_to_list <- function(res, include.burnin = FALSE, verbose = TRUE) {
     }
   }
 
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 1] <- res@dens$loglik[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 1] <- paste0("loglik")
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 2] <- res@dens$logprior[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 2] <- paste0("logprior")
-  theta[, (n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3] <- res@dens$logpost[tokeep]
-  theta_nm[(n_study + n_datapoints + n_treatments + (n_outcomes + 1)/2 +
-      2*nGamma*(n_outcomes - 1)/2 + 2*n_datapoints)*n_outcomes + 3] <- paste0("logpost")
-  
   colnames(theta) <- theta_nm
 
   for (j in ncol(theta):1) {

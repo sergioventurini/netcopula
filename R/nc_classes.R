@@ -343,8 +343,6 @@ setMethod("summary", signature(object = "nc_data"),
 #'   the MCMC algorithm for the between-study covariance structure.
 #' @slot accept An object of class \code{list}; final acceptance rates
 #'   for the MCMC algorithm.
-#' @slot dens An object of class \code{list}; list of log-likelihood,
-#'   log-prior and log-posterior values at each iteration of the MCMC
 #'   simulation.
 #' @slot control An object of class \code{list}; list of the control
 #'   parameters (number of burnin and sample iterations, etc.). See
@@ -376,7 +374,6 @@ setClass(Class = "nc_mcmc",
     x = "array",
     x_unadj = "array",
     accept = "list",
-    dens = "list",
     control = "list",
     prior = "list",
     dim = "list",
@@ -413,9 +410,10 @@ setMethod("show",
 #'
 #' @param object An object of class \code{\link{nc_mcmc}}.
 #' @param include.burnin A length-one logical vector. If \code{TRUE} the
-#'   burnin iterations (if available) are included in the summary.
-#' @param regex_pars An optional \code{\link[=grep]{regular expression}} to use for
-#'   parameter selection.
+#'  burnin iterations (if available) are included in the summary.
+#' @param regex_pars An optional \code{\link[=grep]{regular expression}} to use
+#'  for parameter selection. It can be a character vector with multiple strings
+#'  or NULL.
 #' @param ... Further arguments to pass on (currently ignored).
 #'
 #' @return A list object containing the summary of the \code{nc_mcmc} object.
@@ -428,21 +426,35 @@ setMethod("show",
 #' @exportMethod summary
 setMethod("summary",
   "nc_mcmc",
-    function(object, include.burnin = FALSE, regex_pars = "d", ...) {
-      if (regex_pars != "mu" && regex_pars != "delta" && regex_pars != "d" && 
-        regex_pars != "Sigma" && regex_pars != "Gamma" && regex_pars != "r" &&
-        regex_pars != "x" && regex_pars != "x_unadj" && regex_pars != "log") {
-        stop("the 'regex_pars' argument must be one of 'mu', 'delta', 'd', 'Sigma', 'Gamma', 'r', 'x', 'x_unadj' or 'log'.")
+  function(object, include.burnin = FALSE, regex_pars = NULL, ...) {
+    if (!is.null(regex_pars)) {
+      for (i in 1:length(regex_pars)) {
+        if (regex_pars[i] != "mu" && regex_pars[i] != "delta" && regex_pars[i] != "d" && 
+          regex_pars[i] != "Sigma" && regex_pars[i] != "Gamma" && regex_pars[i] != "r" &&
+          regex_pars[i] != "x" && regex_pars[i] != "x_unadj") {
+          stop("the 'regex_pars' elements must be one of 'mu', 'delta', 'd', 'Sigma', 'Gamma', 'r', 'x' or 'x_unadj'.")
+        }
       }
-
-      res.coda <- nc_mcmc_to_mcmc(object, include.burnin = include.burnin, verbose = FALSE)
-      x_idx <- grep(paste0(regex_pars, "["), colnames(res.coda), fixed = TRUE)
-      res.coda <- res.coda[, x_idx]
-
-      out <- summary(res.coda)
-
-      return(out)
     }
+
+    res.coda <- nc_mcmc_to_mcmc(object, include.burnin = include.burnin, verbose = FALSE)
+    if (!is.null(regex_pars)) {
+      x_idx <- numeric(0)
+      for (i in 1:length(regex_pars)) {
+        x_idx <- c(x_idx, grep(paste0(regex_pars[i], "["), colnames(res.coda), fixed = TRUE))
+      }
+    } else {
+      x_idx <- grep("d[", colnames(res.coda), fixed = TRUE)
+      x_idx <- c(x_idx, grep("mu[", colnames(res.coda), fixed = TRUE))
+      x_idx <- c(x_idx, grep("Sigma[", colnames(res.coda), fixed = TRUE))
+      x_idx <- c(x_idx, grep("Gamma[", colnames(res.coda), fixed = TRUE))
+    }
+    res.coda <- res.coda[, x_idx]
+
+    out <- summary(res.coda)
+
+    return(out)
+  }
 )
 
 #' Provide a graphical summary of a \code{nc_mcmc} class instance.
@@ -485,7 +497,7 @@ setMethod("plot",
               is.character(regex_pars),
               is.character(what))
     
-    if (is.character(what) & (length(what) == 0))
+    if (length(what) == 0)
       stop("specify the plot type with the 'what' argument.")
 
     if (!(what %in% unlist(all_plots_list, use.names = FALSE)))

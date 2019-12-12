@@ -5,7 +5,7 @@
 \alias{nc_mcmc-summary}
 \title{Provide a summary of a \code{nc_mcmc} class instance.}
 \usage{
-\S4method{summary}{nc_mcmc}(object, include.burnin = FALSE, regex_pars = "d", ...)
+\S4method{summary}{nc_mcmc}(object, include.burnin = FALSE, regex_pars = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link{nc_mcmc}}.}
@@ -13,8 +13,9 @@
 \item{include.burnin}{A length-one logical vector. If \code{TRUE} the
 burnin iterations (if available) are included in the summary.}
 
-\item{regex_pars}{An optional \code{\link[=grep]{regular expression}} to use for
-parameter selection.}
+\item{regex_pars}{An optional \code{\link[=grep]{regular expression}} to use
+for parameter selection. It can be a character vector with multiple strings
+or NULL.}
 
 \item{...}{Further arguments to pass on (currently ignored).}
 }

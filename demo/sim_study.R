@@ -2,11 +2,11 @@
 
 library(netcopula)
 
-# replace the following path with your own to save the simulation results
+## replace the following path with your own to save the simulation results
 path_to_save <- "~/dev/netcopula/demo"
 set.seed(1406)
 
-# data generation parameters
+## data generation parameters
 N <- 200 # number of simulated data sets
 n_outcomes <- 3
 n_trt <- 3
@@ -18,16 +18,16 @@ rho_vec <- rep(.5, n_outcomes)
 gamma_vec <- c(.3, .1, .5) # components of copula association matrix
 ref_trt <- 1
 
-# inizialization parameters
+## inizialization parameters
 nGamma <- 1 # nc_data@n_treatments
 prm_init <- list(mu_sigma2 = 1e-1, d_sigma2 = 1e-1, beta_sigma = 10^(-1/8),
   nGamma = nGamma, eta_prior = 1)
 
-# prior parameters
+## prior parameters
 prm_prior <- list(mu_sigma2 = 10^3, d_sigma2 = 10^3,
   beta_sigma = 10^(-1/8), nGamma = nGamma, eta_prior = 1)
 
-# MCMC settings
+## MCMC settings
 burnin <- 50000
 nsim <- 10000
 nthin <- 1
@@ -48,20 +48,22 @@ adaptation <- list(every = every, maxiter = maxiter, miniter = 5,
 mu_sigma2_sim <- 1e-1
 n_datapoints <- 2*n_studies
 
+## array to store the result summaries
 res_summary <- array(NA,
-  dim = c(N, n_datapoints*n_outcomes + n_outcomes*(n_outcomes + 1)/2 + n_outcomes + n_outcomes*2, 8))
+  dim = c(N, n_outcomes*(n_outcomes + 1)/2 + n_trt*n_outcomes, 2))
 doagain <- TRUE
+
 for (i in 1:N) {
   print(paste0("--- SIMULATION ", i, "/", N, " ---"))
   
-  # data creation
+  ## data creation
   nc_data_tmp <- nc_data_simulate(d_init, sigma_vec, rho_vec, gamma_vec,
     n_studies, n_trt, n_bin, n_outcomes, mu_sigma2_sim, ref_trt)
   # nc_data_tmp <- nc_data_missing(nc_data_tmp, n_miss = 10)
   
   nc_data <- nc_data_tmp$nc_data
   
-  # true values
+  ## true values
   Gamma_tmp <- nc_data_tmp$Gamma
   mu <- nc_data_tmp$mu
   delta <- nc_data_tmp$delta
@@ -72,13 +74,14 @@ for (i in 1:N) {
   true_vals <- list(mu = mu, delta = delta, d = d, Sigma_M = Sigma_M,
     Gamma = list(Gamma_tmp), D = list(D), x = x)
   
-  # starting values
+  ## starting values
   start_vals <- nc_init(nc_data, prm_init)
   
-  # MCMC simulation
+  ## MCMC simulation
   while (doagain) {
-    res <- try(netcopula(nc_data, control, prm_prior, prm_init, init = start_vals,
-      tuning = tuning, adaptation = adaptation), silent = TRUE)
+    res <- try(netcopula(nc_data, control, prm_prior, prm_init,
+      init = start_vals, tuning = tuning, adaptation = adaptation),
+        silent = TRUE)
     if (class(res) == "try-error") {
       doagain <- TRUE
       print(" --> Do it again! :(")
@@ -87,18 +90,21 @@ for (i in 1:N) {
     }
   }
 
-  # res_summary[i, , ] <- summary(res, latent = FALSE, print = FALSE)
-  # dimnames(res_summary)[2:3] <- dimnames(summary(res, latent = FALSE, print = FALSE))
+  res_summary_tmp <- summary(res, regex_pars = c("d", "Sigma"))
+  res_summary[i, , 1] <- res_summary_tmp[[1]][, 1] # posterior means
+  res_summary[i, , 2] <- res_summary_tmp[[2]][, 3] # posterior medians
   
   doagain <- TRUE
 
-  # uncomment the following lines to save the simulation results
-  # save("nc_data_tmp", "res", file = file.path(path_to_save, paste0("sim_study_", i, ".RData")))
+  ## uncomment the following lines to save the simulation results
+  # save("nc_data_tmp", "res", file = file.path(path_to_save,
+  #   paste0("sim_study_", i, ".RData")))
   # save.image(file = file.path(path_to_save, "sim_study.RData"))
 }
 
-# plotting results
-summ <- apply(res_summary, c(2, 3), mean)
+## plotting results
+summ_pmean <- colMeans(res_summary[, , 1], na.rm = TRUE)
+summ_pmed <- colMeans(res_summary[, , 2], na.rm = TRUE)
 
 param <- "d"
 idx <- grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE)
@@ -119,7 +125,7 @@ plot(cov_d, xlab = "Parameter", ylab = "Coverage", xaxt = "n", cex.axis = .7,
 axis(side = 1, at = 1:length(d_true), labels = dimnames(summ)[[1]][idx])
 abline(h = .95, lty = 2, col = gray(.9))
 
-param <- "Sigma_M"
+param <- "Sigma"
 idx <- grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE)
 Sigma_M_true <- as.numeric(Sigma_M[lower.tri(Sigma_M, diag = TRUE)])
 bias_Sigma_M <- summ[grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE), 1]

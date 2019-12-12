@@ -41,10 +41,7 @@ treatment relative to the baseline.}
 the MCMC algorithm for the between-study covariance structure.}
 
 \item{\code{accept}}{An object of class \code{list}; final acceptance rates
-for the MCMC algorithm.}
-
-\item{\code{dens}}{An object of class \code{list}; list of log-likelihood,
-log-prior and log-posterior values at each iteration of the MCMC
+for the MCMC algorithm.
 simulation.}
 
 \item{\code{control}}{An object of class \code{list}; list of the control
