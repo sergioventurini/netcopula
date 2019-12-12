@@ -2,6 +2,7 @@
 #define NETCOPULA_H
 
 // #define ARMA_NO_DEBUG // this macro disables bounds checks in the Armadillo library making the code faster (but also more frail!); the suggestion is to disable it only for the final release (see http://arma.sourceforge.net/docs.html)
+#define ARMA_DONT_PRINT_ERRORS // this macro disables logging errors and warnings in the Armadillo library
 
 #include <R.h>
 #include <RcppArmadillo.h>

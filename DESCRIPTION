@@ -37,7 +37,7 @@ Suggests:
     truncnorm
 Depends:
     methods,
-    R (>= 3.5.0),
+    R (>= 3.6.0),
     stats,
     utils
 LinkingTo: Rcpp, RcppArmadillo

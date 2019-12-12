@@ -299,11 +299,18 @@ setMethod("summary", signature(object = "nc_data"),
       out_vec <- c(out_vec, temp_str)
 
       out_vec <- c(out_vec, "", "Study by treatment distribution:")
-      out_vec <- c(out_vec, paste0("Treatment  ", ifelse(object@n_treatments < 10, "  ", "   "), "Studies"))
-      out_tab <- as.vector(by(object@study_data$studyid, object@study_data$trt, function(x) toString(names(table(x)))))
+      out_vec <- c(out_vec, paste0("Treatment  ",
+        ifelse(object@n_treatments < 10, "   ", "    "), "Studies"))
+      out_tab <- as.vector(
+        by(object@study_data$studyid, object@study_data$trt,
+          function(x) {
+            tb <- table(x)
+            toString(names(tb[tb > 0]))})
+        )
       for (j in 1:length(out_tab)) {
-        out_vec <- c(out_vec, paste0("Treatment", ifelse(object@n_treatments > 9, ifelse(j < 10, "  ", " "), " "), j,
-          "  ", out_tab[j]))
+        out_vec <- c(out_vec, paste0("Treatment",
+          ifelse(object@n_treatments > 9, ifelse(j < 10, "   ", "  "), " "), j,
+          ":  ", out_tab[j]))#, ifelse(j < length(out_tab), "\n", "")))
       }
     }
 
