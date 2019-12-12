@@ -7,7 +7,7 @@ path_to_save <- "~/dev/netcopula/demo"
 set.seed(1406)
 
 ## data generation parameters
-N <- 200 # number of simulated data sets
+N <- 500 # number of simulated data sets
 n_outcomes <- 3
 n_trt <- 3
 n_studies <- 30
@@ -50,7 +50,7 @@ n_datapoints <- 2*n_studies
 
 ## array to store the result summaries
 res_summary <- array(NA,
-  dim = c(N, n_outcomes*(n_outcomes + 1)/2 + n_trt*n_outcomes, 2))
+  dim = c(N, n_outcomes*(n_outcomes + 1)/2 + n_trt*n_outcomes + n_outcomes, 2))
 doagain <- TRUE
 
 for (i in 1:N) {
@@ -90,24 +90,22 @@ for (i in 1:N) {
     }
   }
 
-  res_summary_tmp <- summary(res, regex_pars = c("d", "Sigma"))
+  res_summary_tmp <- summary(res, regex_pars = c("d", "Sigma", "Gamma"))
   res_summary[i, , 1] <- res_summary_tmp[[1]][, 1] # posterior means
   res_summary[i, , 2] <- res_summary_tmp[[2]][, 3] # posterior medians
   
   doagain <- TRUE
 
   ## uncomment the following lines to save the simulation results
-  # save("nc_data_tmp", "res", file = file.path(path_to_save,
-  #   paste0("sim_study_", i, ".RData")))
-  # save.image(file = file.path(path_to_save, "sim_study.RData"))
+  save("nc_data_tmp", "res", file = file.path(path_to_save,
+    paste0("sim_study_", i, ".RData")))
+  save.image(file = file.path(path_to_save, "sim_study.RData"))
 }
 
 ## plotting results
 summ_pmean <- colMeans(res_summary[, , 1], na.rm = TRUE)
 summ_pmed <- colMeans(res_summary[, , 2], na.rm = TRUE)
 
-param <- "d"
-idx <- grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE)
 d_true <- as.numeric(d_init)
 bias_d <- summ[idx, 1]
 bias_d <- bias_d - d_true
