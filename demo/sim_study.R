@@ -97,49 +97,48 @@ for (i in 1:N) {
   doagain <- TRUE
 
   ## uncomment the following lines to save the simulation results
-  save("nc_data_tmp", "res", file = file.path(path_to_save,
-    paste0("sim_study_", i, ".RData")))
-  save.image(file = file.path(path_to_save, "sim_study.RData"))
+  # save("nc_data_tmp", "res", file = file.path(path_to_save,
+  #   paste0("sim_study_", i, ".RData")))
+  # save.image(file = file.path(path_to_save, "sim_study.RData"))
 }
 
-## plotting results
+dimnames(res_summary) <- list(NULL, rownames(res_summary_tmp[[1]]), NULL)
+res_summary <- res_summary[, -c(1, 4, 7), ]
+
 summ_pmean <- colMeans(res_summary[, , 1], na.rm = TRUE)
 summ_pmed <- colMeans(res_summary[, , 2], na.rm = TRUE)
 
-d_true <- as.numeric(d_init)
-bias_d <- summ[idx, 1]
-bias_d <- bias_d - d_true
-cov_d_tmp <- res_summary[, , c(4, 8)]
-cov_d <- numeric(length(d_true))
-for (i in 1:length(d_true)) {
-  cov_d[i] <- sum(cov_d_tmp[, i , 1] <= d_true[i] & cov_d_tmp[, i , 2] >= d_true[i])/N
+## plotting results
+toplot <- t(res_summary[, , 2]) # plot estimated posterior medians
+true_val <- c(as.numeric(d[-1, ]), Sigma_M[lower.tri(Sigma_M, diag = TRUE)],
+  Gamma_tmp[lower.tri(Gamma_tmp)])
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
+  "#D55E00", "#CC79A7")
+toinst <- require(scales)
+if (!toinst) install.packages("scales")
+par(mar = c(5, 6.5, 1.5, 1.5) + 0.1)
+plot(toplot[1, ], rep(1, N), xlim = c(min(toplot), max(toplot)),
+  ylim = c(0, nrow(toplot) + 1), type = "n",
+  xlab = "Posterior median", ylab = "", yaxt = "n")
+for (j in 1:6) {
+  segments(-10, j, 10, j, lty = 2, col = gray(.9))
+  points(toplot[j, ], rep(j, N), pch = 20, col = alpha(cbPalette[2], alpha = .25))
+  points(summ_pmed[j], j, pch = 18, col = cbPalette[7], cex = 1.75)
+  points(true_val[j], j, pch = 17, col = cbPalette[4], cex = 1.25)
 }
-plot(bias_d, xlab = "Parameter", ylab = "Bias", xaxt = "n", cex.axis = .7,
-  ylim = c(min(bias_d, 0.1), max(bias_d, 0)))
-axis(side = 1, at = 1:length(d_true), labels = dimnames(summ)[[1]][idx])
-abline(h = 0, lty = 2, col = gray(.9))
-plot(cov_d, xlab = "Parameter", ylab = "Coverage", xaxt = "n", cex.axis = .7,
-  ylim = c(0, 1))
-axis(side = 1, at = 1:length(d_true), labels = dimnames(summ)[[1]][idx])
-abline(h = .95, lty = 2, col = gray(.9))
-
-param <- "Sigma"
-idx <- grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE)
-Sigma_M_true <- as.numeric(Sigma_M[lower.tri(Sigma_M, diag = TRUE)])
-bias_Sigma_M <- summ[grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE), 1]
-bias_Sigma_M <- bias_Sigma_M - Sigma_M_true
-cov_Sigma_M_tmp <- res_summary[, grep(paste0(param, "["), dimnames(summ)[[1]], fixed = TRUE), c(4, 8)]
-cov_Sigma_M <- numeric(length(Sigma_M_true))
-for (i in 1:length(Sigma_M_true)) {
-  cov_Sigma_M[i] <- sum(cov_Sigma_M_tmp[, i , 1] <= Sigma_M_true[i] & cov_Sigma_M_tmp[, i , 2] >= Sigma_M_true[i])/N
+for (j in 7:12) {
+  segments(-10, j, 10, j, lty = 2, col = gray(.9))
+  points(toplot[j, ], rep(j, N), pch = 20, col = alpha(cbPalette[3], alpha = .25))
+  points(summ_pmed[j], j, pch = 18, col = cbPalette[7], cex = 1.75)
+  points(true_val[j], j, pch = 17, col = cbPalette[4], cex = 1.25)
 }
-plot(bias_Sigma_M, xlab = "Parameter", ylab = "Bias", xaxt = "n", cex.axis = .7,
-  ylim = c(min(bias_Sigma_M, 0.1), max(bias_Sigma_M, 0)))
-axis(side = 1, at = 1:length(d_true), labels = dimnames(summ)[[1]][idx],
-  cex.axis = .7)
-abline(h = 0, lty = 2, col = gray(.9))
-plot(cov_Sigma_M, xlab = "Parameter", ylab = "Bias", xaxt = "n", cex.axis = .7,
-  ylim = c(0, 1))
-axis(side = 1, at = 1:length(d_true), labels = dimnames(summ)[[1]][idx],
-  cex.axis = .7)
-abline(h = .95, lty = 2, col = gray(.9))
+for (j in 13:15) {
+  segments(-10, j, 10, j, lty = 2, col = gray(.9))
+  points(toplot[j, ], rep(j, N), pch = 20, col = alpha(cbPalette[1], alpha = .25))
+  points(summ_pmed[j], j, pch = 18, col = cbPalette[7], cex = 1.75)
+  points(true_val[j], j, pch = 17, col = cbPalette[4], cex = 1.25)
+}
+axis(side = 2, at = 1:nrow(toplot), labels = rownames(toplot), las = 2, cex.axis = .7)
+title(ylab = "Parameter", line = 4.5)
+legend(x = "topright", legend = c("Average", "True"),
+  col = cbPalette[c(7, 4)], pch = c(18, 17), pt.cex = c(1.75, 1.25), horiz = TRUE)
