@@ -487,9 +487,6 @@ setMethod("summary",
 #'   \code{\link[bayesplot]{mcmc_combo}}).
 #' @param ... Further arguments to pass on.
 #'
-#' @return An invisible \code{\link{ggplot}} object providing the required graphical
-#'  representation.
-#'
 #' @author Sergio Venturini \email{sergio.venturini@unito.it}
 #'
 #' @aliases plot,nc_mcmc-method
@@ -639,6 +636,5 @@ setMethod("plot",
     options(ow) # reset to previous, typically 'warn = 0'
 
     p
-    invisible(p)
   }
 )

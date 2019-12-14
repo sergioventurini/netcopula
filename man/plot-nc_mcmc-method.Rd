@@ -43,10 +43,6 @@ burnin iterations (if available) are included in the summary.}
 
 \item{...}{Further arguments to pass on.}
 }
-\value{
-An invisible \code{\link{ggplot}} object providing the required graphical
- representation.
-}
 \description{
 Provide a graphical summary of a \code{nc_mcmc} class instance.
 }

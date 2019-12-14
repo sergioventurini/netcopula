@@ -33,7 +33,7 @@ prm.prior <- nc_prior(mu_sigma2 = 10^3, d_sigma2 = 10^3, beta_sigma = 10^(-1/8),
   nGamma = nGamma, eta_prior = 1)
 
 # MCMC settings
-burnin <- 250000
+burnin <- 300000
 nsim <- 50000
 nthin <- 1
 prm.prop <- list(Gamma.update = "PX-RPMH", eta = .5, sigma.r = .01)
