@@ -4,7 +4,8 @@
 \name{homesafety}
 \alias{homesafety}
 \title{Home safety data}
-\format{A data frame with 45 rows and 12 variables. The variables are as
+\format{
+A data frame with 45 rows and 12 variables. The variables are as
 follows:
 
 \itemize{
@@ -32,7 +33,8 @@ follows:
   home safety inspection + fitting of equipment
   \item treatment 8: education + home visit
   \item treatment 9: provision of free/low cost equipment
-}}
+}
+}
 \source{
 \url{http://www.biomedcentral.com/1471-2288/14/92}
 }

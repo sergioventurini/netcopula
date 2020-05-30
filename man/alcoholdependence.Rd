@@ -4,7 +4,8 @@
 \name{alcoholdependence}
 \alias{alcoholdependence}
 \title{Alcohol dependence data}
-\format{A data frame with 87 rows and 12 variables. The variables are as
+\format{
+A data frame with 87 rows and 12 variables. The variables are as
 follows:
 
 \itemize{
@@ -24,7 +25,8 @@ follows:
   \item treatment 2: naltrexone
   \item treatment 3: acamprosate
   \item treatment 4: naltrexone + acamprosate
-}}
+}
+}
 \source{
 Liu, Y., DeSantis, S. M., and Chen, Y. (2018) Bayesian mixed
 treatment comparisons meta-analysis for correlated outcomes subject to
