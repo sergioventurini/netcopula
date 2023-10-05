@@ -43,4 +43,4 @@ Depends:
 LinkingTo: Rcpp, RcppArmadillo
 BugReports: https://github.com/sergioventurini/netcopula/issues
 Encoding: UTF-8
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
